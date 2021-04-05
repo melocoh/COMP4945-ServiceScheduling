@@ -1,5 +1,6 @@
 ﻿using cstestproject2.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,14 @@ namespace cstestproject2.Controllers
 
         public IActionResult EmployeeRegistration()
         {
+            ViewBag.CertificationTypes = new List<SelectListItem>()
+            {
+                new SelectListItem() { Text = "type1", Value = "1" },
+                new SelectListItem() { Text = "type2", Value = "2" },
+                new SelectListItem() { Text = "type3", Value = "3" },
+                new SelectListItem() { Text = "type4", Value = "4" }
+            };
+
             return View();
         }
 

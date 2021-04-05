@@ -1,4 +1,6 @@
-﻿<html xmlns="http://www.w3.org/1999/xhtml">
+﻿@model CertificationType
+
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
@@ -94,12 +96,7 @@
 
                         <div class="p-2 bd-highlight">
                             <label>Certification</label><br>
-                            <select id="logincertification" class="logininput dropdown" name="dropdownTest" multiple>
-                                <option style="display:none">-- Select Test --</option>
-                                <option value="Test1">Test1</option>
-                                <option value="Test2">Test2</option>
-                                <option value="Test3">Test3</option>
-                                <option value="Test4">Test4</option>
+                            <select asp-for ="CertificationTypes" id="certificationType" class="logininput dropdown" asp-items="ViewBag.CertificationTypes" multiple>
                             </select>
                             <button id="addcertificatebutton">+</button>
                         </div>
