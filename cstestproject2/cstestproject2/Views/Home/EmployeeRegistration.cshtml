@@ -24,6 +24,12 @@
             text-align: center;
         }
 
+        #addcertificatebutton{
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
         .statusbutton {
             margin: 15px;
             width: 120px;
@@ -35,9 +41,14 @@
             text-align: center;
         }
 
-        .logininput{
+        .logininput {
             width: 300px;
         }
+
+        .dropdown {
+            text-align-last: center;
+        }
+
     </style>
 </head>
 <body>
@@ -46,10 +57,40 @@
         <div id="blockContainer">
             <div id="dynamicContainer" class="d-flex flex-column">
                 <div class="d-flex justify-content-center">
-                    <p id="message">Client Log In</p>
+                    <p id="message">Employee Registration</p>
                 </div>
                 <div class="d-flex justify-content-center">
                     <div class="d-flex flex-column bd-highlight mb-3">
+
+                        <div class="p-2 bd-highlight">
+                            <label>Full Name</label><br>
+                            <input class="logininput" type="text" id="loginfullname" name="fullname">
+                        </div>
+
+                        <div class="p-2 bd-highlight">
+                            <label>Job Title</label><br>
+                            <select id="loginjobtitle" class="logininput dropdown" name="loginjobtitle">
+                                <option style="display:none">-- Select Job --</option>
+                                <option value="Clout Gang Tik Tocker">Clout Gang Tik Tocker</option>
+                                <option value="Fire Fighter">Fire Fighter</option>
+                                <option value="Nurse">Nurse</option>
+                                <option value="SoundCloud Rapper">SoundCloud Rapper</option>
+                                <option value="CST Instructor">CST Instructor</option>
+
+                            </select>
+                        </div>
+
+                        <div class="p-2 bd-highlight">
+                            <label>Certification</label><br>
+                            <select id="logincertification" class="logininput dropdown"  name="logincertification">
+                                <option style="display:none">-- Select Certificate --</option>
+                                <option value="Hamburger University Degree">Hamburger University Degree</option>
+                                <option value="First Aid Certification">First Aid Certification</option>
+                                <option value="Scuba Diving Certification">Scuba Diving Certification</option>
+                                <option value="Nurse Practitioning Certification">Nurse Practitioning Certification</option>
+                            </select>
+                            <button id="addcertificatebutton">+</button>
+                        </div>
 
                         <div class="p-2 bd-highlight">
                             <label>Email</label><br>
@@ -62,8 +103,8 @@
                         </div>
 
                         <div class="p-2 bd-highlight">
-                            <input type="checkbox" id="remember1" name="remember1" value="Remember">
-                            <label for="remember1">Remember me?</label><br>
+                            <label>Confirm Password</label><br>
+                            <input class="logininput" type="password" id="confirmloginpassword" name="confirmloginpassword">
                         </div>
 
                     </div>
@@ -75,8 +116,7 @@
                     <button class="btn btn-primary statusbutton">Log In</button>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <a href="" class="hyperlinks">Forgot your password?</a>
-                    <a href="@Url.Action("ClientRegistration", "Home")" class="hyperlinks">Register as a new user</a>
+                    <a href="@Url.Action("EmployeeSignIn", "Home")" class="hyperlinks">Already a user?</a>
                 </div>
             </div>
         </div>

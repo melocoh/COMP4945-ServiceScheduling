@@ -33,6 +33,21 @@ namespace cstestproject2.Controllers
             return View();
         }
 
+        public IActionResult ClientRegistration()
+        {
+            return View();
+        }
+
+        public IActionResult EmployeeSignIn()
+        {
+            return View();
+        }
+
+        public IActionResult EmployeeRegistration()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

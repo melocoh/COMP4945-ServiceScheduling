@@ -9,11 +9,11 @@
 
         #blockContainer {
             display: block;
-            margin-left: 20%;
-            margin-right: 20%;
-            margin-top: 5%;
+            margin-left: 5%;
+            margin-right: 5%;
+            margin-top: 30%;
             margin-bottom: auto;
-            border: 1px solid lightgrey;
+            border: 1px solid transparent;
             border-radius: 10px;
             padding: 20px;
         }
@@ -21,6 +21,7 @@
         #message {
             font-size: 30px;
             font-weight: bold;
+            text-align: center;
         }
 
         .statusbutton{
@@ -41,8 +42,10 @@
                     <a href="@Url.Action("ClientSignIn","Home")">
                         <button class="btn btn-outline-primary statusbutton">Client</button>
                     </a>
+                    <a href="@Url.Action("EmployeeSignIn","Home")">
                         <button class="btn btn-outline-primary statusbutton">Employee</button>
-</div>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
