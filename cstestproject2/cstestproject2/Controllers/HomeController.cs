@@ -48,10 +48,10 @@ namespace cstestproject2.Controllers
         {
             ViewBag.CertificationTypes = new List<SelectListItem>()
             {
-                new SelectListItem() { Text = "type1", Value = "1" },
-                new SelectListItem() { Text = "type2", Value = "2" },
-                new SelectListItem() { Text = "type3", Value = "3" },
-                new SelectListItem() { Text = "type4", Value = "4" }
+                new SelectListItem() { Text = "Hamburger University Degree", Value = "1" },
+                new SelectListItem() { Text = "First Aid Certification", Value = "2" },
+                new SelectListItem() { Text = "Scuba Diving Certification", Value = "3" },
+                new SelectListItem() { Text = "Nurse Practitioning Certification", Value = "4" }
             };
 
             return View();
