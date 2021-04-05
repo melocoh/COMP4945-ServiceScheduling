@@ -1,5 +1,6 @@
 ﻿using cstestproject2.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,29 @@ namespace cstestproject2.Controllers
 
         public IActionResult ClientSignIn()
         {
+            return View();
+        }
+
+        public IActionResult ClientRegistration()
+        {
+            return View();
+        }
+
+        public IActionResult EmployeeSignIn()
+        {
+            return View();
+        }
+
+        public IActionResult EmployeeRegistration()
+        {
+            ViewBag.CertificationTypes = new List<SelectListItem>()
+            {
+                new SelectListItem() { Text = "Hamburger University Degree", Value = "1" },
+                new SelectListItem() { Text = "First Aid Certification", Value = "2" },
+                new SelectListItem() { Text = "Scuba Diving Certification", Value = "3" },
+                new SelectListItem() { Text = "Nurse Practitioning Certification", Value = "4" }
+            };
+
             return View();
         }
 
