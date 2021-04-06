@@ -16,39 +16,41 @@ namespace Selenium.Tests
             ChromeDriver driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
             driver.Navigate().GoToUrl(url);
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(100000000);
             driver.FindElement(By.LinkText("Start Now")).Click();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             
             // Select Your Role
             driver.FindElement(By.LinkText("Client")).Click();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
             // Register as a new user
             driver.FindElement(By.LinkText("Register as a new user")).Click();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             driver.FindElement(By.Id("loginfullname")).SendKeys("Jason Lee");
             driver.FindElement(By.Id("loginemail")).SendKeys("jasoncflee@bcit.ca");
             driver.FindElement(By.Id("loginpassword")).SendKeys("A123s456*");
             driver.FindElement(By.Id("confirmloginpassword")).SendKeys("A123s456*");
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
             // Client Log In
             driver.FindElement(By.LinkText("Already a user?")).Click();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             driver.FindElement(By.Id("loginemail")).SendKeys("jasoncflee@bcit.ca");
             driver.FindElement(By.Id("loginpassword")).SendKeys("A123s456*");
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
             // Select Your Role
             driver.FindElement(By.LinkText("Home")).Click();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             driver.FindElement(By.LinkText("Start Now")).Click();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             driver.FindElement(By.LinkText("Employee")).Click();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
             // Employee Registration
             driver.FindElement(By.LinkText("Register as a new user")).Click();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             driver.FindElement(By.Id("loginfullname")).SendKeys("Jason Lee");
 
             var jobTitle = driver.FindElement(By.Name("loginjobtitle"));
@@ -59,21 +61,20 @@ namespace Selenium.Tests
             var selectCertification = new SelectElement(certification);
             selectCertification.SelectByValue("Scuba Diving Certification");
 
-            //driver.FindElement(By.Id("loginjobtitle")).SendKeys("CST Instructor");
-            //driver.FindElement(By.Id("certificationType")).SendKeys("");
             driver.FindElement(By.Id("loginemail")).SendKeys("jasoncflee@bcit.ca");
-            driver.FindElement(By.Id("loginpassword")).SendKeys("A123s456*");
+            driver.FindElement(By.Id("loginpassword")).SendKeys("A123s4106*");
             driver.FindElement(By.Id("confirmloginpassword")).SendKeys("A123s456*");
 
             // Employee Log In
             driver.FindElement(By.LinkText("Already a user?")).Click();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             driver.FindElement(By.Id("loginemail")).SendKeys("jasoncflee@bcit.ca");
             driver.FindElement(By.Id("loginpassword")).SendKeys("A123s456*");
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
             // Back to Home
             driver.FindElement(By.LinkText("Home")).Click();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
             // Submit
             //driver.FindElement(By.XPath("//Input[@type='submit']")).Click();
