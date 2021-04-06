@@ -6,6 +6,19 @@
     <title>@ViewData["Title"] - Service Scheduling</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+
+    <style>
+
+        .notificationbell {
+            width: 50px;
+        }
+
+        .notificationbellheader {
+            font-size: 25px !important;
+            font-weight: 500;
+        }
+
+    </style>
 </head>
 <body>
     <header>
@@ -25,7 +38,30 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="test">Chart.JS</a>
                         </li>
                     </ul>
+                    @* Bell Notification - Begin *@
+                    @* Added dropdown button on the navigation bar using bell with dot, photos are in wwwroot -> images folder *@
                     <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown">
+                            <div class="notificationbell">
+                                <img id="imagedropdown" class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src="~/images/bell-notification-red.png" alt="notificationwithdot" width="90%" height="90%">
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li class="dropdown-header notificationbellheader" aria-labelledby="dropdown01">Notifications</li>
+                                    <li class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">You have 3 upcoming appointments today</a>
+                                    </li>
+                                    <li class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">You currently have 6 pending appointments</a>
+                                    </li>
+                                    <li class="dropdown-divider"></li>
+                                    <li class="dropdown-header">
+                                        <a href="#">View All</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        @* Bell Notification - End *@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Registration</a>
                         </li>
@@ -48,8 +84,8 @@
             &copy; 2021 - Service Scheduling - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
