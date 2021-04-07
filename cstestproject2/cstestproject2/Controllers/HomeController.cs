@@ -70,6 +70,17 @@ namespace cstestproject2.Controllers
             return View();
         }
 
+        public IActionResult Modal()
+        {
+            ViewBag.SelectOptions = new List<SelectListItem>()
+            {
+                new SelectListItem(){Text = "Option 1", Value = "1"},
+                new SelectListItem(){Text = "Option 2", Value = "2"},
+                new SelectListItem(){Text = "Option 3", Value = "3"},
+            };
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
