@@ -10,8 +10,8 @@ using ServiceScheduling_App;
 namespace ServiceScheduling_App.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20210407051453_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210407210357_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -119,61 +119,52 @@ namespace ServiceScheduling_App.Migrations
                     b.Property<int>("AppId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AppointmentAppId")
-                        .HasColumnType("int");
-
                     b.HasKey("ClientId", "AppId");
 
-                    b.HasIndex("AppointmentAppId");
+                    b.HasIndex("AppId");
 
                     b.ToTable("ClientAppointments");
                 });
 
             modelBuilder.Entity("ServiceScheduling_App.Models.EmpAppointment", b =>
                 {
-                    b.Property<int>("EmployeeId")
+                    b.Property<int>("EmpId")
                         .HasColumnType("int");
 
                     b.Property<int>("AppId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AppointmentAppId")
-                        .HasColumnType("int");
+                    b.HasKey("EmpId", "AppId");
 
-                    b.HasKey("EmployeeId", "AppId");
-
-                    b.HasIndex("AppointmentAppId");
+                    b.HasIndex("AppId");
 
                     b.ToTable("EmpAppointments");
                 });
 
             modelBuilder.Entity("ServiceScheduling_App.Models.EmpCertification", b =>
                 {
-                    b.Property<int>("EmployeeId")
+                    b.Property<int>("EmpId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CertificationId")
+                    b.Property<int>("CertId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CertificationTypeCertId")
-                        .HasColumnType("int");
+                    b.HasKey("EmpId", "CertId");
 
-                    b.HasKey("EmployeeId", "CertificationId");
-
-                    b.HasIndex("CertificationTypeCertId");
+                    b.HasIndex("CertId");
 
                     b.ToTable("EmpCertifications");
                 });
 
             modelBuilder.Entity("ServiceScheduling_App.Models.EmpShift", b =>
                 {
-                    b.Property<int>("EmployeeId")
+                    b.Property<int>("EmpId")
                         .HasColumnType("int");
 
                     b.Property<int>("ServiceShiftId")
                         .HasColumnType("int");
 
-                    b.HasKey("EmployeeId", "ServiceShiftId");
+                    b.HasKey("EmpId", "ServiceShiftId");
 
                     b.HasIndex("ServiceShiftId");
 
@@ -243,8 +234,7 @@ namespace ServiceScheduling_App.Migrations
 
                     b.HasKey("ServiceShiftId");
 
-                    b.HasIndex("ServId")
-                        .IsUnique();
+                    b.HasIndex("ServId");
 
                     b.ToTable("ServiceShift");
                 });
@@ -257,9 +247,6 @@ namespace ServiceScheduling_App.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CertificationRqt")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("EmployeeEmpId")
                         .HasColumnType("int");
 
                     b.Property<int>("MaxNoClient")
@@ -278,8 +265,6 @@ namespace ServiceScheduling_App.Migrations
 
                     b.HasIndex("CertificationRqt")
                         .IsUnique();
-
-                    b.HasIndex("EmployeeEmpId");
 
                     b.ToTable("ServiceType");
                 });
@@ -309,11 +294,13 @@ namespace ServiceScheduling_App.Migrations
             modelBuilder.Entity("ServiceScheduling_App.Models.ClientAppointment", b =>
                 {
                     b.HasOne("ServiceScheduling_App.Models.Appointment", "Appointment")
-                        .WithMany("ClientAppointment")
-                        .HasForeignKey("AppointmentAppId");
+                        .WithMany("ClientAppointments")
+                        .HasForeignKey("AppId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ServiceScheduling_App.Models.Client", "Client")
-                        .WithMany("ClientAppointment")
+                        .WithMany("ClientAppointments")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -327,11 +314,13 @@ namespace ServiceScheduling_App.Migrations
                 {
                     b.HasOne("ServiceScheduling_App.Models.Appointment", "Appointment")
                         .WithMany("EmpAppointments")
-                        .HasForeignKey("AppointmentAppId");
+                        .HasForeignKey("AppId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ServiceScheduling_App.Models.Employee", "Employee")
                         .WithMany("EmpAppointments")
-                        .HasForeignKey("EmployeeId")
+                        .HasForeignKey("EmpId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -344,11 +333,13 @@ namespace ServiceScheduling_App.Migrations
                 {
                     b.HasOne("ServiceScheduling_App.Models.CertificationType", "CertificationType")
                         .WithMany("EmpCertifications")
-                        .HasForeignKey("CertificationTypeCertId");
+                        .HasForeignKey("CertId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ServiceScheduling_App.Models.Employee", "Employee")
                         .WithMany("EmpCertifications")
-                        .HasForeignKey("EmployeeId")
+                        .HasForeignKey("EmpId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -361,12 +352,12 @@ namespace ServiceScheduling_App.Migrations
                 {
                     b.HasOne("ServiceScheduling_App.Models.Employee", "Employee")
                         .WithMany("EmpShifts")
-                        .HasForeignKey("EmployeeId")
+                        .HasForeignKey("EmpId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ServiceScheduling_App.Models.ServiceShift", "ServiceShift")
-                        .WithMany()
+                        .WithMany("EmpShifts")
                         .HasForeignKey("ServiceShiftId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -390,8 +381,8 @@ namespace ServiceScheduling_App.Migrations
             modelBuilder.Entity("ServiceScheduling_App.Models.ServiceShift", b =>
                 {
                     b.HasOne("ServiceScheduling_App.Models.ServiceType", "ServiceType")
-                        .WithOne("ServiceShift")
-                        .HasForeignKey("ServiceScheduling_App.Models.ServiceShift", "ServId")
+                        .WithMany()
+                        .HasForeignKey("ServId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -406,20 +397,14 @@ namespace ServiceScheduling_App.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ServiceScheduling_App.Models.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeEmpId");
-
                     b.Navigation("CertificationType");
-
-                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("ServiceScheduling_App.Models.Appointment", b =>
                 {
                     b.Navigation("AppointmentSession");
 
-                    b.Navigation("ClientAppointment");
+                    b.Navigation("ClientAppointments");
 
                     b.Navigation("EmpAppointments");
                 });
@@ -433,7 +418,7 @@ namespace ServiceScheduling_App.Migrations
 
             modelBuilder.Entity("ServiceScheduling_App.Models.Client", b =>
                 {
-                    b.Navigation("ClientAppointment");
+                    b.Navigation("ClientAppointments");
                 });
 
             modelBuilder.Entity("ServiceScheduling_App.Models.Employee", b =>
@@ -450,11 +435,14 @@ namespace ServiceScheduling_App.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("ServiceScheduling_App.Models.ServiceShift", b =>
+                {
+                    b.Navigation("EmpShifts");
+                });
+
             modelBuilder.Entity("ServiceScheduling_App.Models.ServiceType", b =>
                 {
                     b.Navigation("Appointment");
-
-                    b.Navigation("ServiceShift");
                 });
 #pragma warning restore 612, 618
         }

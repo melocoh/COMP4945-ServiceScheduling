@@ -9,10 +9,10 @@ namespace ServiceScheduling_App.Models
 {
     public class AppointmentSession
     {
-        [Key]
+        [Key] // Primary key
         public int AppSessionId { get; set; }
 
-        [ForeignKey("Appointment")]
+        [ForeignKey("Appointment")] // Foreign key that references Appointment
         public int AppId { get; set;}
 
         public int SessionNo { get; set; }
@@ -23,9 +23,10 @@ namespace ServiceScheduling_App.Models
 
         public DateTime EndDateTime { get; set; }
 
-
+        /*****************************************/
 
         // References Appointment object
+        // @relation one-to-many
         public virtual Appointment Appointment { get; set; }
     }
 }

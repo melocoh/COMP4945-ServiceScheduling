@@ -7,10 +7,10 @@ namespace ServiceScheduling_App.Models
 {
     public class EmpCertification
     {
-        public int EmployeeId { get; set; }
+        public int EmpId { get; set; }
         public Employee Employee { get; set; }
 
-        public int CertificationId { get; set; }
+        public int CertId { get; set; }
         public CertificationType CertificationType { get; set; }
     }
 }

@@ -9,15 +9,18 @@ namespace ServiceScheduling_App.Models
 {
     public class CertificationType
     {
-        [Key]
+        [Key] // Primary key
         public int CertId { get; set; }
         public string CertTitle { get; set; }
 
+        /*****************************************/
 
         // References ServiceType object
+        // @relation one-to-one
         public virtual ServiceType ServiceType { get; set; }
 
-        // References EmpCertifications object
+        // References EmpCertifications collection
+        // @relation many-to-many
         public ICollection<EmpCertification> EmpCertifications { get; set; }
 
     }

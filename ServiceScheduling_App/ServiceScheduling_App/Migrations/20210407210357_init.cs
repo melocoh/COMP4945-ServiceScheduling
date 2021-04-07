@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ServiceScheduling_App.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,6 +49,29 @@ namespace ServiceScheduling_App.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ServiceType",
+                columns: table => new
+                {
+                    ServId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ServTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CertificationRqt = table.Column<int>(type: "int", nullable: false),
+                    MaxNoEmp = table.Column<int>(type: "int", nullable: false),
+                    MaxNoClient = table.Column<int>(type: "int", nullable: false),
+                    Rate = table.Column<float>(type: "real", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceType", x => x.ServId);
+                    table.ForeignKey(
+                        name: "FK_ServiceType_CertificationType_CertificationRqt",
+                        column: x => x.CertificationRqt,
+                        principalTable: "CertificationType",
+                        principalColumn: "CertId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Employee",
                 columns: table => new
                 {
@@ -68,61 +91,6 @@ namespace ServiceScheduling_App.Migrations
                         principalTable: "JobType",
                         principalColumn: "JobId",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EmpCertifications",
-                columns: table => new
-                {
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    CertificationId = table.Column<int>(type: "int", nullable: false),
-                    CertificationTypeCertId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmpCertifications", x => new { x.EmployeeId, x.CertificationId });
-                    table.ForeignKey(
-                        name: "FK_EmpCertifications_CertificationType_CertificationTypeCertId",
-                        column: x => x.CertificationTypeCertId,
-                        principalTable: "CertificationType",
-                        principalColumn: "CertId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_EmpCertifications_Employee_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employee",
-                        principalColumn: "EmpId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ServiceType",
-                columns: table => new
-                {
-                    ServId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ServTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CertificationRqt = table.Column<int>(type: "int", nullable: false),
-                    MaxNoEmp = table.Column<int>(type: "int", nullable: false),
-                    MaxNoClient = table.Column<int>(type: "int", nullable: false),
-                    Rate = table.Column<float>(type: "real", nullable: false),
-                    EmployeeEmpId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ServiceType", x => x.ServId);
-                    table.ForeignKey(
-                        name: "FK_ServiceType_CertificationType_CertificationRqt",
-                        column: x => x.CertificationRqt,
-                        principalTable: "CertificationType",
-                        principalColumn: "CertId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ServiceType_Employee_EmployeeEmpId",
-                        column: x => x.EmployeeEmpId,
-                        principalTable: "Employee",
-                        principalColumn: "EmpId",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -169,6 +137,30 @@ namespace ServiceScheduling_App.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EmpCertifications",
+                columns: table => new
+                {
+                    EmpId = table.Column<int>(type: "int", nullable: false),
+                    CertId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmpCertifications", x => new { x.EmpId, x.CertId });
+                    table.ForeignKey(
+                        name: "FK_EmpCertifications_CertificationType_CertId",
+                        column: x => x.CertId,
+                        principalTable: "CertificationType",
+                        principalColumn: "CertId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EmpCertifications_Employee_EmpId",
+                        column: x => x.EmpId,
+                        principalTable: "Employee",
+                        principalColumn: "EmpId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AppointmentSession",
                 columns: table => new
                 {
@@ -196,18 +188,17 @@ namespace ServiceScheduling_App.Migrations
                 columns: table => new
                 {
                     ClientId = table.Column<int>(type: "int", nullable: false),
-                    AppId = table.Column<int>(type: "int", nullable: false),
-                    AppointmentAppId = table.Column<int>(type: "int", nullable: true)
+                    AppId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ClientAppointments", x => new { x.ClientId, x.AppId });
                     table.ForeignKey(
-                        name: "FK_ClientAppointments_Appointment_AppointmentAppId",
-                        column: x => x.AppointmentAppId,
+                        name: "FK_ClientAppointments_Appointment_AppId",
+                        column: x => x.AppId,
                         principalTable: "Appointment",
                         principalColumn: "AppId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ClientAppointments_Client_ClientId",
                         column: x => x.ClientId,
@@ -220,22 +211,21 @@ namespace ServiceScheduling_App.Migrations
                 name: "EmpAppointments",
                 columns: table => new
                 {
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    AppId = table.Column<int>(type: "int", nullable: false),
-                    AppointmentAppId = table.Column<int>(type: "int", nullable: true)
+                    EmpId = table.Column<int>(type: "int", nullable: false),
+                    AppId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmpAppointments", x => new { x.EmployeeId, x.AppId });
+                    table.PrimaryKey("PK_EmpAppointments", x => new { x.EmpId, x.AppId });
                     table.ForeignKey(
-                        name: "FK_EmpAppointments_Appointment_AppointmentAppId",
-                        column: x => x.AppointmentAppId,
+                        name: "FK_EmpAppointments_Appointment_AppId",
+                        column: x => x.AppId,
                         principalTable: "Appointment",
                         principalColumn: "AppId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EmpAppointments_Employee_EmployeeId",
-                        column: x => x.EmployeeId,
+                        name: "FK_EmpAppointments_Employee_EmpId",
+                        column: x => x.EmpId,
                         principalTable: "Employee",
                         principalColumn: "EmpId",
                         onDelete: ReferentialAction.Cascade);
@@ -245,15 +235,15 @@ namespace ServiceScheduling_App.Migrations
                 name: "EmpShifts",
                 columns: table => new
                 {
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    EmpId = table.Column<int>(type: "int", nullable: false),
                     ServiceShiftId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmpShifts", x => new { x.EmployeeId, x.ServiceShiftId });
+                    table.PrimaryKey("PK_EmpShifts", x => new { x.EmpId, x.ServiceShiftId });
                     table.ForeignKey(
-                        name: "FK_EmpShifts_Employee_EmployeeId",
-                        column: x => x.EmployeeId,
+                        name: "FK_EmpShifts_Employee_EmpId",
+                        column: x => x.EmpId,
                         principalTable: "Employee",
                         principalColumn: "EmpId",
                         onDelete: ReferentialAction.Cascade);
@@ -278,19 +268,19 @@ namespace ServiceScheduling_App.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientAppointments_AppointmentAppId",
+                name: "IX_ClientAppointments_AppId",
                 table: "ClientAppointments",
-                column: "AppointmentAppId");
+                column: "AppId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmpAppointments_AppointmentAppId",
+                name: "IX_EmpAppointments_AppId",
                 table: "EmpAppointments",
-                column: "AppointmentAppId");
+                column: "AppId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmpCertifications_CertificationTypeCertId",
+                name: "IX_EmpCertifications_CertId",
                 table: "EmpCertifications",
-                column: "CertificationTypeCertId");
+                column: "CertId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employee_JobId",
@@ -306,19 +296,13 @@ namespace ServiceScheduling_App.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_ServiceShift_ServId",
                 table: "ServiceShift",
-                column: "ServId",
-                unique: true);
+                column: "ServId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ServiceType_CertificationRqt",
                 table: "ServiceType",
                 column: "CertificationRqt",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ServiceType_EmployeeEmpId",
-                table: "ServiceType",
-                column: "EmployeeEmpId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -345,19 +329,19 @@ namespace ServiceScheduling_App.Migrations
                 name: "Appointment");
 
             migrationBuilder.DropTable(
+                name: "Employee");
+
+            migrationBuilder.DropTable(
                 name: "ServiceShift");
+
+            migrationBuilder.DropTable(
+                name: "JobType");
 
             migrationBuilder.DropTable(
                 name: "ServiceType");
 
             migrationBuilder.DropTable(
                 name: "CertificationType");
-
-            migrationBuilder.DropTable(
-                name: "Employee");
-
-            migrationBuilder.DropTable(
-                name: "JobType");
         }
     }
 }

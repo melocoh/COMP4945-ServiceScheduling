@@ -23,13 +23,6 @@ namespace ServiceScheduling_App.Models
 
         public float Rate { get; set; }
 
-
-        // References Employee object
-        public virtual Employee Employee { get; set; }
-
-        // References ServiceType object
-        public virtual ServiceShift ServiceShift { get; set; }
-
         // References ServiceType object
         public virtual Appointment Appointment { get; set; }
 

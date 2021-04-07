@@ -25,5 +25,8 @@ namespace ServiceScheduling_App.Models
 
         // References ServiceType object
         public virtual ServiceType ServiceType { get; set; }
+
+        // References EmpShift object
+        public ICollection<EmpShift> EmpShifts { get; set; }
     }
 }

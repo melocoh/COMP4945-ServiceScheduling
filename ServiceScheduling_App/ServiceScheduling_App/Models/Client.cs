@@ -18,6 +18,6 @@ namespace ServiceScheduling_App.Models
 
         public string Password { get; set; }
 
-        public ICollection<ClientAppointment> ClientAppointment { get; set; }
+        public ICollection<ClientAppointment> ClientAppointments { get; set; }
     }
 }
