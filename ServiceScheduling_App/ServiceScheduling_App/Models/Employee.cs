@@ -17,9 +17,16 @@ namespace ServiceScheduling_App.Models
         [ForeignKey("JobType")]//Foreign Key attribute takes another Model class name
         public int JobId { get; set; }
 
-        [RegularExpression("^[\\w -\\.] +@([\\w -] +\\.)+[\\w-]{2,4}$")]
+        //[RegularExpression("^[\\w -\\.] +@([\\w -] +\\.)+[\\w-]{2,4}$")]
         public string Email { get; set; }
 
         public string Password { get; set; }
+
+
+        public ICollection<EmpCertification> EmpCertifications { get; set; }
+
+        public ICollection<EmpAppointment> EmpAppointments { get; set; }
+
+        public ICollection<EmpShift> EmpShifts { get; set; }
     }
 }

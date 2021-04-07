@@ -12,5 +12,7 @@ namespace ServiceScheduling_App.Models
         [Key]
         public int CertId { get; set; }
         public string CertTitle { get; set; }
+
+        public ICollection<EmpCertification> EmpCertifications { get; set; }
     }
 }

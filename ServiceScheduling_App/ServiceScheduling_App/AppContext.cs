@@ -21,17 +21,17 @@ namespace ServiceScheduling_App
 
         public DbSet<ServiceType> ServiceTypes { get; set; }
 
-        public DbSet<EmpCertification> EmpCertifications { get; set; }
+        //public DbSet<EmpCertification> EmpCertifications { get; set; }
 
         public DbSet<ServiceShift> ServiceShifts { get; set; }
 
-        public DbSet<EmpShift> EmpShifts { get; set; }
+        //public DbSet<EmpShift> EmpShifts { get; set; }
 
         public DbSet<Appointment> Appointments { get; set; }
 
-        public DbSet<EmpAppointment> EmpAppointments { get; set; }
+        //public DbSet<EmpAppointment> EmpAppointments { get; set; }
 
-        public DbSet<ClientAppointment> ClientAppointments { get; set; }
+        //public DbSet<ClientAppointment> ClientAppointments { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

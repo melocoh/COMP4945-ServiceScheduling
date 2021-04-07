@@ -10,19 +10,17 @@ namespace ServiceScheduling_App.Models
     public class Appointment
     {
         [Key]
-        public int AppDetailsId { get; set; }
+        public int AppId { get; set; }
 
         [ForeignKey("ServiceType")]
         public int ServId { get; set; }
 
-        public List<string> Statuses { get; set; }
-
-        public DateTime StartDateTime { get; set; }
-
-        public DateTime EndDateTime { get; set; }
-
         public DateTime EntryDate { get; set; }
 
         public float TotalFee { get; set; }
+
+        public ICollection<EmpAppointment> EmpAppointments { get; set; }
+
+        public ICollection<ClientAppointment> ClientAppointment { get; set; }
     }
 }
