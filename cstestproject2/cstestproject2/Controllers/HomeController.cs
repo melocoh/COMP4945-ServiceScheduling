@@ -44,6 +44,19 @@ namespace cstestproject2.Controllers
             return View();
         }
 
+        public IActionResult Chart()
+        {
+            Console.WriteLine("In chart page");
+            return View();
+        }
+
+        [HttpGet]
+        public JsonResult ChartDetails()
+        {
+            Console.WriteLine("Called");
+            return Json(new Chart("bar", new []{ 100, 200, 300 }));
+        }
+
         public IActionResult EmployeeRegistration()
         {
             ViewBag.CertificationTypes = new List<SelectListItem>()
