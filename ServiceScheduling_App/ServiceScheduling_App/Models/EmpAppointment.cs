@@ -10,7 +10,7 @@ namespace ServiceScheduling_App.Models
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; }
 
-        public int AppointmentId { get; set; }
+        public int AppId { get; set; }
         public Appointment Appointment { get; set; }
     }
 }

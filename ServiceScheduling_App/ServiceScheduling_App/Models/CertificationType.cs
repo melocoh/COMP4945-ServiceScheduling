@@ -13,6 +13,12 @@ namespace ServiceScheduling_App.Models
         public int CertId { get; set; }
         public string CertTitle { get; set; }
 
+
+        // References ServiceType object
+        public virtual ServiceType ServiceType { get; set; }
+
+        // References EmpCertifications object
         public ICollection<EmpCertification> EmpCertifications { get; set; }
+
     }
 }

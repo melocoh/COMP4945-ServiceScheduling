@@ -14,7 +14,7 @@ namespace ServiceScheduling_App.Models
 
         public string FullName { get; set; }
 
-        [ForeignKey("JobType")]//Foreign Key attribute takes another Model class name
+        [ForeignKey("JobType")] //Foreign Key attribute takes another Model class name
         public int JobId { get; set; }
 
         //[RegularExpression("^[\\w -\\.] +@([\\w -] +\\.)+[\\w-]{2,4}$")]
@@ -23,10 +23,17 @@ namespace ServiceScheduling_App.Models
         public string Password { get; set; }
 
 
+
+        // References JobType object
+        public virtual JobType JobType { get; set; }
+
+        // References EmpCertification object
         public ICollection<EmpCertification> EmpCertifications { get; set; }
 
+        // References EmpAppointment object
         public ICollection<EmpAppointment> EmpAppointments { get; set; }
 
+        // References EmpShift object
         public ICollection<EmpShift> EmpShifts { get; set; }
     }
 }

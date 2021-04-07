@@ -12,15 +12,20 @@ namespace ServiceScheduling_App.Models
         [Key]
         public int AppSessionId { get; set; }
 
-        [ForeignKey("JobType")]
+        [ForeignKey("Appointment")]
         public int AppId { get; set;}
 
         public int SessionNo { get; set; }
 
-        public List<string> Statuses { get; set; }
+        public string Status { get; set; }
 
         public DateTime StartDateTime { get; set; }
 
         public DateTime EndDateTime { get; set; }
+
+
+
+        // References Appointment object
+        public virtual Appointment Appointment { get; set; }
     }
 }

@@ -15,10 +15,15 @@ namespace ServiceScheduling_App.Models
         [ForeignKey("ServiceType")]
         public int ServId { get; set; }
 
-        public List<DayOfWeek> DaysOfWeek { get; set; }
+        public int DayOfWeek { get; set; }
 
         public TimeSpan TimeStart { get; set; }
 
         public TimeSpan TimeEnd { get; set; }
+
+
+
+        // References ServiceType object
+        public virtual ServiceType ServiceType { get; set; }
     }
 }

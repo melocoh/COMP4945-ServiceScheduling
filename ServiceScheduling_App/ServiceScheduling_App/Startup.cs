@@ -26,7 +26,7 @@ namespace ServiceScheduling_App
         {
             // this is where you set the database connection
             services.AddDbContext<AppContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("ServiceSchedulingConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 

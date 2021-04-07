@@ -19,6 +19,13 @@ namespace ServiceScheduling_App.Models
 
         public float TotalFee { get; set; }
 
+
+        // References ServiceType object
+        public virtual ServiceType ServiceType { get; set; }
+
+        // References Appointment object
+        public virtual AppointmentSession AppointmentSession { get; set; }
+
         public ICollection<EmpAppointment> EmpAppointments { get; set; }
 
         public ICollection<ClientAppointment> ClientAppointment { get; set; }

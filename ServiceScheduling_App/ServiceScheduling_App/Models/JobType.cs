@@ -13,5 +13,9 @@ namespace ServiceScheduling_App.Models
         public int JobId { get; set; }
 
         public string JobTitle { get; set; }
+
+
+        // References ServiceType object
+        public virtual Employee Employee { get; set; }
     }
 }
