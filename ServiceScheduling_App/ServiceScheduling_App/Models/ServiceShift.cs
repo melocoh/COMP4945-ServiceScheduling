@@ -15,7 +15,7 @@ namespace ServiceScheduling_App.Models
         [ForeignKey("ServiceType")]
         public int ServId { get; set; }
 
-        public int DayOfWeek { get; set; }
+        public DayOfWeek DayOfWeek { get; set; }
 
         public TimeSpan TimeStart { get; set; }
 

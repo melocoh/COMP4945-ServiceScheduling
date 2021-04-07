@@ -38,9 +38,39 @@ namespace ServiceScheduling_App.Migrations
                 context.CertificationTypes.AddRange(certificationTypes);
                 context.SaveChanges();
 
-                var serviceTypes = DummyData.GetCertificationTypes().ToArray();
+                var serviceTypes = DummyData.GetServiceTypes().ToArray();
                 context.ServiceTypes.AddRange(serviceTypes);
                 context.SaveChanges();
+
+                var appointments = DummyData.GetAppointments().ToArray();
+                context.Appointments.AddRange(appointments);
+                context.SaveChanges();
+
+                var appointmentSessions = DummyData.GetAppointmentSessions().ToArray();
+                context.AppointmentSession.AddRange(appointmentSessions);
+                context.SaveChanges();
+
+                var serviceShifts = DummyData.GetServiceShifts().ToArray();
+                context.ServiceShifts.AddRange(serviceShifts);
+                context.SaveChanges();
+
+                var empShifts = DummyData.GetEmpShifts().ToArray();
+                context.EmpShifts.AddRange(empShifts);
+                context.SaveChanges();
+
+                var empCertifications = DummyData.GetEmpCertifications().ToArray();
+                context.EmpCertifications.AddRange(empCertifications);
+                context.SaveChanges();
+
+                var empClientAppointments = DummyData.GetClientAppointments().ToArray();
+                context.ClientAppointments.AddRange(empClientAppointments);
+                context.SaveChanges();
+
+                var empAppointments = DummyData.GetEmpAppointments().ToArray();
+                context.EmpAppointments.AddRange(empAppointments);
+                context.SaveChanges();
+                
+
             }
         }
 
@@ -146,5 +176,121 @@ namespace ServiceScheduling_App.Migrations
             };
             return serviceTypes;
         }
+
+
+
+
+        public static List<Appointment> GetAppointments()
+        {
+            List<Appointment> appointments = new List<Appointment>() {
+                new Appointment
+                {
+                    AppId = 0,
+                    ServId = 0,
+                    EntryDate =DateTime.Now,
+                    TotalFee = 42069f
+                }
+            };
+            return appointments;
+        }
+
+
+        public static List<AppointmentSession> GetAppointmentSessions()
+        {
+            List<AppointmentSession> appointmentsSessions = new List<AppointmentSession>() {
+                new AppointmentSession
+                {
+                    AppSessionId = 0,
+                    AppId = 0,
+                    SessionNo = 0,
+                    StartDateTime = DateTime.Now,
+                    EndDateTime = DateTime.Now,
+                    Status = "Completed"
+                }
+            };
+            return appointmentsSessions;
+        }
+
+
+
+        public static List<ServiceShift> GetServiceShifts()
+        {
+            List<ServiceShift> serviceShifts = new List<ServiceShift>() {
+                new ServiceShift
+                {
+                    ServiceShiftId = 0,
+                    ServId = 0,
+                    DayOfWeek = DayOfWeek.Monday,
+                    TimeStart = TimeSpan.Zero,
+                    TimeEnd = TimeSpan.Zero
+                }
+            };
+
+            return serviceShifts;
+        }
+
+
+        public static List<EmpShift> GetEmpShifts()
+        {
+            List<EmpShift> empShifts = new List<EmpShift>() {
+                new EmpShift
+                {
+                    ServiceShiftId = 0,
+                    EmpId = 0
+                }
+            };
+
+            return empShifts;
+        }
+
+
+        public static List<EmpCertification> GetEmpCertifications()
+        {
+            List<EmpCertification> empCertifications = new List<EmpCertification>() {
+                new EmpCertification
+                {
+                    EmpId = 0,
+                    CertId = 0
+                }
+            };
+
+            return empCertifications;
+        }
+
+
+
+        public static List<ClientAppointment> GetClientAppointments()
+        {
+            List<ClientAppointment> clientAppointments = new List<ClientAppointment>() {
+                new ClientAppointment
+                {
+                    AppId = 0,
+                    ClientId = 0
+                }
+            };
+
+            return clientAppointments;
+        }
+
+
+
+        public static List<EmpAppointment> GetEmpAppointments()
+        {
+            List<EmpAppointment> empAppointments = new List<EmpAppointment>() {
+                new EmpAppointment
+                {
+                    AppId = 0,
+                    EmpId = 0
+                }
+            };
+
+            return empAppointments;
+        }
+
+
+
+
+
+
     }
 }
