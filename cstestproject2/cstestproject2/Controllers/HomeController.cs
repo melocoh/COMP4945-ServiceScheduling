@@ -60,10 +60,10 @@ namespace cstestproject2.Controllers
         {
             ViewBag.CertificationTypes = new List<SelectListItem>()
             {
-                new SelectListItem() { Text = "Hamburger University Degree", Value = "1" },
-                new SelectListItem() { Text = "First Aid Certification", Value = "2" },
-                new SelectListItem() { Text = "Scuba Diving Certification", Value = "3" },
-                new SelectListItem() { Text = "Nurse Practitioning Certification", Value = "4" }
+                new SelectListItem() { Text = "Hamburger University Degree", Value = "Hamburger University Degree" },
+                new SelectListItem() { Text = "First Aid Certification", Value = "First Aid Certification" },
+                new SelectListItem() { Text = "Scuba Diving Certification", Value = "Scuba Diving Certification" },
+                new SelectListItem() { Text = "Nurse Practitioning Certification", Value = "Nurse Practitioning Certification" }
             };
 
             return View();
@@ -74,12 +74,27 @@ namespace cstestproject2.Controllers
             return View();
         }
 
+        public IActionResult test()
+        {
+            return View();
+        }
+
         public IActionResult Service()
         {
             return View();
         }
 
+        public IActionResult EmployeeShift()
+        {
+            return View();
+        }
+
+
         public IActionResult Schedule()
+        {
+            return View();
+        }
+        public IActionResult EmployeeShiftForms()
         {
             return View();
         }
@@ -104,6 +119,11 @@ namespace cstestproject2.Controllers
                 new SelectListItem(){Text = "Option 2", Value = "2"},
                 new SelectListItem(){Text = "Option 3", Value = "3"},
             };
+            return View();
+        }
+
+        public IActionResult BookingAppointment()
+        {
             return View();
         }
 
