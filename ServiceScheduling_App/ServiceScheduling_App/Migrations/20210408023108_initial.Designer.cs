@@ -10,7 +10,7 @@ using ServiceScheduling_App;
 namespace ServiceScheduling_App.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20210407224154_initial")]
+    [Migration("20210408023108_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,8 +69,7 @@ namespace ServiceScheduling_App.Migrations
 
                     b.HasKey("AppSessionId");
 
-                    b.HasIndex("AppId")
-                        .IsUnique();
+                    b.HasIndex("AppId");
 
                     b.ToTable("AppointmentSession");
                 });
@@ -283,8 +282,8 @@ namespace ServiceScheduling_App.Migrations
             modelBuilder.Entity("ServiceScheduling_App.Models.AppointmentSession", b =>
                 {
                     b.HasOne("ServiceScheduling_App.Models.Appointment", "Appointment")
-                        .WithOne("AppointmentSession")
-                        .HasForeignKey("ServiceScheduling_App.Models.AppointmentSession", "AppId")
+                        .WithMany("AppointmentSessions")
+                        .HasForeignKey("AppId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -402,7 +401,7 @@ namespace ServiceScheduling_App.Migrations
 
             modelBuilder.Entity("ServiceScheduling_App.Models.Appointment", b =>
                 {
-                    b.Navigation("AppointmentSession");
+                    b.Navigation("AppointmentSessions");
 
                     b.Navigation("ClientAppointments");
 

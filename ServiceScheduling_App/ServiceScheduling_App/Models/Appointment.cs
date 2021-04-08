@@ -26,8 +26,9 @@ namespace ServiceScheduling_App.Models
         public virtual ServiceType ServiceType { get; set; }
 
         // References Appointment object
-        // @relation one-to-one
-        public virtual AppointmentSession AppointmentSession { get; set; }
+        // @relation one to many
+
+        public ICollection<AppointmentSession> AppointmentSessions { get; set; }
 
         // References EmpAppointment collection
         // @relation many-to-many

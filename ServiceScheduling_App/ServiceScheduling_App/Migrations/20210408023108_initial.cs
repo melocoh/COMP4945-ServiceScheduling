@@ -264,8 +264,7 @@ namespace ServiceScheduling_App.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_AppointmentSession_AppId",
                 table: "AppointmentSession",
-                column: "AppId",
-                unique: true);
+                column: "AppId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClientAppointments_AppId",

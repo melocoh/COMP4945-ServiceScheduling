@@ -67,8 +67,7 @@ namespace ServiceScheduling_App.Migrations
 
                     b.HasKey("AppSessionId");
 
-                    b.HasIndex("AppId")
-                        .IsUnique();
+                    b.HasIndex("AppId");
 
                     b.ToTable("AppointmentSession");
                 });
@@ -281,8 +280,8 @@ namespace ServiceScheduling_App.Migrations
             modelBuilder.Entity("ServiceScheduling_App.Models.AppointmentSession", b =>
                 {
                     b.HasOne("ServiceScheduling_App.Models.Appointment", "Appointment")
-                        .WithOne("AppointmentSession")
-                        .HasForeignKey("ServiceScheduling_App.Models.AppointmentSession", "AppId")
+                        .WithMany("AppointmentSessions")
+                        .HasForeignKey("AppId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -400,7 +399,7 @@ namespace ServiceScheduling_App.Migrations
 
             modelBuilder.Entity("ServiceScheduling_App.Models.Appointment", b =>
                 {
-                    b.Navigation("AppointmentSession");
+                    b.Navigation("AppointmentSessions");
 
                     b.Navigation("ClientAppointments");
 
