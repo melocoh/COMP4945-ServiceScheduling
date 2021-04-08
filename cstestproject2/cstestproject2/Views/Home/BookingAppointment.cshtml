@@ -64,7 +64,7 @@
             <div id="dynamicContainer" class="d-flex flex-column">
                 <div class="d-flex justify-content-start">
                     <div>
-                        <p id="message" class="">Create or Join a Service Session</p>
+                        <p id="message" class="">Booking Appointment</p>
                     </div>
                 </div>
                 <hr class="splitline">
@@ -72,7 +72,7 @@
                     <div class="row">
                         <!-- Fill Out Information -->
                         <div class="col">
-                            <p id="message2" class="">Fill out the information for this shift:</p>
+                            <p id="message2" class="">Filter necessary information to view available appointments.</p>
 
                             <form>
                                 <div class="text-danger"></div>
@@ -98,12 +98,8 @@
                                 </div>
                                 <div class="form-group">
                                     <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">
-                                        Create Session
-                                    </button>
-
-                                    <button type="button" class="btn btn-primary" onclick="createCard()">
-                                        Check Session
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                                        Check Availability
                                     </button>
 
                                     <!-- Modal -->
@@ -111,21 +107,43 @@
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLongTitle">Service Session Confirmation</h5>
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Booking Confirmation</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <p>Service: Therapy</p>
-                                                    <p>Location: Burnaby</p>
-                                                    <p>Day of Week: Monday</p>
-                                                    <p>Time: 11:00:00</p>
+                                                    <div>
+                                                        <p>Wed, 2020-11-16 at 10:00 - 12:00</p>
+                                                        <p>Burnaby</p>
+                                                        <p>Rate ($/session): 80.00</p>
+                                                        <p>Employee: Jason Chi Fai Lee</p>
+                                                    </div>
+                                                    <!-- Checkbox -->
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                        <label class="form-check-label" for="flexCheckDefault">
+                                                            weekly service
+                                                        </label>
+                                                    </div>
+                                                    <!-- Hidden Div -->
+                                                    <div id="hiddenDiv" style="display: none;">
+                                                        <p>Please choose the <u>number of weeks</u> you'd like to subscribe to this service:</p>
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                Number of weeks
+                                                            </button>
+                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                                <a class="dropdown-item" href="#">2</a>
+                                                                <a class="dropdown-item" href="#">3</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                                    <a href="@Url.Action("EmployeeShift","Home")">
-                                                        <button type="button" class="btn btn-primary">Confirm</button>
+                                                    <a href="@Url.Action("BookingAppointment","Home")">
+                                                        <button type="button" class="btn btn-success">Confirm</button>
                                                     </a>
                                                 </div>
                                             </div>
@@ -134,11 +152,11 @@
                                 </div>
                             </form>
                         </div>
-                        
+
                         <!-- Available Weekly Sessions -->
                         <div class="col">
                             <div id="schedulebox" class="d-flex flex-column bd-highlight mb-3">
-                                <h4 style="text-align: center;">Available Weekly Sessions</h4>
+                                <h4 style="text-align: center;">Available Appointments</h4>
 
                                 <div class="container" id="scheduleContainer">
                                 </div>
@@ -188,9 +206,19 @@
             createButton.setAttribute('class', "btn btn-info");
             createButton.setAttribute('data-toggle', "modal");
             createButton.setAttribute('data-target', "#exampleModalCenter");
-            createButton.appendChild(document.createTextNode("Join"));
+            createButton.appendChild(document.createTextNode("Book"));
             createDiv.appendChild(createButton);
         }
+
+        // reveals the div when the checkbox is checked
+        // hides the div when the checkbox is unchecked
+        $("#flexCheckDefault").click(function () {
+            if (this.checked) {
+                $('#hiddenDiv').css('display', 'inline-block');
+            } else {
+                $('#hiddenDiv').css('display', 'none');
+            }
+        });
     </script>
 </body>
 </html>
