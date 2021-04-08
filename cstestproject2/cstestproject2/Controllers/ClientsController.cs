@@ -25,20 +25,45 @@ namespace cstestproject2.Controllers
             return View(await _context.Clients.ToListAsync());
         }
 
-        public async Task<IActionResult> GetNames()
+        // GET: Clients Names
+        //public async Task<IActionResult> GetNames()
+        //{
+        //    var client = await _context.Clients
+        //        .Select(b => new SelectListItem
+        //        {
+        //            Value = b.ClientId.ToString(),
+        //            Text = b.FullName
+        //        }).ToListAsync();
+
+        //    ViewData["ClientNames"] = client;
+
+        //    return this.View();
+        //}
+
+
+        private List<SelectListItem> GetClientsNamesList()
         {
-            var client = await _context.Clients
-                .Select(b => new SelectListItem
+            List<Client> clients = _context.Clients.ToList<Client>();
+
+            List<SelectListItem> list = clients.ConvertAll<SelectListItem>(a =>
+            {
+                return new SelectListItem()
                 {
-                    Value = b.ClientId.ToString(),
-                    Text = b.FullName
-                }).ToListAsync();
+                    Text = a.FullName,
+                    Value = a.ClientId.ToString(),
+                    Selected = false
+                };
+            });
 
-            ViewData["ClientNames"] = client;
-
-            return this.View();
+            return list;
         }
 
+        //IList<Client> Clients = new List<Client>();
+        //Clients.Add(new Client() { FullName = "Bill" });
+        //Clients.Add(new Client() { FullName = "Steve" });
+        //Clients.Add(new Client() { FullName = "Ram" });
+
+        //ViewData["ClientName"] = Clients;
 
         // GET: Clients/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -61,6 +86,7 @@ namespace cstestproject2.Controllers
         // GET: Clients/Create
         public IActionResult Create()
         {
+            ViewBag.ClientsNamesList = GetClientsNamesList();
             return View();
         }
 
