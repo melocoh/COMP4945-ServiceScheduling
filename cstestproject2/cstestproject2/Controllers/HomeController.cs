@@ -13,6 +13,7 @@ namespace cstestproject2.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private bool loggedin = true;
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -21,6 +22,11 @@ namespace cstestproject2.Controllers
 
         public IActionResult Index()
         {
+            if (loggedin)
+            {
+                ViewBag.AccountName = "John Smith";
+                return View("LoggedIn");
+            }
             return View();
         }
 
@@ -50,13 +56,6 @@ namespace cstestproject2.Controllers
             return View();
         }
 
-        [HttpGet]
-        public JsonResult ChartDetails()
-        {
-            Console.WriteLine("Called");
-            return Json(new Chart("bar", new []{ 100, 200, 300 }));
-        }
-
         public IActionResult EmployeeRegistration()
         {
             ViewBag.CertificationTypes = new List<SelectListItem>()
@@ -68,6 +67,33 @@ namespace cstestproject2.Controllers
             };
 
             return View();
+        }
+
+        public IActionResult Profile()
+        {
+            return View();
+        }
+
+        public IActionResult Service()
+        {
+            return View();
+        }
+
+        public IActionResult Schedule()
+        {
+            return View();
+        }
+
+        public IActionResult Appointment()
+        {
+            return View("Index");
+        }
+
+        [HttpGet]
+        public JsonResult ChartDetails()
+        {
+            Console.WriteLine("Called");
+            return Json(new Chart("bar", new[] { 100, 200, 300 }));
         }
 
         public IActionResult Modal()
