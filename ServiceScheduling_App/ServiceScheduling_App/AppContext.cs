@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ServiceScheduling_App.Models;
+using cstestproject2.Models;
 
 namespace ServiceScheduling_App
 {
