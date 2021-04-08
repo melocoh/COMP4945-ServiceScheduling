@@ -17,7 +17,7 @@ namespace ServiceScheduling_App.Models
 
         public DateTime EntryDate { get; set; }
 
-        public float TotalFee { get; set; }
+        public double TotalFee { get; set; }
 
         /*****************************************/
 

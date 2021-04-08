@@ -32,8 +32,8 @@ namespace ServiceScheduling_App.Migrations
                     b.Property<int>("ServId")
                         .HasColumnType("int");
 
-                    b.Property<float>("TotalFee")
-                        .HasColumnType("real");
+                    b.Property<double>("TotalFee")
+                        .HasColumnType("float");
 
                     b.HasKey("AppId");
 
@@ -63,7 +63,7 @@ namespace ServiceScheduling_App.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("AppSessionId");
 
@@ -81,7 +81,7 @@ namespace ServiceScheduling_App.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CertTitle")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("CertId");
 
@@ -96,13 +96,13 @@ namespace ServiceScheduling_App.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("ClientId");
 
@@ -177,16 +177,16 @@ namespace ServiceScheduling_App.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<int>("JobId")
                         .HasColumnType("int");
 
                     b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("EmpId");
 
@@ -204,7 +204,7 @@ namespace ServiceScheduling_App.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("JobTitle")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("JobId");
 
@@ -253,11 +253,11 @@ namespace ServiceScheduling_App.Migrations
                     b.Property<int>("MaxNoEmp")
                         .HasColumnType("int");
 
-                    b.Property<float>("Rate")
-                        .HasColumnType("real");
+                    b.Property<double>("Rate")
+                        .HasColumnType("float");
 
                     b.Property<string>("ServTitle")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("ServId");
 

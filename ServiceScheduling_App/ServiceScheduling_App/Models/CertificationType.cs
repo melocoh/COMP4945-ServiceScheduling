@@ -11,6 +11,8 @@ namespace ServiceScheduling_App.Models
     {
         [Key] // Primary key
         public int CertId { get; set; }
+
+        [Column(TypeName = "varchar(50)")]
         public string CertTitle { get; set; }
 
         /*****************************************/

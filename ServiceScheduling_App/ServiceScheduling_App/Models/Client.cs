@@ -12,10 +12,13 @@ namespace ServiceScheduling_App.Models
         [Key]
         public int ClientId { get; set; }
 
+        [Column(TypeName = "varchar(50)")]
         public string FullName { get; set; }
 
+        [Column(TypeName = "varchar(50)")]
         public string Email { get; set; }
 
+        [Column(TypeName = "varchar(50)")]
         public string Password { get; set; }
 
         public ICollection<ClientAppointment> ClientAppointments { get; set; }

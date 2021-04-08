@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ServiceScheduling_App.Migrations
 {
-    public partial class init : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,7 @@ namespace ServiceScheduling_App.Migrations
                 {
                     CertId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CertTitle = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CertTitle = table.Column<string>(type: "varchar(50)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -26,9 +26,9 @@ namespace ServiceScheduling_App.Migrations
                 {
                     ClientId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    FullName = table.Column<string>(type: "varchar(50)", nullable: true),
+                    Email = table.Column<string>(type: "varchar(50)", nullable: true),
+                    Password = table.Column<string>(type: "varchar(50)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -41,7 +41,7 @@ namespace ServiceScheduling_App.Migrations
                 {
                     JobId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    JobTitle = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    JobTitle = table.Column<string>(type: "varchar(50)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -54,11 +54,11 @@ namespace ServiceScheduling_App.Migrations
                 {
                     ServId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ServTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ServTitle = table.Column<string>(type: "varchar(50)", nullable: true),
                     CertificationRqt = table.Column<int>(type: "int", nullable: false),
                     MaxNoEmp = table.Column<int>(type: "int", nullable: false),
                     MaxNoClient = table.Column<int>(type: "int", nullable: false),
-                    Rate = table.Column<float>(type: "real", nullable: false)
+                    Rate = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -77,10 +77,10 @@ namespace ServiceScheduling_App.Migrations
                 {
                     EmpId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FullName = table.Column<string>(type: "varchar(50)", nullable: true),
                     JobId = table.Column<int>(type: "int", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Email = table.Column<string>(type: "varchar(50)", nullable: true),
+                    Password = table.Column<string>(type: "varchar(50)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -101,7 +101,7 @@ namespace ServiceScheduling_App.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ServId = table.Column<int>(type: "int", nullable: false),
                     EntryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotalFee = table.Column<float>(type: "real", nullable: false)
+                    TotalFee = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -168,7 +168,7 @@ namespace ServiceScheduling_App.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AppId = table.Column<int>(type: "int", nullable: false),
                     SessionNo = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "varchar(50)", nullable: true),
                     StartDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },

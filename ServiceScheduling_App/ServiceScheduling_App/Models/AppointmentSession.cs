@@ -17,6 +17,7 @@ namespace ServiceScheduling_App.Models
 
         public int SessionNo { get; set; }
 
+        [Column(TypeName = "varchar(50)")]
         public string Status { get; set; }
 
         public DateTime StartDateTime { get; set; }

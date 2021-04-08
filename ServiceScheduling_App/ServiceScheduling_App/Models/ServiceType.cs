@@ -12,6 +12,7 @@ namespace ServiceScheduling_App.Models
         [Key]
         public int ServId { get; set; }
 
+        [Column(TypeName = "varchar(50)")]
         public string ServTitle { get; set; }
 
         [ForeignKey("CertificationType")]
@@ -21,7 +22,7 @@ namespace ServiceScheduling_App.Models
 
         public int MaxNoClient { get; set; }
 
-        public float Rate { get; set; }
+        public double Rate { get; set; }
 
         // References ServiceType object
         public virtual Appointment Appointment { get; set; }

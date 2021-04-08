@@ -12,14 +12,17 @@ namespace ServiceScheduling_App.Models
         [Key]
         public int EmpId { get; set; }
 
+        [Column(TypeName = "varchar(50)")]
         public string FullName { get; set; }
 
         [ForeignKey("JobType")] //Foreign Key attribute takes another Model class name
         public int JobId { get; set; }
 
         //[RegularExpression("^[\\w -\\.] +@([\\w -] +\\.)+[\\w-]{2,4}$")]
+        [Column(TypeName = "varchar(50)")]
         public string Email { get; set; }
 
+        [Column(TypeName = "varchar(50)")]
         public string Password { get; set; }
 
 

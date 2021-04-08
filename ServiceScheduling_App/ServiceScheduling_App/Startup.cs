@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ServiceScheduling_App.Migrations;
 
 namespace ServiceScheduling_App
 {
@@ -59,6 +60,8 @@ namespace ServiceScheduling_App
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            DummyData.Initialize(app);
         }
     }
 }

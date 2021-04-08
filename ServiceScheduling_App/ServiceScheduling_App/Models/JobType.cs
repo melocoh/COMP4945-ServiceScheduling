@@ -12,6 +12,7 @@ namespace ServiceScheduling_App.Models
         [Key]
         public int JobId { get; set; }
 
+        [Column(TypeName = "varchar(50)")]
         public string JobTitle { get; set; }
 
 
