@@ -98,7 +98,8 @@
                                 </div>
                                 <div class="form-group">
                                     <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                                    <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">-->
+                                    <button type="button" class="btn btn-primary" onclick="createCard()">
                                         Check Availability
                                     </button>
 
@@ -180,6 +181,7 @@
     </script>
     <script>
         function createCard() {
+            // Row 1
             let createDiv = document.createElement("div");
             createDiv.setAttribute('class', "row border");
             document.getElementById("scheduleContainer").appendChild(createDiv);
@@ -189,11 +191,11 @@
             createDiv.appendChild(createDiv2);
 
             let createP = document.createElement("p");
-            createP.appendChild(document.createTextNode("Num of Employee: 2/4"));
+            createP.appendChild(document.createTextNode("Wed, 2020-11-16 at 10:00 - 12:00"));
             createDiv2.appendChild(createP);
 
             createP = document.createElement("p");
-            createP.appendChild(document.createTextNode("Employee: Eric #1, Vincent"));
+            createP.appendChild(document.createTextNode("Burnaby"));
             createDiv2.appendChild(createP);
 
             let createDiv3 = document.createElement("div");
@@ -207,7 +209,67 @@
             createButton.setAttribute('data-toggle', "modal");
             createButton.setAttribute('data-target', "#exampleModalCenter");
             createButton.appendChild(document.createTextNode("Book"));
-            createDiv.appendChild(createButton);
+            createDiv3.appendChild(createButton);
+
+            // Row 2
+            let createDiv4 = document.createElement("div");
+            createDiv4.setAttribute('class', "row border");
+            document.getElementById("scheduleContainer").appendChild(createDiv4);
+
+            let createDiv5 = document.createElement("div");
+            createDiv5.setAttribute('class', "col-9");
+            createDiv4.appendChild(createDiv5);
+
+            let createP2 = document.createElement("p");
+            createP2.appendChild(document.createTextNode("Wed, 2020-11-16 at 10:00 - 12:00"));
+            createDiv5.appendChild(createP2);
+
+            createP2 = document.createElement("p");
+            createP2.appendChild(document.createTextNode("Burnaby"));
+            createDiv5.appendChild(createP2);
+
+            let createDiv6 = document.createElement("div");
+            createDiv6.setAttribute('class', "col-3");
+            createDiv6.setAttribute('style', "padding: 30px;");
+            createDiv4.appendChild(createDiv6);
+
+            let createButton2 = document.createElement("button");
+            createButton2.setAttribute('type', "button");
+            createButton2.setAttribute('class', "btn btn-info");
+            createButton2.setAttribute('data-toggle', "modal");
+            createButton2.setAttribute('data-target', "#exampleModalCenter");
+            createButton2.appendChild(document.createTextNode("Book"));
+            createDiv6.appendChild(createButton2);
+
+            // Row 3
+            let createDiv7 = document.createElement("div");
+            createDiv7.setAttribute('class', "row border");
+            document.getElementById("scheduleContainer").appendChild(createDiv7);
+
+            let createDiv8 = document.createElement("div");
+            createDiv8.setAttribute('class', "col-9");
+            createDiv7.appendChild(createDiv8);
+
+            let createP3 = document.createElement("p");
+            createP3.appendChild(document.createTextNode("Wed, 2020-11-16 at 10:00 - 12:00"));
+            createDiv8.appendChild(createP3);
+
+            createP3 = document.createElement("p");
+            createP3.appendChild(document.createTextNode("Burnaby"));
+            createDiv8.appendChild(createP3);
+
+            let createDiv9 = document.createElement("div");
+            createDiv9.setAttribute('class', "col-3");
+            createDiv9.setAttribute('style', "padding: 30px;");
+            createDiv7.appendChild(createDiv9);
+
+            let createButton3 = document.createElement("button");
+            createButton3.setAttribute('type', "button");
+            createButton3.setAttribute('class', "btn btn-info");
+            createButton3.setAttribute('data-toggle', "modal");
+            createButton3.setAttribute('data-target', "#exampleModalCenter");
+            createButton3.appendChild(document.createTextNode("Book"));
+            createDiv9.appendChild(createButton3);
         }
 
         // reveals the div when the checkbox is checked
