@@ -62,6 +62,16 @@ namespace cstestproject2.Controllers
             return View();
         }
 
+        public IActionResult EmployeeShift()
+        {
+            return View();
+        }
+
+        public IActionResult EmployeeShiftForms()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
