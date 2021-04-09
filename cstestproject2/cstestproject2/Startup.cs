@@ -30,6 +30,10 @@ namespace cstestproject2
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+            services.AddDistributedMemoryCache();
+
+            services.AddSession();
+
             services.AddControllersWithViews();
         }
 
@@ -52,6 +56,8 @@ namespace cstestproject2
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

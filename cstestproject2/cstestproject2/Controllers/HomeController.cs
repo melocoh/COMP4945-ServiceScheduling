@@ -1,6 +1,7 @@
 ﻿using cstestproject2.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -13,21 +14,36 @@ namespace cstestproject2.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private bool loggedin = true;
+        private readonly AppContext _context;
+        private bool loggedin = false;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, AppContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            if (loggedin)
-            {
-                ViewBag.AccountName = "John Smith";
-                return View("LoggedIn");
-            }
             return View();
+        }
+
+        public IActionResult Login(Employee credentials)
+        {
+            Employee account = _context.Employees.Where(emp => emp.Email == credentials.Email).FirstOrDefault<Employee>();
+            ViewBag.AccountName = account.FullName;
+
+            HttpContext.Session.SetInt32("empID", account.EmpId);
+            return View("LoggedIn");
+        }
+
+        [HttpPost]
+        public IActionResult SubmitRegistration(Employee formData)
+        {
+            _context.Add(formData);
+            _context.SaveChanges();
+            
+            return RedirectToAction("Login", formData);
         }
 
         public IActionResult RoleSelection()
@@ -52,7 +68,6 @@ namespace cstestproject2.Controllers
 
         public IActionResult Chart()
         {
-            Console.WriteLine("In chart page");
             return View();
         }
 
