@@ -1,0 +1,269 @@
+﻿@model cstestproject2.Models.ServiceSession
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<head>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <title>Index</title>
+
+    <style>
+
+        #blockContainer {
+            display: block;
+            margin-left: 0%;
+            margin-right: 5%;
+            margin-top: 0%;
+            margin-bottom: auto;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            padding: 1px;
+        }
+
+        #message {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        #message2 {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        #schedulebox {
+            border: 5px solid grey;
+            width: 100%;
+            height: 600px;
+            margin: 20px;
+        }
+
+        .statusbutton {
+            margin: 15px;
+            width: 120px;
+        }
+
+        .hyperlinks {
+            margin: 15px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .logininput {
+            width: 300px;
+        }
+
+        .splitline {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="mainContainer">
+        @*<div id="blockContainer">*@
+            <div id="dynamicContainer" class="d-flex flex-column">
+                <div class="d-flex justify-content-start">
+                    <div>
+                        <h1>Create or Join</h1>
+                        <h4>Service Session</h4>
+                    </div>
+                </div>
+                <hr class="splitline">
+                <div class="container">
+                    <div class="row">
+                        <!-- Fill Out Information -->
+                        <div class="col">
+                            <form asp-action="Create">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="Service" class="control-label"></label>
+                                    <select asp-for="Service" class="form-control" asp-items="ViewBag.ServicesList">
+                                        <option value="">Select a service</option>
+                                    </select>
+                                    <span asp-validation-for="Service" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Location" class="control-label"></label>
+                                    <select asp-for="Location" class="form-control" asp-items="ViewBag.Locations">
+                                        <option value="">Select a location</option>
+                                    </select>
+                                    <span asp-validation-for="Location" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DayOfTheWeek" class="control-label"></label>
+                                    <select asp-for="DayOfTheWeek" class="form-control" asp-items="Html.GetEnumSelectList<DayOfWeek>()">
+                                        <option value="">Select a day of the Week</option>
+                                    </select>
+                                    <span asp-validation-for="DayOfTheWeek" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Time" class="control-label"></label>
+                                    <select asp-for="Time" class="form-control" asp-items="ViewBag.ShiftTimes">
+                                        <option value="">Select a shift time</option>
+                                    </select>
+                                    <span asp-validation-for="Time" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Create" class="btn btn-primary" />
+                                </div>
+                            </form>
+                            <div class="form-group">
+                                @*Button trigger modal*@
+                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">
+                                    Create Session
+                                </button>
+
+                                <button type="button" class="btn btn-primary" onclick="createCard()">
+                                    Check Session
+                                </button>
+
+                                @*Modal*@
+                                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Service Session Confirmation</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Service: Therapy</p>
+                                                <p>Location: Burnaby</p>
+                                                <p>Day of Week: Monday</p>
+                                                <p>Time: 11:00:00</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                <a href="@Url.Action("EmployeeShift","Home")">
+                                                    <button type="button" class="btn btn-primary">Confirm</button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Available Weekly Sessions -->
+                        <div class="col">
+                            <div id="schedulebox" class="d-flex flex-column bd-highlight mb-3">
+                                <h4 style="text-align: center;">Available Weekly Sessions</h4>
+
+                                <div class="container" id="scheduleContainer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @*</div>*@
+    </div>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
+            integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous">
+    </script>
+    <script>
+        function createCard() {
+            let createDiv = document.createElement("div");
+            createDiv.setAttribute('class', "row border");
+            document.getElementById("scheduleContainer").appendChild(createDiv);
+
+            let createDiv2 = document.createElement("div");
+            createDiv2.setAttribute('class', "col-9");
+            createDiv.appendChild(createDiv2);
+
+            let createP = document.createElement("p");
+            createP.appendChild(document.createTextNode("Num of Employee: 2/4"));
+            createDiv2.appendChild(createP);
+
+            createP = document.createElement("p");
+            createP.appendChild(document.createTextNode("Employee: Eric #1, Vincent"));
+            createDiv2.appendChild(createP);
+
+            let createDiv3 = document.createElement("div");
+            createDiv3.setAttribute('class', "col-3");
+            createDiv3.setAttribute('style', "padding: 30px;");
+            createDiv.appendChild(createDiv3);
+
+            let createButton = document.createElement("button");
+            createButton.setAttribute('type', "button");
+            createButton.setAttribute('class', "btn btn-info");
+            createButton.setAttribute('data-toggle', "modal");
+            createButton.setAttribute('data-target', "#exampleModalCenter");
+            createButton.appendChild(document.createTextNode("Join"));
+            createDiv3.appendChild(createButton);
+        }
+    </script>
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<h1>Create or Join a Service Session</h1>
+
+<h4>ServiceSession</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Service" class="control-label"></label>
+                <select asp-for="Service" class="form-control" asp-items="ViewBag.ServiceTypes"></select>
+                <span asp-validation-for="Service" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location" class="control-label"></label>
+                <select asp-for="Location" class="form-control" asp-items="ViewBag.Locations"></select>
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DayOfTheWeek" class="control-label"></label>
+                <select asp-for="DayOfTheWeek" class="form-control" asp-items="Html.GetEnumSelectList<DayOfWeek>()">
+                    <option value="">Select Day of the Week</option>
+                </select>
+                <span asp-validation-for="DayOfTheWeek" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Time" class="control-label"></label>
+                <select asp-for="Time" class="form-control" asp-items="ViewBag.ShiftTimes"></select>
+                <span asp-validation-for="Time" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>*@
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

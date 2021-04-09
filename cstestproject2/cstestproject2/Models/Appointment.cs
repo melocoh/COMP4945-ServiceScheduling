@@ -18,20 +18,24 @@ namespace cstestproject2.Models
         [Key]
         public int AppId { get; set; }
 
-        [ForeignKey ("Service")]
-        public int ServId { get; set; }
+        //[ForeignKey ("Service")]
+        //public int ServId { get; set; }
 
-        public DayOfWeek Day { get; set; }
+        [Display(Name = "Service Title")]
+        public string ServTitle { get; set; }
+
+        //public DayOfWeek Day { get; set; }
 
 
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        //[DataType(DataType.Date)]
+        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Start Date")]
         public DateTime StartDateTime { get; set; }
 
 
-        [DataType(DataType.Time)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
+        //[DataType(DataType.Time)]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
+        [Display(Name = "End Date Time")]
         public DateTime EndDateTime { get; set; }
 
 
