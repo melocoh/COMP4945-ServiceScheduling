@@ -90,6 +90,21 @@ namespace cstestproject2.Controllers
 
         public IActionResult BookingAppointment()
         {
+            ViewBag.ServiceTypes = new List<SelectListItem>()
+            {
+                new SelectListItem() { Text = "Teach", Value = "Teach" },
+                new SelectListItem() { Text = "Chew food", Value = "Chew food" },
+                new SelectListItem() { Text = "Rap", Value = "Rap" },
+                new SelectListItem() { Text = "Provide vaccine", Value = "Provide vaccine" }
+            };
+
+            ViewBag.Locations = new List<SelectListItem>()
+            {
+                new SelectListItem() { Text = "Burnaby", Value = "Burnaby" },
+                new SelectListItem() { Text = "Richmond", Value = "Richmond" },
+                new SelectListItem() { Text = "Vancouver", Value = "Vancouver" }
+            };
+
             return View();
         }
 
