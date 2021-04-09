@@ -54,6 +54,14 @@ namespace cstestproject2.Controllers
                 new SelectListItem() { Text = "Nurse Practitioning Certification", Value = "Nurse Practitioning Certification" }
             };
 
+            ViewBag.ServiceTypes = new List<SelectListItem>()
+            {
+                new SelectListItem() { Text = "Teach", Value = "Teach" },
+                new SelectListItem() { Text = "Chew food", Value = "Chew food" },
+                new SelectListItem() { Text = "Rap", Value = "Rap" },
+                new SelectListItem() { Text = "Provide vaccine", Value = "Provide vaccine" }
+            };
+
             return View();
         }
 
