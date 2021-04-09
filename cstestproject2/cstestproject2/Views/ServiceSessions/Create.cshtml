@@ -81,24 +81,30 @@
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <div class="form-group">
                                     <label asp-for="Service" class="control-label"></label>
-                                    <select asp-for="Service" class="form-control" asp-items="ViewBag.ServiceTypes"></select>
+                                    <select asp-for="Service" class="form-control" asp-items="ViewBag.ServiceTypes">
+                                        <option value="">Select a service</option>
+                                    </select>
                                     <span asp-validation-for="Service" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="Location" class="control-label"></label>
-                                    <select asp-for="Location" class="form-control" asp-items="ViewBag.Locations"></select>
+                                    <select asp-for="Location" class="form-control" asp-items="ViewBag.Locations">
+                                        <option value="">Select a location</option>
+                                    </select>
                                     <span asp-validation-for="Location" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="DayOfTheWeek" class="control-label"></label>
                                     <select asp-for="DayOfTheWeek" class="form-control" asp-items="Html.GetEnumSelectList<DayOfWeek>()">
-                                        <option value="">Select Day of the Week</option>
+                                        <option value="">Select a day of the Week</option>
                                     </select>
                                     <span asp-validation-for="DayOfTheWeek" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="Time" class="control-label"></label>
-                                    <select asp-for="Time" class="form-control" asp-items="ViewBag.ShiftTimes"></select>
+                                    <select asp-for="Time" class="form-control" asp-items="ViewBag.ShiftTimes">
+                                        <option value="">Select a shift time</option>
+                                    </select>
                                     <span asp-validation-for="Time" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">

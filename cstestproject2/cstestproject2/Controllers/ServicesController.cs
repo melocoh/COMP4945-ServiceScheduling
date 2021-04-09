@@ -10,22 +10,22 @@ using cstestproject2.Models;
 
 namespace cstestproject2.Controllers
 {
-    public class AppointmentsController : Controller
+    public class ServicesController : Controller
     {
         private readonly AppContext _context;
 
-        public AppointmentsController(AppContext context)
+        public ServicesController(AppContext context)
         {
             _context = context;
         }
 
-        // GET: Appointments
+        // GET: Services
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Appointments.ToListAsync());
+            return View(await _context.Services.ToListAsync());
         }
 
-        // GET: Appointments/Details/5
+        // GET: Services/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,58 +33,39 @@ namespace cstestproject2.Controllers
                 return NotFound();
             }
 
-            var appointment = await _context.Appointments
-                .FirstOrDefaultAsync(m => m.AppId == id);
-            if (appointment == null)
+            var service = await _context.Services
+                .FirstOrDefaultAsync(m => m.ServId == id);
+            if (service == null)
             {
                 return NotFound();
             }
 
-            return View(appointment);
+            return View(service);
         }
 
-        // A list of Services
-        private List<SelectListItem> GetServicesList()
-        {
-            List<Service> clients = _context.Services.ToList<Service>();
-
-            List<SelectListItem> list = clients.ConvertAll<SelectListItem>(a =>
-            {
-                return new SelectListItem()
-                {
-                    Text = a.ServTitle,
-                    Value = a.ServTitle,
-                    Selected = false
-                };
-            });
-
-            return list;
-        }
-
-        // GET: Appointments/Create
+        // GET: Services/Create
         public IActionResult Create()
         {
-            ViewBag.ServicesList = GetServicesList();
             return View();
         }
 
-        // POST: Appointments/Create
+        // POST: Services/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AppId,ServTitle,StartDateTime,EndDateTime")] Appointment appointment)
+        public async Task<IActionResult> Create([Bind("ServId,ServTitle,Rate,MaxEmpNo,MaxClientNo")] Service service)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(appointment);
+                _context.Add(service);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(appointment);
+            return View(service);
         }
 
-        // GET: Appointments/Edit/5
+        // GET: Services/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -92,22 +73,22 @@ namespace cstestproject2.Controllers
                 return NotFound();
             }
 
-            var appointment = await _context.Appointments.FindAsync(id);
-            if (appointment == null)
+            var service = await _context.Services.FindAsync(id);
+            if (service == null)
             {
                 return NotFound();
             }
-            return View(appointment);
+            return View(service);
         }
 
-        // POST: Appointments/Edit/5
+        // POST: Services/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AppId,ServTitle,StartDateTime,EndDateTime")] Appointment appointment)
+        public async Task<IActionResult> Edit(int id, [Bind("ServId,ServTitle,Rate,MaxEmpNo,MaxClientNo")] Service service)
         {
-            if (id != appointment.AppId)
+            if (id != service.ServId)
             {
                 return NotFound();
             }
@@ -116,12 +97,12 @@ namespace cstestproject2.Controllers
             {
                 try
                 {
-                    _context.Update(appointment);
+                    _context.Update(service);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AppointmentExists(appointment.AppId))
+                    if (!ServiceExists(service.ServId))
                     {
                         return NotFound();
                     }
@@ -132,10 +113,10 @@ namespace cstestproject2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(appointment);
+            return View(service);
         }
 
-        // GET: Appointments/Delete/5
+        // GET: Services/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -143,30 +124,30 @@ namespace cstestproject2.Controllers
                 return NotFound();
             }
 
-            var appointment = await _context.Appointments
-                .FirstOrDefaultAsync(m => m.AppId == id);
-            if (appointment == null)
+            var service = await _context.Services
+                .FirstOrDefaultAsync(m => m.ServId == id);
+            if (service == null)
             {
                 return NotFound();
             }
 
-            return View(appointment);
+            return View(service);
         }
 
-        // POST: Appointments/Delete/5
+        // POST: Services/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var appointment = await _context.Appointments.FindAsync(id);
-            _context.Appointments.Remove(appointment);
+            var service = await _context.Services.FindAsync(id);
+            _context.Services.Remove(service);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AppointmentExists(int id)
+        private bool ServiceExists(int id)
         {
-            return _context.Appointments.Any(e => e.AppId == id);
+            return _context.Services.Any(e => e.ServId == id);
         }
     }
 }

@@ -43,16 +43,29 @@ namespace cstestproject2.Controllers
             return View(serviceSession);
         }
 
+        // A list of Services
+        private List<SelectListItem> GetServicesList()
+        {
+            List<Service> clients = _context.Services.ToList<Service>();
+
+            List<SelectListItem> list = clients.ConvertAll<SelectListItem>(a =>
+            {
+                return new SelectListItem()
+                {
+                    Text = a.ServTitle,
+                    Value = a.ServTitle,
+                    Selected = false
+                };
+            });
+
+            return list;
+        }
+
         // GET: ServiceSessions/Create
         public IActionResult Create()
         {
 
-            ViewBag.ServiceTypes = new List<SelectListItem>()
-            {
-                new SelectListItem() { Text = "Inspect health", Value = "Inspect health" },
-                new SelectListItem() { Text = "Clean", Value = "Clean" },
-                new SelectListItem() { Text = "Give vaccine", Value = "Give vaccine" }
-            };
+            ViewBag.ServicesList = GetServicesList();
 
             ViewBag.Locations = new List<SelectListItem>()
             {

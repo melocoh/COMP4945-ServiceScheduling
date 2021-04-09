@@ -74,26 +74,26 @@ namespace cstestproject2.Migrations
                 {
                     AppId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ServId = table.Column<int>(type: "int", nullable: false),
-                    Day = table.Column<int>(type: "int", nullable: false),
+                    ServTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StartDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    EndDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ServiceServId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Appointment", x => x.AppId);
                     table.ForeignKey(
-                        name: "FK_Appointment_Service_ServId",
-                        column: x => x.ServId,
+                        name: "FK_Appointment_Service_ServiceServId",
+                        column: x => x.ServiceServId,
                         principalTable: "Service",
                         principalColumn: "ServId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Appointment_ServId",
+                name: "IX_Appointment_ServiceServId",
                 table: "Appointment",
-                column: "ServId");
+                column: "ServiceServId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

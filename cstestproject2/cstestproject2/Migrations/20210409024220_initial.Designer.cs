@@ -10,7 +10,7 @@ using cstestproject2;
 namespace cstestproject2.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20210408205932_initial")]
+    [Migration("20210409024220_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,13 +28,13 @@ namespace cstestproject2.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Day")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("EndDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ServId")
+                    b.Property<string>("ServTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ServiceServId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDateTime")
@@ -42,7 +42,7 @@ namespace cstestproject2.Migrations
 
                     b.HasKey("AppId");
 
-                    b.HasIndex("ServId");
+                    b.HasIndex("ServiceServId");
 
                     b.ToTable("Appointment");
                 });
@@ -138,9 +138,7 @@ namespace cstestproject2.Migrations
                 {
                     b.HasOne("cstestproject2.Models.Service", "Service")
                         .WithMany("Appointments")
-                        .HasForeignKey("ServId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ServiceServId");
 
                     b.Navigation("Service");
                 });

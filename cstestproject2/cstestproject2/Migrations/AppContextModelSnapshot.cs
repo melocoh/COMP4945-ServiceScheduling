@@ -26,13 +26,13 @@ namespace cstestproject2.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Day")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("EndDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ServId")
+                    b.Property<string>("ServTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ServiceServId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDateTime")
@@ -40,7 +40,7 @@ namespace cstestproject2.Migrations
 
                     b.HasKey("AppId");
 
-                    b.HasIndex("ServId");
+                    b.HasIndex("ServiceServId");
 
                     b.ToTable("Appointment");
                 });
@@ -136,9 +136,7 @@ namespace cstestproject2.Migrations
                 {
                     b.HasOne("cstestproject2.Models.Service", "Service")
                         .WithMany("Appointments")
-                        .HasForeignKey("ServId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ServiceServId");
 
                     b.Navigation("Service");
                 });
