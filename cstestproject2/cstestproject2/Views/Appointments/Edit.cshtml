@@ -15,7 +15,9 @@
             <input type="hidden" asp-for="AppId" />
             <div class="form-group">
                 <label asp-for="ServTitle" class="control-label"></label>
-                <select asp-for="ServTitle" class="form-control" asp-items="@ViewBag.ServicesList"></select>
+                <select asp-for="ServTitle" class="form-control" asp-items="@ViewBag.ServicesList">
+                    <option value="">Select a service</option>
+                </select>
                 <span asp-validation-for="ServTitle" class="text-danger"></span>
             </div>
             <div class="form-group">

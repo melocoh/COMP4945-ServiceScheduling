@@ -7,26 +7,57 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Appointment</h4>
+    <h4>Appointment ID : @ViewBag.ServiceAppointment.AppointmentId</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+
+        @*This part is from the appointment table*@
+
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ServTitle)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ServTitle)
         </dd>
-        <dt class = "col-sm-2">
+
+        @*This part is from the service table*@
+
+        <dt class="col-sm-2">
+            Max Num of Emp
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.ServiceAppointment.MaxEmpNo
+        </dd>
+
+        <dt class="col-sm-2">
+            Max Num of Clients
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.ServiceAppointment.MaxClientNo
+        </dd>
+
+        @*This part is from the appointment table*@
+
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StartDateTime)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StartDateTime)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.EndDateTime)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.EndDateTime)
+        </dd>
+
+        @*This part is from the service table*@
+
+        <dt class="col-sm-2">
+            Rate ($/session)
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.ServiceAppointment.Rate
         </dd>
     </dl>
 </div>

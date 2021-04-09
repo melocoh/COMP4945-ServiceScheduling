@@ -10,6 +10,29 @@ using cstestproject2.Models;
 
 namespace cstestproject2.Controllers
 {
+    public class ServiceAppointment
+    {
+        public int AppointmentId;
+        public string ServTitle;
+        public int MaxEmpNo;
+        public int MaxClientNo;
+        public DateTime StartDateTime;
+        public DateTime EndDateTime;
+        public int Rate;
+
+        public ServiceAppointment(int appointmentId, string servTitle, int maxEmpNo, int maxClientNo, DateTime startDateTime, DateTime endDateTime, int rate)
+        {
+            AppointmentId = appointmentId;
+            ServTitle = servTitle;
+            MaxEmpNo = maxEmpNo;
+            MaxClientNo = maxClientNo;
+            StartDateTime = startDateTime;
+            EndDateTime = endDateTime;
+            Rate = rate;
+        }
+    }
+
+
     public class AppointmentsController : Controller
     {
         private readonly AppContext _context;
@@ -40,15 +63,17 @@ namespace cstestproject2.Controllers
                 return NotFound();
             }
 
+            ViewBag.ServiceAppointment = GetServiceAppointmentDetailsList();
+
             return View(appointment);
         }
 
         // A list of Services
         private List<SelectListItem> GetServicesList()
         {
-            List<Service> clients = _context.Services.ToList<Service>();
+            List<Service> services = _context.Services.ToList<Service>();
 
-            List<SelectListItem> list = clients.ConvertAll<SelectListItem>(a =>
+            List<SelectListItem> list = services.ConvertAll<SelectListItem>(a =>
             {
                 return new SelectListItem()
                 {
@@ -59,6 +84,33 @@ namespace cstestproject2.Controllers
             });
 
             return list;
+        }
+
+        // A list of Services
+        private ServiceAppointment GetServiceAppointmentDetailsList()
+        {
+
+            var query = _context.Appointments
+            .Join(
+            _context.Services,
+            appointment => appointment.ServTitle,
+            service => service.ServTitle,
+            (appointment, service) => new
+            {
+                AppointmentId = appointment.AppId,
+                ServTitle = service.ServTitle,
+                MaxEmpNo = service.MaxEmpNo,
+                MaxClientNo = service.MaxEmpNo,
+                Start = appointment.StartDateTime,
+                End = appointment.EndDateTime,
+                Rate = service.Rate
+            }
+            ).ToList();
+
+            ServiceAppointment serviceAppointment = new ServiceAppointment(query[0].AppointmentId, query[0].ServTitle, query[0].MaxEmpNo, query[0].MaxClientNo, query[0].Start, query[0].End, query[0].Rate);
+
+
+            return serviceAppointment;
         }
 
         // GET: Appointments/Create
