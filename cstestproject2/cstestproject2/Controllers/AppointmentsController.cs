@@ -32,7 +32,6 @@ namespace cstestproject2.Controllers
         }
     }
 
-
     public class AppointmentsController : Controller
     {
         private readonly AppContext _context;
@@ -64,8 +63,26 @@ namespace cstestproject2.Controllers
             }
 
             ViewBag.ServiceAppointment = GetServiceAppointmentDetailsList();
+            ViewBag.Employees = GetEmployeesList();
+            ViewBag.Clients = GetClientsList();
 
             return View(appointment);
+        }
+
+        // A list of Services
+        private List<Employee> GetEmployeesList()
+        {
+            List<Employee> employees = _context.Employees.ToList<Employee>();
+
+            return employees;
+        }
+
+        // A list of Services
+        private List<Client> GetClientsList()
+        {
+            List<Client> clients = _context.Clients.ToList<Client>();
+
+            return clients;
         }
 
         // A list of Services

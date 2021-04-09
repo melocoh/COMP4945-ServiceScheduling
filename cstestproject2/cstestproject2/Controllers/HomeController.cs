@@ -44,6 +44,7 @@ namespace cstestproject2.Controllers
             return View();
         }
 
+
         public IActionResult EmployeeRegistration()
         {
             ViewBag.CertificationTypes = new List<SelectListItem>()
@@ -52,6 +53,13 @@ namespace cstestproject2.Controllers
                 new SelectListItem() { Text = "First Aid Certification", Value = "First Aid Certification" },
                 new SelectListItem() { Text = "Scuba Diving Certification", Value = "Scuba Diving Certification" },
                 new SelectListItem() { Text = "Nurse Practitioning Certification", Value = "Nurse Practitioning Certification" }
+            };
+
+            ViewBag.Locations = new List<SelectListItem>()
+            {
+                new SelectListItem() { Text = "Burnaby", Value = "Burnaby" },
+                new SelectListItem() { Text = "Richmond", Value = "Richmond" },
+                new SelectListItem() { Text = "Vancouver", Value = "Vancouver" }
             };
 
             ViewBag.ServiceTypes = new List<SelectListItem>()

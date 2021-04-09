@@ -46,9 +46,9 @@ namespace cstestproject2.Controllers
         // A list of Services
         private List<SelectListItem> GetServicesList()
         {
-            List<Service> clients = _context.Services.ToList<Service>();
+            List<Service> services = _context.Services.ToList<Service>();
 
-            List<SelectListItem> list = clients.ConvertAll<SelectListItem>(a =>
+            List<SelectListItem> list = services.ConvertAll<SelectListItem>(a =>
             {
                 return new SelectListItem()
                 {

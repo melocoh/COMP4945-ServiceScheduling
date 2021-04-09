@@ -1,4 +1,4 @@
-﻿<html xmlns="http://www.w3.org/1999/xhtml">
+﻿
 <head>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
@@ -77,23 +77,29 @@
                             <form>
                                 <div class="text-danger"></div>
                                 <div class="form-group">
-                                    <label class="control-label"></label>
+                                    <label class="control-label">Service</label>
+                                    <select class="form-control" asp-items="@ViewBag.ServiceTypes">
+                                        <option value="">Select a service</option>
+                                    </select>
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">(Optional) Date time Range</label>
                                     <input class="form-control" />
                                     <span class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label"></label>
-                                    <input class="form-control" />
+                                    <label class="control-label">(Optional) Locations</label>
+                                    <select class="form-control" asp-items="@ViewBag.Locations">
+                                        <option value="">Select a location</option>
+                                    </select>
                                     <span class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label"></label>
-                                    <input class="form-control" />
-                                    <span class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label"></label>
-                                    <input class="form-control" />
+                                    <label class="control-label">(Optional) Day of the week</label>
+                                    <select class="form-control" asp-items="Html.GetEnumSelectList<DayOfWeek>()">
+                                        <option value="">Select a day of the week</option>
+                                    </select>
                                     <span class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
