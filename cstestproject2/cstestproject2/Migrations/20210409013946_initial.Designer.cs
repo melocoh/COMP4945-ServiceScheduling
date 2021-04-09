@@ -10,7 +10,7 @@ using cstestproject2;
 namespace cstestproject2.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20210408205932_initial")]
+    [Migration("20210409013946_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
