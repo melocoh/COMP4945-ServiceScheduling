@@ -25,22 +25,7 @@ namespace cstestproject2.Controllers
             return View(await _context.Clients.ToListAsync());
         }
 
-        // GET: Clients Names
-        //public async Task<IActionResult> GetNames()
-        //{
-        //    var client = await _context.Clients
-        //        .Select(b => new SelectListItem
-        //        {
-        //            Value = b.ClientId.ToString(),
-        //            Text = b.FullName
-        //        }).ToListAsync();
-
-        //    ViewData["ClientNames"] = client;
-
-        //    return this.View();
-        //}
-
-
+        // A list of Client Names
         private List<SelectListItem> GetClientsNamesList()
         {
             List<Client> clients = _context.Clients.ToList<Client>();
@@ -57,13 +42,6 @@ namespace cstestproject2.Controllers
 
             return list;
         }
-
-        //IList<Client> Clients = new List<Client>();
-        //Clients.Add(new Client() { FullName = "Bill" });
-        //Clients.Add(new Client() { FullName = "Steve" });
-        //Clients.Add(new Client() { FullName = "Ram" });
-
-        //ViewData["ClientName"] = Clients;
 
         // GET: Clients/Details/5
         public async Task<IActionResult> Details(int? id)

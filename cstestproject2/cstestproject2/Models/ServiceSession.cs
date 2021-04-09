@@ -16,8 +16,15 @@ namespace cstestproject2.Models
 
         public string Location { get; set; }
 
+        [Display(Name = "Day of the Week")]
         public string DayOfTheWeek { get; set; }
 
-        public DateTime DateTime { get; set; }
+        // uses time range based on the shifts
+        public string Time { get; set; }
+
+        // Real time object
+        //[DataType(DataType.Time)]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
+        //public DateTime Time { get; set; }
     }
 }

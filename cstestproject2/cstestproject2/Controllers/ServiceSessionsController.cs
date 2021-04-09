@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ServiceScheduling_App;
+using cstestproject2;
 using cstestproject2.Models;
 
-namespace ServiceScheduling_App.Controllers
+namespace cstestproject2.Controllers
 {
     public class ServiceSessionsController : Controller
     {
@@ -22,7 +22,7 @@ namespace ServiceScheduling_App.Controllers
         // GET: ServiceSessions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ServiceSession.ToListAsync());
+            return View(await _context.ServiceSessions.ToListAsync());
         }
 
         // GET: ServiceSessions/Details/5
@@ -33,7 +33,7 @@ namespace ServiceScheduling_App.Controllers
                 return NotFound();
             }
 
-            var serviceSession = await _context.ServiceSession
+            var serviceSession = await _context.ServiceSessions
                 .FirstOrDefaultAsync(m => m.ServSessionId == id);
             if (serviceSession == null)
             {
@@ -46,6 +46,28 @@ namespace ServiceScheduling_App.Controllers
         // GET: ServiceSessions/Create
         public IActionResult Create()
         {
+
+            ViewBag.ServiceTypes = new List<SelectListItem>()
+            {
+                new SelectListItem() { Text = "Inspect health", Value = "Inspect health" },
+                new SelectListItem() { Text = "Clean", Value = "Clean" },
+                new SelectListItem() { Text = "Give vaccine", Value = "Give vaccine" }
+            };
+
+            ViewBag.Locations = new List<SelectListItem>()
+            {
+                new SelectListItem() { Text = "Burnaby", Value = "Burnaby" },
+                new SelectListItem() { Text = "Richmond", Value = "Richmond" },
+                new SelectListItem() { Text = "Vancouver", Value = "Vancouver" }
+            };
+
+            ViewBag.ShiftTimes = new List<SelectListItem>()
+            {
+                new SelectListItem() { Text = "9:00 - 10:00", Value = "9:00 - 10:00" },
+                new SelectListItem() { Text = "12:00 - 1:00", Value = "12:00 - 1:00" },
+                new SelectListItem() { Text = "16:00 - 18:00", Value = "16:00 - 18:00" }
+            };
+
             return View();
         }
 
@@ -54,7 +76,7 @@ namespace ServiceScheduling_App.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ServSessionId,Service,Location,DayOfTheWeek,DateTime")] ServiceSession serviceSession)
+        public async Task<IActionResult> Create([Bind("ServSessionId,Service,Location,DayOfTheWeek,Time")] ServiceSession serviceSession)
         {
             if (ModelState.IsValid)
             {
@@ -73,7 +95,7 @@ namespace ServiceScheduling_App.Controllers
                 return NotFound();
             }
 
-            var serviceSession = await _context.ServiceSession.FindAsync(id);
+            var serviceSession = await _context.ServiceSessions.FindAsync(id);
             if (serviceSession == null)
             {
                 return NotFound();
@@ -86,7 +108,7 @@ namespace ServiceScheduling_App.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ServSessionId,Service,Location,DayOfTheWeek,DateTime")] ServiceSession serviceSession)
+        public async Task<IActionResult> Edit(int id, [Bind("ServSessionId,Service,Location,DayOfTheWeek,Time")] ServiceSession serviceSession)
         {
             if (id != serviceSession.ServSessionId)
             {
@@ -124,7 +146,7 @@ namespace ServiceScheduling_App.Controllers
                 return NotFound();
             }
 
-            var serviceSession = await _context.ServiceSession
+            var serviceSession = await _context.ServiceSessions
                 .FirstOrDefaultAsync(m => m.ServSessionId == id);
             if (serviceSession == null)
             {
@@ -139,15 +161,15 @@ namespace ServiceScheduling_App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var serviceSession = await _context.ServiceSession.FindAsync(id);
-            _context.ServiceSession.Remove(serviceSession);
+            var serviceSession = await _context.ServiceSessions.FindAsync(id);
+            _context.ServiceSessions.Remove(serviceSession);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ServiceSessionExists(int id)
         {
-            return _context.ServiceSession.Any(e => e.ServSessionId == id);
+            return _context.ServiceSessions.Any(e => e.ServSessionId == id);
         }
     }
 }

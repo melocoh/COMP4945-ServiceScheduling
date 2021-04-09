@@ -115,9 +115,6 @@ namespace cstestproject2.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("DayOfTheWeek")
                         .HasColumnType("nvarchar(max)");
 
@@ -125,6 +122,9 @@ namespace cstestproject2.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Service")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Time")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ServSessionId");

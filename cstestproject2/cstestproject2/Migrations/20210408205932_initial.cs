@@ -61,7 +61,7 @@ namespace cstestproject2.Migrations
                     Service = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DayOfTheWeek = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Time = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
