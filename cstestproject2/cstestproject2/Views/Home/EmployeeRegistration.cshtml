@@ -1,4 +1,4 @@
-﻿@model CertificationType
+﻿@model Employee
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -61,68 +61,60 @@
                 <div class="d-flex justify-content-center">
                     <p id="message">Employee Registration</p>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <div class="d-flex flex-column bd-highlight mb-3">
+                <form asp-action="SubmitRegistration" asp-controller="Home">
+                    <div class="d-flex justify-content-center">
+                        <div class="d-flex flex-column bd-highlight mb-3">
 
-                        <div class="p-2 bd-highlight">
-                            <label>Full Name</label><br>
-                            <input class="logininput" type="text" id="loginfullname" name="fullname">
-                        </div>
+                            <div class="p-2 bd-highlight">
+                                <label asp-for="FullName">Full Name</label><br>
+                                <input asp-for="FullName" class="logininput" type="text" id="loginfullname"/>
+                            </div>
 
-                        <div class="p-2 bd-highlight">
-                            <label>Job Title</label><br>
-                            <select id="loginjobtitle" class="logininput dropdown" name="loginjobtitle">
-                                <option style="display:none">-- Select Job --</option>
-                                <option value="Clout Gang Tik Tocker">Clout Gang Tik Tocker</option>
-                                <option value="Fire Fighter">Fire Fighter</option>
-                                <option value="Nurse">Nurse</option>
-                                <option value="SoundCloud Rapper">SoundCloud Rapper</option>
-                                <option value="CST Instructor">CST Instructor</option>
-                            </select>
-                        </div>
-
-
-                        <div id="certificatecontainer" class="p-2 bd-highlight">
-                            <label>Certification</label><br>
-                            <select id="logincertification" class="logininput dropdown" name="logincertification">
-                                <option style="display:none">-- Select Certificate --</option>
-                                <option value="Hamburger University Degree">Hamburger University Degree</option>
-                                <option value="First Aid Certification">First Aid Certification</option>
-                                <option value="Scuba Diving Certification">Scuba Diving Certification</option>
-                                <option value="Nurse Practitioning Certification">Nurse Practitioning Certification</option>
-                            </select>
-                            <button id="addcertificatebutton">+</button>
-                        </div>
+                            <div class="p-2 bd-highlight">
+                                <label asp-for="JobTitle">Job Title</label><br>
+                                <select asp-for="JobTitle" id="loginjobtitle" class="logininput dropdown">
+                                    <option style="display:none">-- Select Job --</option>
+                                    <option value="Clout Gang Tik Tocker">Clout Gang Tik Tocker</option>
+                                    <option value="Fire Fighter">Fire Fighter</option>
+                                    <option value="Nurse">Nurse</option>
+                                    <option value="SoundCloud Rapper">SoundCloud Rapper</option>
+                                    <option value="CST Instructor">CST Instructor</option>
+                                </select>
+                            </div>
 
 
-                        <div class="p-2 bd-highlight">
-                            <label>Certification</label><br>
-                            <select asp-for ="CertificationTypes" id="certificationType" class="logininput dropdown" asp-items="ViewBag.CertificationTypes" multiple>
-                            </select>
-                        </div>
+                            <div id="certificatecontainer" class="p-2 bd-highlight">
+                                <label>Certification</label><br>
+                                <select id="logincertification" class="logininput dropdown">
+                                    <option style="display:none">-- Select Certificate --</option>
+                                    <option value="Hamburger University Degree">Hamburger University Degree</option>
+                                    <option value="First Aid Certification">First Aid Certification</option>
+                                    <option value="Scuba Diving Certification">Scuba Diving Certification</option>
+                                    <option value="Nurse Practitioning Certification">Nurse Practitioning Certification</option>
+                                </select>
+                                <button id="addcertificatebutton">+</button>
+                            </div>
 
-                        <div class="p-2 bd-highlight">
-                            <label>Email</label><br>
-                            <input class="logininput" type="text" id="loginemail" name="loginemail">
-                        </div>
 
-                        <div class="p-2 bd-highlight">
-                            <label>Password</label><br>
-                            <input class="logininput" type="password" id="loginpassword" name="loginpassword">
-                        </div>
+                            <div class="p-2 bd-highlight">
+                                <label>Certification</label><br>
+                                <select id="certificationType" class="logininput dropdown" asp-items="ViewBag.CertificationTypes" multiple>
+                                </select>
+                            </div>
 
-                        <div class="p-2 bd-highlight">
-                            <label>Confirm Password</label><br>
-                            <input class="logininput" type="password" id="confirmloginpassword" name="confirmloginpassword">
+                            <div class="p-2 bd-highlight">
+                                <label asp-for="Email">Email</label><br>
+                                <input asp-for="Email" class="logininput" type="text" id="loginemail" />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <a href="@Url.Action("RoleSelection","Home")">
-                        <button class="btn btn-info statusbutton">Go Back</button>
-                    </a>
-                    <button class="btn btn-primary statusbutton">Log In</button>
-                </div>
+                    <div class="d-flex justify-content-center">
+                        <a href="@Url.Action("RoleSelection","Home")">
+                            <button class="btn btn-info statusbutton">Go Back</button>
+                        </a>
+                        <input type="submit" class="btn btn-primary statusbutton" value="Sign Up">
+                    </div>
+                </form>
                 <div class="d-flex justify-content-center">
                     <a href="@Url.Action("EmployeeSignIn", "Home")" class="hyperlinks">Already a user?</a>
                 </div>

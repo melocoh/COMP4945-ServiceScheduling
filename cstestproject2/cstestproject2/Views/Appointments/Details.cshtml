@@ -1,0 +1,135 @@
+﻿@model cstestproject2.Models.Appointment
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Appointment Details</h1>
+
+<div>
+    <h4>Appointment ID : @ViewBag.ServiceAppointment.AppointmentId</h4>
+    <hr />
+    <dl class="row">
+
+        @*This part is from the appointment table*@
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ServTitle)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ServTitle)
+        </dd>
+
+        @*This part is from the service table*@
+
+        <dt class="col-sm-2">
+            Max Num of Emp
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.ServiceAppointment.MaxEmpNo
+        </dd>
+
+        <dt class="col-sm-2">
+            Max Num of Clients
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.ServiceAppointment.MaxClientNo
+        </dd>
+
+        @*This part is from the appointment table*@
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StartDateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StartDateTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EndDateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EndDateTime)
+        </dd>
+
+        @*This part is from the service table*@
+
+        <dt class="col-sm-2">
+            Rate ($/session)
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.ServiceAppointment.Rate
+        </dd>
+    </dl>
+</div>
+<br />
+<h4>
+    Employees
+</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Full Name
+            </th>
+            <th>
+                Job Title
+            </th>
+            <th>
+                Email
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var emp in @ViewBag.Employees)
+        {
+            <tr>
+                <td>
+                    @emp.FullName
+                </td>
+                <td>
+                    @emp.JobTitle
+                </td>
+                <td>
+                    @emp.JobTitle
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br />
+<h4>
+    Clients
+</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Full Name
+            </th>
+            <th>
+                Email
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var client in @ViewBag.Clients)
+        {
+            <tr>
+                <td>
+                    @client.FullName
+                </td>
+                <td>
+                    @client.Email
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.AppId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
