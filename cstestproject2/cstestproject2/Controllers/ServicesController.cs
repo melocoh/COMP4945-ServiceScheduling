@@ -10,22 +10,22 @@ using cstestproject2.Models;
 
 namespace cstestproject2.Controllers
 {
-    public class ClientsController : Controller
+    public class ServicesController : Controller
     {
         private readonly AppContext _context;
 
-        public ClientsController(AppContext context)
+        public ServicesController(AppContext context)
         {
             _context = context;
         }
 
-        // GET: Clients
+        // GET: Services
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Clients.ToListAsync());
+            return View(await _context.Services.ToListAsync());
         }
 
-        // GET: Clients/Details/5
+        // GET: Services/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace cstestproject2.Controllers
                 return NotFound();
             }
 
-            var client = await _context.Clients
-                .FirstOrDefaultAsync(m => m.ClientId == id);
-            if (client == null)
+            var service = await _context.Services
+                .FirstOrDefaultAsync(m => m.ServId == id);
+            if (service == null)
             {
                 return NotFound();
             }
 
-            return View(client);
+            return View(service);
         }
 
-        // GET: Clients/Create
+        // GET: Services/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Clients/Create
+        // POST: Services/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClientId,FullName,Email")] Client client)
+        public async Task<IActionResult> Create([Bind("ServId,ServTitle,Rate,MaxEmpNo,MaxClientNo")] Service service)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(client);
+                _context.Add(service);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(client);
+            return View(service);
         }
 
-        // GET: Clients/Edit/5
+        // GET: Services/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace cstestproject2.Controllers
                 return NotFound();
             }
 
-            var client = await _context.Clients.FindAsync(id);
-            if (client == null)
+            var service = await _context.Services.FindAsync(id);
+            if (service == null)
             {
                 return NotFound();
             }
-            return View(client);
+            return View(service);
         }
 
-        // POST: Clients/Edit/5
+        // POST: Services/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ClientId,FullName,Email")] Client client)
+        public async Task<IActionResult> Edit(int id, [Bind("ServId,ServTitle,Rate,MaxEmpNo,MaxClientNo")] Service service)
         {
-            if (id != client.ClientId)
+            if (id != service.ServId)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace cstestproject2.Controllers
             {
                 try
                 {
-                    _context.Update(client);
+                    _context.Update(service);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClientExists(client.ClientId))
+                    if (!ServiceExists(service.ServId))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace cstestproject2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(client);
+            return View(service);
         }
 
-        // GET: Clients/Delete/5
+        // GET: Services/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace cstestproject2.Controllers
                 return NotFound();
             }
 
-            var client = await _context.Clients
-                .FirstOrDefaultAsync(m => m.ClientId == id);
-            if (client == null)
+            var service = await _context.Services
+                .FirstOrDefaultAsync(m => m.ServId == id);
+            if (service == null)
             {
                 return NotFound();
             }
 
-            return View(client);
+            return View(service);
         }
 
-        // POST: Clients/Delete/5
+        // POST: Services/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var client = await _context.Clients.FindAsync(id);
-            _context.Clients.Remove(client);
+            var service = await _context.Services.FindAsync(id);
+            _context.Services.Remove(service);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ClientExists(int id)
+        private bool ServiceExists(int id)
         {
-            return _context.Clients.Any(e => e.ClientId == id);
+            return _context.Services.Any(e => e.ServId == id);
         }
     }
 }

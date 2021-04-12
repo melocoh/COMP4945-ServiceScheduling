@@ -32,10 +32,10 @@ namespace cstestproject2
             modelBuilder.Entity<Appointment>().ToTable("Appointment");
             modelBuilder.Entity<Service>().ToTable("Service");
 
-            modelBuilder.Entity<Appointment>()
-            .HasOne<Service>(s => s.Service)
-            .WithMany(g => g.Appointments)
-            .HasForeignKey(s => s.ServId);
+            //modelBuilder.Entity<Appointment>()
+            //.HasOne<Service>(s => s.Service)
+            //.WithMany(g => g.Appointments)
+            //.HasForeignKey(s => s.ServId);
         }
     }
 }

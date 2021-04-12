@@ -4,12 +4,35 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using cstestproject2;
 using cstestproject2.Models;
 
 namespace cstestproject2.Controllers
 {
+    public class ServiceAppointment
+    {
+        public int AppointmentId;
+        public string ServTitle;
+        public int MaxEmpNo;
+        public int MaxClientNo;
+        public DateTime StartDateTime;
+        public DateTime EndDateTime;
+        public int Rate;
+
+        public ServiceAppointment(int appointmentId, string servTitle, int maxEmpNo, int maxClientNo, DateTime startDateTime, DateTime endDateTime, int rate)
+        {
+            AppointmentId = appointmentId;
+            ServTitle = servTitle;
+            MaxEmpNo = maxEmpNo;
+            MaxClientNo = maxClientNo;
+            StartDateTime = startDateTime;
+            EndDateTime = endDateTime;
+            Rate = rate;
+        }
+    }
+
     public class AppointmentsController : Controller
     {
         private readonly AppContext _context;
@@ -22,6 +45,7 @@ namespace cstestproject2.Controllers
         // GET: Appointments
         public async Task<IActionResult> Index()
         {
+            Console.WriteLine(HttpContext.Session.GetInt32("empID"));
             var appContext = _context.Appointments.Include(a => a.Service);
             return View(await appContext.ToListAsync());
         }
@@ -35,20 +59,84 @@ namespace cstestproject2.Controllers
             }
 
             var appointment = await _context.Appointments
-                .Include(a => a.Service)
                 .FirstOrDefaultAsync(m => m.AppId == id);
             if (appointment == null)
             {
                 return NotFound();
             }
 
+            ViewBag.ServiceAppointment = GetServiceAppointmentDetailsList();
+            ViewBag.Employees = GetEmployeesList();
+            ViewBag.Clients = GetClientsList();
+
             return View(appointment);
+        }
+
+        // A list of Services
+        private List<Employee> GetEmployeesList()
+        {
+            List<Employee> employees = _context.Employees.ToList<Employee>();
+
+            return employees;
+        }
+
+        // A list of Services
+        private List<Client> GetClientsList()
+        {
+            List<Client> clients = _context.Clients.ToList<Client>();
+
+            return clients;
+        }
+
+        // A list of Services
+        private List<SelectListItem> GetServicesList()
+        {
+            List<Service> services = _context.Services.ToList<Service>();
+
+            List<SelectListItem> list = services.ConvertAll<SelectListItem>(a =>
+            {
+                return new SelectListItem()
+                {
+                    Text = a.ServTitle,
+                    Value = a.ServTitle,
+                    Selected = false
+                };
+            });
+
+            return list;
+        }
+
+        // A list of Services
+        private ServiceAppointment GetServiceAppointmentDetailsList()
+        {
+
+            var query = _context.Appointments
+            .Join(
+            _context.Services,
+            appointment => appointment.ServTitle,
+            service => service.ServTitle,
+            (appointment, service) => new
+            {
+                AppointmentId = appointment.AppId,
+                ServTitle = service.ServTitle,
+                MaxEmpNo = service.MaxEmpNo,
+                MaxClientNo = service.MaxEmpNo,
+                Start = appointment.StartDateTime,
+                End = appointment.EndDateTime,
+                Rate = service.Rate
+            }
+            ).ToList();
+
+            ServiceAppointment serviceAppointment = new ServiceAppointment(query[0].AppointmentId, query[0].ServTitle, query[0].MaxEmpNo, query[0].MaxClientNo, query[0].Start, query[0].End, query[0].Rate);
+
+
+            return serviceAppointment;
         }
 
         // GET: Appointments/Create
         public IActionResult Create()
         {
-            ViewData["ServId"] = new SelectList(_context.Services, "ServId", "ServId");
+            ViewBag.ServicesList = GetServicesList();
             return View();
         }
 
@@ -57,7 +145,7 @@ namespace cstestproject2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AppId,ServId,Day,StartDateTime,EndDateTime")] Appointment appointment)
+        public async Task<IActionResult> Create([Bind("AppId,ServTitle,StartDateTime,EndDateTime")] Appointment appointment)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +153,6 @@ namespace cstestproject2.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ServId"] = new SelectList(_context.Services, "ServId", "ServId", appointment.ServId);
             return View(appointment);
         }
 
@@ -82,7 +169,6 @@ namespace cstestproject2.Controllers
             {
                 return NotFound();
             }
-            ViewData["ServId"] = new SelectList(_context.Services, "ServId", "ServId", appointment.ServId);
             return View(appointment);
         }
 
@@ -91,7 +177,7 @@ namespace cstestproject2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AppId,ServId,Day,StartDateTime,EndDateTime")] Appointment appointment)
+        public async Task<IActionResult> Edit(int id, [Bind("AppId,ServTitle,StartDateTime,EndDateTime")] Appointment appointment)
         {
             if (id != appointment.AppId)
             {
@@ -118,7 +204,6 @@ namespace cstestproject2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ServId"] = new SelectList(_context.Services, "ServId", "ServId", appointment.ServId);
             return View(appointment);
         }
 
@@ -131,7 +216,6 @@ namespace cstestproject2.Controllers
             }
 
             var appointment = await _context.Appointments
-                .Include(a => a.Service)
                 .FirstOrDefaultAsync(m => m.AppId == id);
             if (appointment == null)
             {

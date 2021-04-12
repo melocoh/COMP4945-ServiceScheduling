@@ -12,14 +12,17 @@ namespace cstestproject2.Models
         [Key]
         public int ServId { get; set; }
 
+        [Display(Name = "Service Title")]
         public string ServTitle { get; set; }
 
+        [Display(Name = "Rate ($/session)")]
         public int Rate { get; set; }
 
+        [Display(Name = "Max Number of Employees")]
         public int MaxEmpNo{ get;set; }
 
+        [Display(Name = "Max Number of Clients")]
         public int MaxClientNo { get; set; }
-
 
         public ICollection<Appointment> Appointments { get; set; }
     }

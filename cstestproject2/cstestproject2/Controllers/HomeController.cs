@@ -1,6 +1,7 @@
 ﻿using cstestproject2.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -13,15 +14,36 @@ namespace cstestproject2.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly AppContext _context;
+        private bool loggedin = false;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, AppContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult Login(Employee credentials)
+        {
+            Employee account = _context.Employees.Where(emp => emp.Email == credentials.Email).FirstOrDefault<Employee>();
+            ViewBag.AccountName = account.FullName;
+
+            HttpContext.Session.SetInt32("empID", account.EmpId);
+            return View("LoggedIn");
+        }
+
+        [HttpPost]
+        public IActionResult SubmitRegistration(Employee formData)
+        {
+            _context.Add(formData);
+            _context.SaveChanges();
+            
+            return RedirectToAction("Login", formData);
         }
 
         public IActionResult RoleSelection()
@@ -44,6 +66,11 @@ namespace cstestproject2.Controllers
             return View();
         }
 
+        public IActionResult Chart()
+        {
+            return View();
+        }
+
         public IActionResult EmployeeRegistration()
         {
             ViewBag.CertificationTypes = new List<SelectListItem>()
@@ -54,10 +81,35 @@ namespace cstestproject2.Controllers
                 new SelectListItem() { Text = "Nurse Practitioning Certification", Value = "Nurse Practitioning Certification" }
             };
 
+            ViewBag.Locations = new List<SelectListItem>()
+            {
+                new SelectListItem() { Text = "Burnaby", Value = "Burnaby" },
+                new SelectListItem() { Text = "Richmond", Value = "Richmond" },
+                new SelectListItem() { Text = "Vancouver", Value = "Vancouver" }
+            };
+
+            ViewBag.ServiceTypes = new List<SelectListItem>()
+            {
+                new SelectListItem() { Text = "Teach", Value = "Teach" },
+                new SelectListItem() { Text = "Chew food", Value = "Chew food" },
+                new SelectListItem() { Text = "Rap", Value = "Rap" },
+                new SelectListItem() { Text = "Provide vaccine", Value = "Provide vaccine" }
+            };
+
+            return View();
+        }
+
+        public IActionResult Profile()
+        {
             return View();
         }
 
         public IActionResult test()
+        {
+            return View();
+        }
+
+        public IActionResult Service()
         {
             return View();
         }
@@ -67,13 +119,56 @@ namespace cstestproject2.Controllers
             return View();
         }
 
+
+        public IActionResult Schedule()
+        {
+            return View();
+        }
         public IActionResult EmployeeShiftForms()
         {
             return View();
         }
 
+        public IActionResult Appointment()
+        {
+            return View("Index");
+        }
+
+        [HttpGet]
+        public JsonResult ChartDetails()
+        {
+            Console.WriteLine("Called");
+            return Json(new Chart("bar", new[] { 100, 200, 300 }));
+        }
+
+        public IActionResult Modal()
+        {
+            ViewBag.SelectOptions = new List<SelectListItem>()
+            {
+                new SelectListItem(){Text = "Option 1", Value = "1"},
+                new SelectListItem(){Text = "Option 2", Value = "2"},
+                new SelectListItem(){Text = "Option 3", Value = "3"},
+            };
+            return View();
+        }
+
         public IActionResult BookingAppointment()
         {
+            ViewBag.ServiceTypes = new List<SelectListItem>()
+            {
+                new SelectListItem() { Text = "Teach", Value = "Teach" },
+                new SelectListItem() { Text = "Chew food", Value = "Chew food" },
+                new SelectListItem() { Text = "Rap", Value = "Rap" },
+                new SelectListItem() { Text = "Provide vaccine", Value = "Provide vaccine" }
+            };
+
+            ViewBag.Locations = new List<SelectListItem>()
+            {
+                new SelectListItem() { Text = "Burnaby", Value = "Burnaby" },
+                new SelectListItem() { Text = "Richmond", Value = "Richmond" },
+                new SelectListItem() { Text = "Vancouver", Value = "Vancouver" }
+            };
+
             return View();
         }
 

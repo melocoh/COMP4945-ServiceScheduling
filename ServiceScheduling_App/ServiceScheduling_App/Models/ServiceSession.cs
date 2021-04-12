@@ -18,6 +18,8 @@ namespace cstestproject2.Models
 
         public string DayOfTheWeek { get; set; }
 
-        public DateTime DateTime { get; set; }
+        [DataType(DataType.Time)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
+        public DateTime Time { get; set; }
     }
 }
