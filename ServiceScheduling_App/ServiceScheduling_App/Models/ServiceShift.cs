@@ -21,7 +21,7 @@ namespace ServiceScheduling_App.Models
 
         public TimeSpan TimeEnd { get; set; }
 
-
+        public string SerLocation { get; set; }
 
         // References ServiceType object
         public virtual ServiceType ServiceType { get; set; }

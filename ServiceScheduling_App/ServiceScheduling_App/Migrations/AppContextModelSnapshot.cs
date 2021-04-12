@@ -29,9 +29,6 @@ namespace ServiceScheduling_App.Migrations
                     b.Property<DateTime>("EntryDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("ServiceShiftId")
                         .HasColumnType("int");
 
@@ -221,6 +218,9 @@ namespace ServiceScheduling_App.Migrations
 
                     b.Property<int>("DayOfWeek")
                         .HasColumnType("int");
+
+                    b.Property<string>("SerLocation")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ServId")
                         .HasColumnType("int");
