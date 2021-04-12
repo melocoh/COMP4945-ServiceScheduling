@@ -12,8 +12,8 @@ namespace ServiceScheduling_App.Models
         [Key] // Primary key
         public int AppId { get; set; }
 
-        [ForeignKey("ServiceType")] // Foreign key that references ServiceType
-        public int ServId { get; set; }
+        [ForeignKey("ServiceShift")] // Foreign key that references ServiceType
+        public int ServiceShiftId { get; set; }
 
         public DateTime EntryDate { get; set; }
 
@@ -23,7 +23,13 @@ namespace ServiceScheduling_App.Models
 
         // References ServiceType object 
         // @relation one-to-one
-        public virtual ServiceType ServiceType { get; set; }
+        //public virtual ServiceType ServiceType { get; set; }
+
+
+        // References ServiceShift object 
+        // @relation one-to-many
+        public virtual ServiceShift ServiceShift { get; set; }
+
 
         // References Appointment object
         // @relation one to many

@@ -29,7 +29,7 @@ namespace ServiceScheduling_App.Migrations
                     b.Property<DateTime>("EntryDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ServId")
+                    b.Property<int>("ServiceShiftId")
                         .HasColumnType("int");
 
                     b.Property<double>("TotalFee")
@@ -37,8 +37,7 @@ namespace ServiceScheduling_App.Migrations
 
                     b.HasKey("AppId");
 
-                    b.HasIndex("ServId")
-                        .IsUnique();
+                    b.HasIndex("ServiceShiftId");
 
                     b.ToTable("Appointment");
                 });
@@ -268,13 +267,13 @@ namespace ServiceScheduling_App.Migrations
 
             modelBuilder.Entity("ServiceScheduling_App.Models.Appointment", b =>
                 {
-                    b.HasOne("ServiceScheduling_App.Models.ServiceType", "ServiceType")
-                        .WithOne("Appointment")
-                        .HasForeignKey("ServiceScheduling_App.Models.Appointment", "ServId")
+                    b.HasOne("ServiceScheduling_App.Models.ServiceShift", "ServiceShift")
+                        .WithMany("Appointments")
+                        .HasForeignKey("ServiceShiftId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ServiceType");
+                    b.Navigation("ServiceShift");
                 });
 
             modelBuilder.Entity("ServiceScheduling_App.Models.AppointmentSession", b =>
@@ -434,12 +433,9 @@ namespace ServiceScheduling_App.Migrations
 
             modelBuilder.Entity("ServiceScheduling_App.Models.ServiceShift", b =>
                 {
-                    b.Navigation("EmpShifts");
-                });
+                    b.Navigation("Appointments");
 
-            modelBuilder.Entity("ServiceScheduling_App.Models.ServiceType", b =>
-                {
-                    b.Navigation("Appointment");
+                    b.Navigation("EmpShifts");
                 });
 #pragma warning restore 612, 618
         }

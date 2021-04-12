@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ServiceScheduling_App.Models;
-using cstestproject2.Models;
 
 namespace ServiceScheduling_App
 {
@@ -55,6 +54,12 @@ namespace ServiceScheduling_App
             .HasOne<Appointment>(s => s.Appointment)
             .WithMany(g => g.AppointmentSessions)
             .HasForeignKey(s => s.AppId);
+
+            // One to many with Appointment and ServiceShift
+            modelBuilder.Entity<Appointment>()
+            .HasOne<ServiceShift>(s => s.ServiceShift)
+            .WithMany(g => g.Appointments)
+            .HasForeignKey(s => s.ServiceShiftId);
 
             // Intermediate table creation with composite keys
             modelBuilder.Entity<EmpCertification>().HasKey(ec => new { ec.EmpId, ec.CertId });

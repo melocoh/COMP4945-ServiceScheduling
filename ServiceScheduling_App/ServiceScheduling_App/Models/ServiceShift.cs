@@ -28,5 +28,9 @@ namespace ServiceScheduling_App.Models
 
         // References EmpShift object
         public ICollection<EmpShift> EmpShifts { get; set; }
+
+        // References Appointment object
+        // @relation one-to-many
+        public ICollection<Appointment> Appointments { get; set; }
     }
 }

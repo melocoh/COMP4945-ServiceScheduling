@@ -25,7 +25,7 @@ namespace ServiceScheduling_App.Models
         public double Rate { get; set; }
 
         // References ServiceType object
-        public virtual Appointment Appointment { get; set; }
+        //public virtual Appointment Appointment { get; set; }
 
         // References Employee object
         public virtual CertificationType CertificationType { get; set; }
