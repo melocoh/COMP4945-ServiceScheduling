@@ -30,4 +30,5 @@ namespace ServiceScheduling_App.Models
         // @relation one-to-many
         public virtual Appointment Appointment { get; set; }
     }
+
 }
