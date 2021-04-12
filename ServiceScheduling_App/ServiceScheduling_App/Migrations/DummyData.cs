@@ -306,15 +306,21 @@ namespace ServiceScheduling_App.Migrations
             List<Appointment> appointments = new List<Appointment>() {
                 new Appointment  // 1
                 {
-                    ServId = 1,
+                    ServiceShiftId = 1,
                     EntryDate = DateTime.Now,
                     TotalFee = 42069
                 },
                 new Appointment  // 2
                 {
-                    ServId = 2,
+                    ServiceShiftId = 2,
                     EntryDate = DateTime.Now,
                     TotalFee = 69420
+                },
+                new Appointment  // 2
+                {
+                    ServiceShiftId = 2,
+                    EntryDate = new DateTime (2021, 11, 16, 12, 00, 00),
+                    TotalFee = 100
                 }
             };
             return appointments;
