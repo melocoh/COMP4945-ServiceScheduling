@@ -308,19 +308,22 @@ namespace ServiceScheduling_App.Migrations
                 {
                     ServiceShiftId = 1,
                     EntryDate = DateTime.Now,
-                    TotalFee = 42069
+                    TotalFee = 42069,
+                    Location = "Richmond"
                 },
                 new Appointment  // 2
                 {
                     ServiceShiftId = 2,
                     EntryDate = DateTime.Now,
-                    TotalFee = 69420
+                    TotalFee = 69420,
+                    Location = "Burnaby"
                 },
                 new Appointment  // 2
                 {
                     ServiceShiftId = 2,
                     EntryDate = new DateTime (2021, 11, 16, 12, 00, 00),
-                    TotalFee = 100
+                    TotalFee = 100,
+                    Location = "Vancouver"
                 }
             };
             return appointments;

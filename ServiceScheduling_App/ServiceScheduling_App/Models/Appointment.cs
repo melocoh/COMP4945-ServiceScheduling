@@ -19,6 +19,8 @@ namespace ServiceScheduling_App.Models
 
         public double TotalFee { get; set; }
 
+        public string Location { get; set; }
+
         /*****************************************/
 
         // References ServiceType object 
