@@ -22,11 +22,6 @@
             font-weight: bold;
         }
 
-        #message2 {
-            font-size: 15px;
-            font-weight: 600;
-        }
-
         #schedulebox {
             border: 5px solid grey;
             width: 100%;
@@ -34,19 +29,30 @@
             margin: 20px;
         }
 
-        .statusbutton {
-            margin: 15px;
-            width: 120px;
+        #modalinput {
+            width: 100%;
         }
 
-        .hyperlinks {
-            margin: 15px;
-            font-size: 12px;
-            text-align: center;
+        #abovechartlabel {
+            margin-left: 5px;
+            margin-right: 5px;
+            margin-top: 11px;
         }
 
-        .logininput {
-            width: 300px;
+        #serviceTypeSelect {
+            margin-left: 5px;
+            margin-right: 5px;
+            margin-top: 7px;
+            border-radius: 5px;
+            height: 35px;
+        }
+
+        .modalbuttons {
+            width: 35%;
+        }
+
+        .abovechartbuttons {
+            margin: 5px;
         }
 
         .splitline {
@@ -54,6 +60,7 @@
             border-radius: 5px;
             width: 100%;
         }
+
     </style>
 </head>
 <body>
@@ -63,46 +70,62 @@
             <div id="dynamicContainer" class="d-flex flex-column">
                 <div class="d-flex justify-content-start">
                     <div>
-                        <p id="message" class="">Shift Hours for Jason Lee</p>
-                        <p id="message2" class="">Employ ID: 1</p>
+                        <p id="message" class="">Service Calender</p>
                     </div>
                 </div>
                 <hr class="splitline">
+
+                <div class="d-flex justify-content-start">
+                    <div>
+                        <p id="abovechartlabel">Filter by Service</p>
+                    </div>
+                    <div>
+                        <select id="serviceTypeSelect" class="dropdown" name="">
+                            <option style="display:none">-- Select Service --</option>
+                            <option value="Flipper">Flipper</option>
+                            <option value="Shaker">Shaker</option>
+                            <option value="Smeller">Smeller</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button id="" class="btn btn-primary abovechartbuttons">Search</button>
+                    </div>
+                    <div>
+                        <!-- Button trigger modal -->
+                        <button type="button" id="" class="btn btn-outline-primary abovechartbuttons" data-toggle="modal" data-target="#exampleModalCenter">Email Service Schedule</button>
+                    </div>
+                </div>
+
                 <div class="d-flex justify-content-center">
                     <div id="schedulebox" class="d-flex flex-column bd-highlight mb-3">
                     </div>
                 </div>
                 <div class="d-flex justify-content-start">
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-warning statusbutton" data-toggle="modal" data-target="#exampleModalCenter">
-                        Edit
-                    </button>
 
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Shift</h5>
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Email Service Schedule</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    How would you like to set up a shift?
+                                    <label>Email recipient:</label><br>
+                                    <input id="modalinput" placeholder="Email">
                                 </div>
-                                <div class="modal-footer justify-content-center">
-                                    <a href="@Url.Action("Create","ServiceSessions")">
-                                        <button type="button" class="btn btn-outline-primary">Add Service</button>
-                                    </a>
-                                    <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Remove Service</button>
+                                <div id="" class="modal-footer justify-content-around">
+                                    <button type="button" class="btn btn-danger modalbuttons" data-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-success modalbuttons" data-dismiss="modal">Send</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
     </div>
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

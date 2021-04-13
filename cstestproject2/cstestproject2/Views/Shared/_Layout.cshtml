@@ -18,9 +18,8 @@
         }
 
         @@media only screen and (max-width: 575px) {
-
-            #bellnotificationcontainer{
-                display:none;
+            #bellnotificationcontainer {
+                display: none;
             }
         }
     </style>
@@ -51,8 +50,11 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="BookingAppointment">Booking</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ServiceCalender">Service Calender</a>
+                        </li>
                     </ul>
-                   
+
                     <ul class="navbar-nav ml-auto">
                         @* Bell Notification - Begin *@
                         @* Added dropdown button on the navigation bar using bell with dot, photos are in wwwroot -> images folder *@
