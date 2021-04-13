@@ -10,12 +10,17 @@ using ServiceScheduling_App.Models;
 
 namespace ServiceScheduling_App.Controllers
 {
+    //keeps track of the database tables:
+    //ServiceShifts, ServiceTypes, EmpShifts, and Employees
+    //contains the methods to work with the data from the tables
     public class EmployeeServiceControl
     {
+        //database tables
         public List<EmployeeService> employeeServiceList;
+
+        //load all the data from tables into this object
         public EmployeeServiceControl(AppContext context)
         {
-
             var query = context.ServiceShifts
             .Join(
             context.ServiceTypes,
@@ -61,6 +66,7 @@ namespace ServiceScheduling_App.Controllers
             }
         }
 
+        //returns a list of all services
         public List<string> getAllServices()
         {
             List<string> allServices = new List<string>();
@@ -72,6 +78,7 @@ namespace ServiceScheduling_App.Controllers
             return allServices;
         }
 
+        //returns a list of all services locations filtered by their title
         public List<string> getFilterLocations(string servTitle)
         {
             List<string> filteredLocations = new List<string>();
@@ -86,6 +93,7 @@ namespace ServiceScheduling_App.Controllers
             return filteredLocations;
         }
 
+        //returns a list of all services day of the week filtered by their title and location
         public List<DayOfWeek> getFilterDayOfTheWeek(string servTitle, string location)
         {
             List<DayOfWeek> filteredDayOfTheWeek = new List<DayOfWeek>();
@@ -100,7 +108,7 @@ namespace ServiceScheduling_App.Controllers
             return filteredDayOfTheWeek;
         }
 
-
+        //returns a list of all services (start + end time) filtered by their title, location, and day of the week
         public List<string> getStartAndEndTime(string servTitle, string location, DayOfWeek dayOfWeek)
         {
             List<string> filteredStartAndEndTime = new List<string>();
@@ -119,8 +127,12 @@ namespace ServiceScheduling_App.Controllers
         }
 
 
-
-
+        //returns a list of service information that contains:
+        //serviceShiftId
+        //numberOfEmployees
+        //numberOfMaxEmployees
+        //List<string> employeeNames
+        //it is filtered by a service title, location, day of the week, and (start + end time)
         public List<EmployeeServiceInfo> getAvailableSessions(string servTitle, string location, DayOfWeek dayOfWeek, string startToEndTime)
         {
             List<EmployeeServiceInfo> availableSessions = new List<EmployeeServiceInfo>();
@@ -131,7 +143,28 @@ namespace ServiceScheduling_App.Controllers
                 string combinedTime = startTime + " - " + endTime;
                 if ((employeeServiceList[i].servTitle == servTitle) && (employeeServiceList[i].location == location) && (employeeServiceList[i].DayOfWeek == dayOfWeek) && (combinedTime== startToEndTime))
                 {
-                    //filteredStartAndEndTime.Add(new EmployeeServiceInfo());
+                    int currentSerShiftID = employeeServiceList[i].ServiceShiftId;
+                    int currentSerShiftMaxEmployees = employeeServiceList[i].MaxNoEmp;
+                    string currentSerShiftEmployeeName = employeeServiceList[i].FullName;
+                    bool addedEmployeeToList = false;
+                    for (int f=0;f< availableSessions.Count; f++)
+                    {
+                        if(currentSerShiftID == availableSessions[f].serviceShiftId)
+                        {
+                            //session already exists so add to it
+                            availableSessions[f].addEmployee(currentSerShiftEmployeeName);
+                            addedEmployeeToList = true;
+                            break;
+                        }
+                    }
+
+                    //session doesn't exist so create it
+                    if (!addedEmployeeToList)
+                    {
+                        EmployeeServiceInfo newEmployeeServiceInfo = new EmployeeServiceInfo(currentSerShiftMaxEmployees, currentSerShiftID);
+                        newEmployeeServiceInfo.addEmployee(currentSerShiftEmployeeName);
+                        availableSessions.Add(newEmployeeServiceInfo);
+                    }
                 }
             }
 
@@ -141,6 +174,8 @@ namespace ServiceScheduling_App.Controllers
         }
     }
 
+    //contains one entry from the database tables:
+    //ServiceShifts, ServiceTypes, EmpShifts, and Employees
     public class EmployeeService
     {
         public int serId;
@@ -171,16 +206,34 @@ namespace ServiceScheduling_App.Controllers
 
     }
 
+    //contains information about a weekly session for employees
     public class EmployeeServiceInfo
     {
         public int numberOfEmployees;
         public int numberOfMaxEmployees;
         public List<string> employeeNames;
-        public EmployeeServiceInfo(int numberOfEmployees, int numberOfMaxEmployees, List<string> employeeNames)
+        public int serviceShiftId;
+        public EmployeeServiceInfo(int numberOfMaxEmployees, int serviceShiftId)
         {
-            this.numberOfEmployees = numberOfEmployees;
+            this.numberOfEmployees = 0;
             this.numberOfMaxEmployees = numberOfMaxEmployees;
-            this.employeeNames = employeeNames;
+            this.serviceShiftId = serviceShiftId;
+            employeeNames = new List<string>();
+        }
+
+        public bool addEmployee(string newEmployeeName)
+        {
+            if(employeeNames.Count< numberOfMaxEmployees)
+            {
+                employeeNames.Add(newEmployeeName);
+                numberOfEmployees++;
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 
@@ -221,6 +274,25 @@ namespace ServiceScheduling_App.Controllers
             _context = context;
 
             EmployeeServiceControl employeeServiceControl = new EmployeeServiceControl(context);
+
+            TimeSpan startTime = new TimeSpan(2, 14, 18);
+            TimeSpan endTime = new TimeSpan(4, 14, 18);
+            string startTimeString = startTime.Hours.ToString("D2") + ":" + startTime.Minutes.ToString("D2");
+            string endTimeString = endTime.Hours.ToString("D2") + ":" + endTime.Minutes.ToString("D2");
+            EmployeeService newEmployeeService1 = new EmployeeService(10, "personal fanner", 3, 8, DayOfWeek.Wednesday, "home <3", startTime, endTime, 6, "Eric Sondraal");
+            EmployeeService newEmployeeService2 = new EmployeeService(10, "personal fanner", 3, 8, DayOfWeek.Wednesday, "home <3", startTime, endTime, 5, "Ryan Sondraal");
+            employeeServiceControl.employeeServiceList.Add(newEmployeeService1);
+            employeeServiceControl.employeeServiceList.Add(newEmployeeService2);
+
+            List<EmployeeServiceInfo> test1 =
+                employeeServiceControl.getAvailableSessions("personal fanner", "home <3", DayOfWeek.Wednesday, startTimeString + " - " + endTimeString);
+
+            var test2 = employeeServiceControl.getAllServices();
+            var test3 = employeeServiceControl.getFilterLocations("personal fanner");
+            var test4 = employeeServiceControl.getFilterDayOfTheWeek("personal fanner","home <3");
+            var test5 = employeeServiceControl.getStartAndEndTime("personal fanner", "home <3", DayOfWeek.Wednesday);
+
+            //employeeServiceControl.getAvailableSessions()
             //var testData = GetServiceShiftTypeDetailsList();
             //testData = testData;
         }
