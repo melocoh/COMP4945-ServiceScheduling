@@ -10,7 +10,9 @@ using ServiceScheduling_App.Models;
 
 namespace ServiceScheduling_App.Controllers
 {
-    public class ServiceShiftType{
+
+    public class ServiceShiftType
+    {
         public int id;
         public string servTitle;
         public string location;
@@ -31,8 +33,6 @@ namespace ServiceScheduling_App.Controllers
         }
     }
 
-
-
     public class ServiceShiftsController : Controller
     {
         private readonly AppContext _context;
@@ -45,35 +45,6 @@ namespace ServiceScheduling_App.Controllers
             var testData = GetServiceShiftTypeDetailsList();
             testData = testData;
         }
-
-        // GET: ServiceShifts
-        public async Task<IActionResult> Index()
-        {
-            var appContext = _context.ServiceShifts.Include(s => s.ServiceType);
-            return View(await appContext.ToListAsync());
-        }
-
-        // GET: ServiceShifts/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var serviceShift = await _context.ServiceShifts
-                .Include(s => s.ServiceType)
-                .FirstOrDefaultAsync(m => m.ServiceShiftId == id);
-            if (serviceShift == null)
-            {
-                return NotFound();
-            }
-
-            return View(serviceShift);
-        }
-
-
-
 
 
         // Get the first ServiceShiftType
@@ -124,23 +95,37 @@ namespace ServiceScheduling_App.Controllers
             ).ToList();
 
             List<ServiceShiftType> serviceAppointmentList = new List<ServiceShiftType>();
-            for(int i=0;i< query.Count;i++)
-            serviceAppointmentList.Add(new ServiceShiftType(query[i].Id, query[i].Title, query[i].Location, query[i].DayOfTheWeek, query[i].StartTime, query[i].EndTime));
+            for (int i = 0; i < query.Count; i++)
+                serviceAppointmentList.Add(new ServiceShiftType(query[i].Id, query[i].Title, query[i].Location, query[i].DayOfTheWeek, query[i].StartTime, query[i].EndTime));
 
             return serviceAppointmentList;
         }
 
+        // GET: ServiceShifts
+        public async Task<IActionResult> Index()
+        {
+            var appContext = _context.ServiceShifts.Include(s => s.ServiceType);
+            return View(await appContext.ToListAsync());
+        }
 
+        // GET: ServiceShifts/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var serviceShift = await _context.ServiceShifts
+                .Include(s => s.ServiceType)
+                .FirstOrDefaultAsync(m => m.ServiceShiftId == id);
+            if (serviceShift == null)
+            {
+                return NotFound();
+            }
 
-
-
-
-
-
-
-
-
+            return View(serviceShift);
+        }
 
         // GET: ServiceShifts/Create
         public IActionResult Create()
