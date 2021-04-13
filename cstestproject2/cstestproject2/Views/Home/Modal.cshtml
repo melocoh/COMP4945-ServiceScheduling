@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewData["Title"] = "View";
+}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <title>Charts</title>
+    <style>
+
+        #blockContainer {
+            display: block;
+            margin-left: 5%;
+            margin-right: 5%;
+            margin-top: 5%;
+            margin-bottom: auto;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        #message {
+            font-size: 30px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        #addcertificatebutton {
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .statusbutton {
+            margin: 15px;
+            width: 120px;
+        }
+
+        .hyperlinks {
+            margin: 15px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .logininput {
+            width: 300px;
+        }
+
+        .dropdown {
+            text-align-last: center;
+        }
+    </style>
+</head>
+<body>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal3">
+        Show Modal Form
+    </button>
+    <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModal3Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModal3Label">Modal Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="text" placeholder="Text" />
+                        <br />
+                        <br />
+                        <input type="number" />
+                        <br />
+                        <br />
+                        <select id="selectOptions" class="dropdown" asp-items="ViewBag.SelectOptions" multiple>
+                        </select>
+                        <br />
+                        <br />
+                        <select class="logininput dropdown">
+                            <option style="display:none">-- Select Job --</option>
+                            <option value="Option 1">Option 1</option>
+                            <option value="Option 2">Option 2</option>
+                            <option value="Option 3">Option 3</option>
+                        </select>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
