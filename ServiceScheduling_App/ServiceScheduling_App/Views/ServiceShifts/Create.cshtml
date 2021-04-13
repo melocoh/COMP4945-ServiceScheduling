@@ -14,31 +14,48 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ServId" class="control-label"></label>
-                <select asp-for="ServId" class ="form-control" asp-items="ViewBag.ServId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="DayOfWeek" class="control-label"></label>
-                <select asp-for="DayOfWeek" class="form-control"></select>
-                <span asp-validation-for="DayOfWeek" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TimeStart" class="control-label"></label>
-                <input asp-for="TimeStart" class="form-control" />
-                <span asp-validation-for="TimeStart" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TimeEnd" class="control-label"></label>
-                <input asp-for="TimeEnd" class="form-control" />
-                <span asp-validation-for="TimeEnd" class="text-danger"></span>
+
+                @* this inserts to the servid, so this is not right
+                   MUST assign id to the value*@
+                <select asp-for="ServId" class="form-control" asp-items="ViewBag.SerTitle">
+                    <option value="">Select a service</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="SerLocation" class="control-label"></label>
-                <input asp-for="SerLocation" class="form-control" />
+                <select asp-for="SerLocation" class="form-control" asp-items="ViewBag.SerLocation">
+                    <option value="">Select a location</option>
+                </select>
                 <span asp-validation-for="SerLocation" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="DayOfWeek" class="control-label"></label>
+
+                @* this inserts to the DayOfWeek, so this is not right
+                    MUST assign int (must be parsed to DayOfWeek) to the value*@
+                <select asp-for="DayOfWeek" class="form-control" asp-items="ViewBag.SerDayOfWeek">
+                    <option value="">Select a day</option>
+                </select>
+                <span asp-validation-for="DayOfWeek" class="text-danger"></span>
             </div>
+
+            @* This part is not the final version. We should follow the figma*@
+            <div class="form-group">
+                <label asp-for="TimeStart" class="control-label"></label>
+                <select asp-for="TimeStart" class="form-control" asp-items="ViewBag.SerEndTime">
+                    <option value="">Select a start time</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeEnd" class="control-label"></label>
+                <select asp-for="TimeEnd" class="form-control" asp-items="ViewBag.SerStartTime">
+                    <option value="">Select an end time</option>
+                </select>
+                <span asp-validation-for="TimeEnd" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>*@
         </form>
     </div>
 </div>
