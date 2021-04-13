@@ -141,6 +141,27 @@ namespace cstestproject2.Controllers
             return Json(new Chart("bar", new[] { 100, 200, 300 }));
         }
 
+        [HttpGet]
+        public JsonResult ChartDetailsRevenue()
+        {
+            Console.WriteLine("Called");
+            return Json(new Chart("line", new[] { 65, 59, 80, 81, 56, 55, 40 }));
+        }
+
+        [HttpGet]
+        public JsonResult ChartDetailsOutcome()
+        {
+            Console.WriteLine("Called");
+            return Json(new Chart("bar", new[] { 65, 59, 80, 81, 56, 55, 40 }));
+        }
+
+        [HttpGet]
+        public JsonResult ChartDetailsPerformance()
+        {
+            Console.WriteLine("Called");
+            return Json(new Chart("line", new[] { 65, 59, 80, 81, 56, 55, 40 }));
+        }
+
         public IActionResult Modal()
         {
             ViewBag.SelectOptions = new List<SelectListItem>()
