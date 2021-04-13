@@ -43,6 +43,44 @@ namespace cstestproject2.Controllers
             return View(service);
         }
 
+
+
+
+
+
+        // A list of Services
+        private ServiceAppointment GetServiceShiftTypeDetailsList()
+        {
+
+            var query = _context.
+            .Join(
+            _context.Services,
+            serviceShift => serviceShift.,
+            serviceType => serviceType.ServId,
+            (appointment, service) => new
+            {
+                AppointmentId = appointment.AppId,
+                ServTitle = service.ServTitle,
+                MaxEmpNo = service.MaxEmpNo,
+                MaxClientNo = service.MaxEmpNo,
+                Start = appointment.StartDateTime,
+                End = appointment.EndDateTime,
+                Rate = service.Rate
+            }
+            ).ToList();
+
+            ServiceAppointment serviceAppointment = new ServiceAppointment(query[0].AppointmentId, query[0].ServTitle, query[0].MaxEmpNo, query[0].MaxClientNo, query[0].Start, query[0].End, query[0].Rate);
+
+
+            return serviceAppointment;
+        }
+
+
+
+
+
+
+
         // GET: Services/Create
         public IActionResult Create()
         {
