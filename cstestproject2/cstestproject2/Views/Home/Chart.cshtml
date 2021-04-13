@@ -18,7 +18,8 @@
             <option value="outcomes">Client Outcome</option>
             <option value="performance">Performance</option>
         </select>
-        <button id="chart-gen">Generate</button>
+
+        <button id="chart-gen">Generate Bar Graph</button>
         <br />
         <canvas id="chart-container"></canvas>
     </div>
@@ -26,31 +27,167 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.2/chart.min.js"></script>
 
+    <!--
     <script>
+        /** BAR GRAPH */
         $(document).ready(() => {
             var barchart = document.getElementById('chart-container').getContext('2d');
             let chartType;
             let chartData;
             $("#chart-gen").click(() => {
-                let graphselection = document.getElementById("chartTypeSelect").value;
-                if (graphselection == "revenue") {
-                    console.log("revenue is selected");
-
-                    
-                } else if (graphselection == "outcomes") {
-                    console.log("client outcomes is selected");
-
-                    
-                } else if (grpahselection == "performance") {
-                    console.log("performance is selected");
-
-                    
-                }
-                 
+                $.ajax({
+                    type: "GET",
+                    url: "ChartDetails",
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: (json) => {
+                        console.log(json);
+                        chartType = json.type;
+                        chartData = json.data;
+                        return new Chart(barchart, {
+                            type: chartType,
+                            data: {
+                                labels: ['001', '002', '003'],
+                                datasets: [{
+                                    label: 'Bar Chart',
+                                    data: chartData,
+                                    backgroundColor: 'rgba(255, 122, 0, 0.7)'
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
+                            }
+                        })
+                    },
+                    error: (xhr, status, errorThrown) => {
+                        console.log(status);
+                        console.log(errorThrown);
+                    }
+                });
             });
         });
-        
+    </script>
+    -->
 
+    <script>
+        $(document).ready(() => {
+            var chart = document.getElementById('chart-container').getContext('2d');
+            let chartType;
+            let chartData;
+            let graphSelection;
+            var genChart;
+            $("#chart-gen").click(() => {
+                graphSelection = document.getElementById('chartTypeSelect').value;
+                if (graphSelection == "revenue") {
+                    /** REVENUE GRAPH */
+                    $.ajax({
+                        type: "GET",
+                        url: "ChartDetailsRevenue",
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: (json) => {
+                            console.log(json);
+                            chartType = json.type;
+                            chartData = json.data;
+                            genChart = new Chart(chart, {
+                                type: chartType,
+                                data: {
+                                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                                    datasets: [{
+                                        label: 'Revenue',
+                                        data: chartData,
+                                        fill: false,
+                                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                        borderColor: 'rgb(255, 99, 132)',
+                                        tension: 0.1
+                                    }]
+                                },
+                            })
+                            return genChart;
+                        },
+                        error: (xhr, status, errorThrown) => {
+                            console.log(status);
+                            console.log(errorThrown);
+                        }
+                    });
+                    genChart.destroy();
+                } else if (graphSelection == "outcomes") {
+                    /** CLIENT OUTCOME GRAPH */
+                    $.ajax({
+                        type: "GET",
+                        url: "ChartDetailsOutcome",
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: (json) => {
+                            console.log(json);
+                            chartType = json.type;
+                            chartData = json.data;
+                            genChart = new Chart(chart, {
+                                type: chartType,
+                                data: {
+                                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                                    datasets: [{
+                                        label: 'Denied',
+                                        data: chartData,
+                                        backgroundColor: 'rgba(255, 99, 132, 0.5)'
+                                    },
+                                    {
+                                        label: 'Completed',
+                                        data: chartData,
+                                        backgroundColor: 'rgba(54, 162, 235, 0.5)'
+                                    }]
+                                },
+                            })
+                            return genChart;
+                        },
+                        error: (xhr, status, errorThrown) => {
+                            console.log(status);
+                            console.log(errorThrown);
+                        }
+                    });
+                    genChart.destroy();
+                } else if (graphSelection == "performance") {
+                    /** PERFORMANCE GRAPH */
+                    $.ajax({
+                        type: "GET",
+                        url: "ChartDetailsPerformance",
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: (json) => {
+                            console.log(json);
+                            chartType = json.type;
+                            chartData = json.data;
+                            genChart = new Chart(chart, {
+                                type: chartType,
+                                data: {
+                                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                                    datasets: [{
+                                        label: 'Working Hours',
+                                        data: chartData,
+                                        fill: false,
+                                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                        borderColor: 'rgb(54, 162, 235)',
+                                        tension: 0.1
+                                    }]
+                                },
+                            })
+                            return genChart;
+                        },
+                        error: (xhr, status, errorThrown) => {
+                            console.log(status);
+                            console.log(errorThrown);
+                        }
+                    });
+                    genChart.destroy();
+                }
+            });
+        });
     </script>
 </body>
 </html>
