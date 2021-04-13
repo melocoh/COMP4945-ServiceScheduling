@@ -17,6 +17,7 @@ namespace ServiceScheduling_App.Controllers
         public DayOfWeek dayOfWeek;
         public TimeSpan startTime;
         public TimeSpan endTime;
+        public string startToEndTime;
 
         public ServiceShiftType(int id, string servTitle, string location, DayOfWeek dayOfWeek, TimeSpan startTime, TimeSpan endTime)
         {
@@ -26,6 +27,7 @@ namespace ServiceScheduling_App.Controllers
             this.dayOfWeek = dayOfWeek;
             this.startTime = startTime;
             this.endTime = endTime;
+            this.startToEndTime = startTime.Hours.ToString("D2") + ":" + startTime.Minutes.ToString("D2") + " - " + endTime.Hours.ToString("D2") + ":" + endTime.Minutes.ToString("D2");
         }
     }
 
