@@ -134,6 +134,11 @@ namespace cstestproject2.Controllers
             return View();
         }
 
+        public IActionResult ServiceCalender()
+        {
+            return View();
+        }
+
         public IActionResult Service()
         {
             return View();
