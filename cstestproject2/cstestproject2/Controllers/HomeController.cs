@@ -15,7 +15,6 @@ namespace cstestproject2.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly AppContext _context;
-        private bool loggedin = false;
 
         public HomeController(ILogger<HomeController> logger, AppContext context)
         {
@@ -25,16 +24,28 @@ namespace cstestproject2.Controllers
 
         public IActionResult Index()
         {
+            var empID = HttpContext.Session.GetInt32("empID");
+            if (empID != null)
+            {
+                Employee account = _context.Employees.Where(emp => emp.EmpId == empID).FirstOrDefault<Employee>();
+                return RedirectToAction("Login", account);
+            }
             return View();
         }
 
         public IActionResult Login(Employee credentials)
         {
-            Employee account = _context.Employees.Where(emp => emp.Email == credentials.Email).FirstOrDefault<Employee>();
-            ViewBag.AccountName = account.FullName;
 
-            HttpContext.Session.SetInt32("empID", account.EmpId);
-            return View("LoggedIn");
+            Employee account = _context.Employees.Where(emp => emp.Email == credentials.Email).FirstOrDefault<Employee>();
+            if(account != null)
+            {
+                ViewBag.AccountName = account.FullName;
+                HttpContext.Session.SetInt32("empID", account.EmpId);
+                return View("LoggedIn");
+            }
+
+            ModelState.AddModelError("Email", "User with that email not found.");
+            return View("EmployeeSignIn");
         }
 
         [HttpPost]
@@ -42,7 +53,7 @@ namespace cstestproject2.Controllers
         {
             _context.Add(formData);
             _context.SaveChanges();
-            
+            HttpContext.Session.SetInt32("empID",formData.EmpId);
             return RedirectToAction("Login", formData);
         }
 
