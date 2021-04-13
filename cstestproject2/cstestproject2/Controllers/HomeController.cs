@@ -37,6 +37,17 @@ namespace cstestproject2.Controllers
             return View("LoggedIn");
         }
 
+        //CLIENT SIDE OF LOGGING IN
+        //register works but not login
+        public IActionResult LoginClient(Client credentials)
+        {
+            Client account = _context.Clients.Where(emp => emp.Email == credentials.Email).FirstOrDefault<Client>();
+            ViewBag.AccountName = account.FullName;
+
+            HttpContext.Session.SetInt32("clientID", account.ClientId);
+            return View("LoggedInClient");
+        }
+
         [HttpPost]
         public IActionResult SubmitRegistration(Employee formData)
         {
@@ -44,6 +55,15 @@ namespace cstestproject2.Controllers
             _context.SaveChanges();
             
             return RedirectToAction("Login", formData);
+        }
+
+        [HttpPost]
+        public IActionResult SubmitRegistrationClient(Client formData)
+        {
+            _context.Add(formData);
+            _context.SaveChanges();
+
+            return RedirectToAction("LoginClient", formData);
         }
 
         public IActionResult RoleSelection()

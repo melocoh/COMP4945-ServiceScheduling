@@ -32,42 +32,21 @@
             let chartType;
             let chartData;
             $("#chart-gen").click(() => {
-                $.ajax({
-                    type: "GET",
-                    url: "ChartDetails", 
-                    dataType: "JSON",
-                    contentType: "application/json",
-                    success: (json) => {
-                        console.log(json);
-                        chartType = json.type;
-                        chartData = json.data;
-                        return new Chart(barchart, {
-                            type: chartType,
-                            data: {
-                                labels: ['001', '002', '003'],
-                                datasets: [{
-                                    label: 'Bar Chart',
-                                    data: chartData,
-                                    backgroundColor: 'rgba(255, 122, 0, 0.7)'
-                                }]
-                            },
-                            options: {
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true
-                                        }
-                                    }]
-                                }
-                            }
-                        })
-                    },
-                    error: (xhr, status, errorThrown) => {
-                        console.log(status);
-                        console.log(errorThrown);
-                    }
-                });
-                
+                let graphselection = document.getElementById("chartTypeSelect").value;
+                if (graphselection == "revenue") {
+                    console.log("revenue is selected");
+
+                    
+                } else if (graphselection == "outcomes") {
+                    console.log("client outcomes is selected");
+
+                    
+                } else if (grpahselection == "performance") {
+                    console.log("performance is selected");
+
+                    
+                }
+                 
             });
         });
         
