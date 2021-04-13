@@ -16,7 +16,7 @@
                 <label asp-for="ServId" class="control-label"></label>
 
                 @* this inserts to the servid, so this is not right
-                   MUST assign id to the value*@
+            MUST assign id to the value*@
                 <select asp-for="ServId" class="form-control" asp-items="ViewBag.SerTitle">
                     <option value="">Select a service</option>
                 </select>
@@ -32,7 +32,7 @@
                 <label asp-for="DayOfWeek" class="control-label"></label>
 
                 @* this inserts to the DayOfWeek, so this is not right
-                    MUST assign int (must be parsed to DayOfWeek) to the value*@
+            MUST assign int (must be parsed to DayOfWeek) to the value*@
                 <select asp-for="DayOfWeek" class="form-control" asp-items="ViewBag.SerDayOfWeek">
                     <option value="">Select a day</option>
                 </select>
@@ -41,6 +41,13 @@
 
             @* This part is not the final version. We should follow the figma*@
             <div class="form-group">
+                <label asp-for="TimeStart" class="control-label"></label>
+                <select asp-for="TimeStart" class="form-control" asp-items="ViewBag.SerStartEndTime">
+                    <option value="">Select a time</option>
+                </select>
+            </div>
+
+            @*<div class="form-group">
                 <label asp-for="TimeStart" class="control-label"></label>
                 <select asp-for="TimeStart" class="form-control" asp-items="ViewBag.SerEndTime">
                     <option value="">Select a start time</option>
@@ -52,7 +59,7 @@
                     <option value="">Select an end time</option>
                 </select>
                 <span asp-validation-for="TimeEnd" class="text-danger"></span>
-            </div>
+            </div>*@
             @*<div class="form-group">
             <input type="submit" value="Create" class="btn btn-primary" />
         </div>*@
