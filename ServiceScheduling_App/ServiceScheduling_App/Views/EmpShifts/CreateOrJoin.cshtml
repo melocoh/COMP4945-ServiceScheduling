@@ -84,9 +84,9 @@
 
                                 @* this inserts to the servid, so this is not right
                                     MUST assign id to the value*@
-                            <select for="ServId" id="serviceInput" class="form-control" asp-items="ViewBag.SerTitle">
-                                <option id="serviceOption" value="">Select a service</option>
-                            </select>
+                                <select for="ServId" id="serviceInput" class="form-control" asp-items="ViewBag.SerTitle">
+                                    <option id="serviceOption" value="">Select a service</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="Location" class="control-label">Location</label>
@@ -216,12 +216,32 @@
 
     <script>
 
-        $("#serviceInput").click(function () {
 
-            var select = $("#serviceInput option:selected").text();
+        $("#serviceInput").change(function () {
+
             $('#locationInput').prop("disabled", false); // Element(s) are now enabled.
-            console.log(select);
+
+            getFilteredLocations();
         });
+
+
+        function getFilteredLocations() {
+
+            $.ajax({
+                type: 'GET',
+                url: '/EmpShifts/GetFilteredLocations?servTitle=' + $("#serviceInput option:selected").text(),
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data);
+
+                    for (let i = 0; i < data.length; i++) {
+                        $("#locationInput").append($("<option/>", {
+                            text: data[i]
+                        }));
+                    }
+                }
+            });
+        }
 
         $("#locationInput").click(function () {
 
@@ -242,6 +262,7 @@
             var select = $("#timeInput option:selected").text();
             console.log(select);
         });
+
     </script>
 </body>
 

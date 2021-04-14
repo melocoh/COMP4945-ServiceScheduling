@@ -358,10 +358,10 @@ namespace ServiceScheduling_App.Controllers
 
         // Converts List to SelectListItems
         // @returns a list of service locations
-        private List<SelectListItem> GetSerLocationList()
+        private List<SelectListItem> GetSerLocationList(List<string> filteredLocations)
         {
 
-            List<SelectListItem> list = employeeServiceControl.serLocationList.ConvertAll<SelectListItem>(item =>
+            List<SelectListItem> list = filteredLocations.ConvertAll<SelectListItem>(item =>
             {
                 return new SelectListItem()
                 {
@@ -376,10 +376,10 @@ namespace ServiceScheduling_App.Controllers
 
         // Converts List to SelectListItems
         // @returns a list of service days of the week
-        private List<SelectListItem> GetSerDayOfWeek()
+        private List<SelectListItem> GetSerDayOfWeek(List<DayOfWeek> dayOfWeek)
         {
 
-            List<SelectListItem> list = employeeServiceControl.dayOfWeekList.ConvertAll<SelectListItem>(item =>
+            List<SelectListItem> list = dayOfWeek.ConvertAll<SelectListItem>(item =>
             {
                 return new SelectListItem()
                 {
@@ -394,10 +394,10 @@ namespace ServiceScheduling_App.Controllers
 
         // Converts List to SelectListItems
         // @returns a list of service start and end time
-        private List<SelectListItem> GetSerStartEndTime()
+        private List<SelectListItem> GetSerStartEndTime(List<string> startEndTime)
         {
 
-            List<SelectListItem> list = employeeServiceControl.startToEndTimeList.ConvertAll<SelectListItem>(item =>
+            List<SelectListItem> list = startEndTime.ConvertAll<SelectListItem>(item =>
             {
                 return new SelectListItem()
                 {
@@ -443,15 +443,6 @@ namespace ServiceScheduling_App.Controllers
             // service title viewbag
             ViewBag.SerTitle = GetSerTitleList();
 
-            // service location viewbag
-            ViewBag.SerLocation = GetSerLocationList();
-
-            // service day of week viewbag
-            ViewBag.SerDayOfWeek = GetSerDayOfWeek();
-
-            // service start and end time viewbag
-            ViewBag.SerStartEndTime = GetSerStartEndTime();
-
             return View();
         }
 
@@ -467,16 +458,24 @@ namespace ServiceScheduling_App.Controllers
         [HttpGet]
         public ActionResult GetFilteredLocations(string servTitle)
         {
+            var res = employeeServiceControl.FilterLocations(servTitle);
 
-            return Ok(employeeServiceControl.FilterLocations(servTitle));
+            // service location viewbag
+            ViewBag.SerLocation = GetSerLocationList(res);
+
+            return Ok(res);
         }
 
         // POST: EmpShifts/GetFilteredDayOfWeek
         [HttpGet]
         public ActionResult GetFilteredDayOfWeek(string servTitle, string location)
         {
+            var res = employeeServiceControl.FilterDayOfTheWeek(servTitle, location);
 
-            return Ok(employeeServiceControl.FilterDayOfTheWeek(servTitle, location));
+            // service day of week viewbag
+            ViewBag.SerDayOfWeek = GetSerDayOfWeek(res);
+
+            return Ok(res);
         }
 
         // POST: EmpShifts/GetFilteredTime
@@ -484,7 +483,12 @@ namespace ServiceScheduling_App.Controllers
         public ActionResult GetFilteredTime(string servTitle, string location, string dayOfWeek)
         {
 
-            return Ok(employeeServiceControl.FilterStartAndEndTime(servTitle, location, dayOfWeek));
+            var res = employeeServiceControl.FilterStartAndEndTime(servTitle, location, dayOfWeek);
+
+            // service start and end time viewbag
+            ViewBag.SerStartEndTime = GetSerStartEndTime(res);
+
+            return Ok(res);
         }
 
         // POST: EmpShifts/GetFilteredShifts
