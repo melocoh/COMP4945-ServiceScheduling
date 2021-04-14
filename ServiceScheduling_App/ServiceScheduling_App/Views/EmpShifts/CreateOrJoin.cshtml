@@ -227,6 +227,14 @@
 
         function getFilteredLocations() {
 
+            // to do
+            // when clicking an item in the dropdown list
+            // 1) check if there are other selected options in the other forms
+            // - figure how to clear selected input when identified
+            // - remove existing options
+            // 2) ajax filter
+
+
             $.ajax({
                 type: 'GET',
                 url: '/EmpShifts/GetFilteredLocations?servTitle=' + $("#serviceInput option:selected").text(),
