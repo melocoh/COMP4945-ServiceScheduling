@@ -50,8 +50,6 @@
         }
 
         .splitline {
-            border: 2px solid lightgrey;
-            border-radius: 5px;
             width: 100%;
         }
     </style>
@@ -92,7 +90,7 @@
                                     How would you like to set up a shift?
                                 </div>
                                 <div class="modal-footer justify-content-center">
-                                    <a href="@Url.Action("Create","ServiceSessions")">
+                                    <a href="@Url.Action("CreateOrJoin","EmpShifts")">
                                         <button type="button" class="btn btn-outline-primary">Add Service</button>
                                     </a>
                                     <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Remove Service</button>

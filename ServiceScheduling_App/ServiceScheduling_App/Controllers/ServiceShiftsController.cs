@@ -147,9 +147,9 @@ namespace ServiceScheduling_App.Controllers
                     int currentSerShiftMaxEmployees = employeeServiceList[i].MaxNoEmp;
                     string currentSerShiftEmployeeName = employeeServiceList[i].FullName;
                     bool addedEmployeeToList = false;
-                    for (int f=0;f< availableSessions.Count; f++)
+                    for (int f = 0; f < availableSessions.Count; f++)
                     {
-                        if(currentSerShiftID == availableSessions[f].serviceShiftId)
+                        if (currentSerShiftID == availableSessions[f].serviceShiftId)
                         {
                             //session already exists so add to it
                             availableSessions[f].addEmployee(currentSerShiftEmployeeName);
@@ -167,9 +167,6 @@ namespace ServiceScheduling_App.Controllers
                     }
                 }
             }
-
-
-
             return availableSessions;
         }
     }
@@ -202,8 +199,6 @@ namespace ServiceScheduling_App.Controllers
             EmpId = empId;
             FullName = fullName;
         }
-
-
     }
 
     //contains information about a weekly session for employees
@@ -223,7 +218,7 @@ namespace ServiceScheduling_App.Controllers
 
         public bool addEmployee(string newEmployeeName)
         {
-            if(employeeNames.Count< numberOfMaxEmployees)
+            if (employeeNames.Count < numberOfMaxEmployees)
             {
                 employeeNames.Add(newEmployeeName);
                 numberOfEmployees++;
@@ -264,15 +259,34 @@ namespace ServiceScheduling_App.Controllers
             this.endTime = endTime;
             this.startToEndTime = startTime.Hours.ToString("D2") + ":" + startTime.Minutes.ToString("D2") + " - " + endTime.Hours.ToString("D2") + ":" + endTime.Minutes.ToString("D2");
         }
+
+        public ServiceShiftType(int id, string servTitle)
+        {
+            this.id = id;
+            this.servTitle = servTitle;
+        }
     }
 
+    // Custom class that makes rows distinct
+    class DistinctItemComparer : IEqualityComparer<ServiceShiftType>
+    {
+        public bool Equals(ServiceShiftType x, ServiceShiftType y)
+        {
+            return x.id == y.id;
+        }
 
-
+        public int GetHashCode(ServiceShiftType obj)
+        {
+            return obj.id.GetHashCode();
+        }
+    }
 
     /************************** Melody's code for the form, but will merge with Eric's later **************************/
     public class ServiceShiftTypeController
     {
-        public List<ServiceShiftType> serviceAppointmentList;
+        public List<ServiceShiftType> serviceShiftTypeList;
+
+        public List<ServiceShiftType> serviceIdTitleList;
 
         public List<int> servIdList;
 
@@ -287,6 +301,8 @@ namespace ServiceScheduling_App.Controllers
         public List<TimeSpan> timeEndList;
 
         public List<string> startToEndTimeList;
+        
+
 
         public ServiceShiftTypeController(AppContext context)
         {
@@ -306,43 +322,45 @@ namespace ServiceScheduling_App.Controllers
             }
             ).ToList();
 
-
-            serviceAppointmentList = new List<ServiceShiftType>();
-            servIdList = new List<int>();
-            servTitleList = new List<string>();
+            serviceShiftTypeList = new List<ServiceShiftType>();
+            serviceIdTitleList = new List<ServiceShiftType>();
             serLocationList = new List<string>();
             dayOfWeekList = new List<DayOfWeek>();
-            timeStartList = new List<TimeSpan>();
-            timeEndList = new List<TimeSpan>();
             startToEndTimeList = new List<string>();
 
             for (int i = 0; i < query.Count; i++)
             {
+                // calls all parameter constructor
                 ServiceShiftType serviceShiftType = new ServiceShiftType(query[i].Id, query[i].Title, query[i].Location, query[i].DayOfTheWeek, query[i].StartTime, query[i].EndTime);
-                serviceAppointmentList.Add(serviceShiftType);
-                servIdList.Add(serviceShiftType.id);
-                servTitleList.Add(serviceShiftType.servTitle);
+                // calls two parameter constructor
+                ServiceShiftType serviceIdTitle = new ServiceShiftType(query[i].Id, query[i].Title);
+
+                // populates all the lists
+                serviceIdTitleList.Add(serviceIdTitle);
+                serviceShiftTypeList.Add(serviceShiftType);
                 serLocationList.Add(serviceShiftType.location);
                 dayOfWeekList.Add(serviceShiftType.dayOfWeek);
-                timeStartList.Add(query[i].StartTime);
-                timeEndList.Add(query[i].EndTime);
                 startToEndTimeList.Add(serviceShiftType.startToEndTime);
             }
 
-            serviceAppointmentList = serviceAppointmentList.Distinct().ToList();
-            servIdList = servIdList.Distinct().ToList();
-            servTitleList = servTitleList.Distinct().ToList();
-            serLocationList = serLocationList.Distinct().ToList();
-            dayOfWeekList = dayOfWeekList.Distinct().ToList();
-            timeStartList = timeStartList.Distinct().ToList();
-            timeEndList = timeEndList.Distinct().ToList();
-            startToEndTimeList = startToEndTimeList.Distinct().ToList();
+            // ServiceShiftType list that holds every element
+            serviceShiftTypeList = serviceShiftTypeList.Distinct().ToList();
 
+            // ServiceShiftType list that holds id and serTitle
+            // uses custom Distinct method
+            serviceIdTitleList = serviceIdTitleList.Distinct(new DistinctItemComparer()).ToList();
+
+            // string list that holds location
+            serLocationList = serLocationList.Distinct().ToList();
+
+            // DayOfWeek list that holds days
+            dayOfWeekList = dayOfWeekList.Distinct().ToList();
+
+            // string list that holds startTime - endTime
+            startToEndTimeList = startToEndTimeList.Distinct().ToList();
         }
     }
     /***************************************************************************************************/
-
-
 
 
     public class ServiceShiftsController : Controller
@@ -369,7 +387,7 @@ namespace ServiceScheduling_App.Controllers
 
             var test2 = employeeServiceControl.getAllServices();
             var test3 = employeeServiceControl.getFilterLocations("personal fanner");
-            var test4 = employeeServiceControl.getFilterDayOfTheWeek("personal fanner","home <3");
+            var test4 = employeeServiceControl.getFilterDayOfTheWeek("personal fanner", "home <3");
             var test5 = employeeServiceControl.getStartAndEndTime("personal fanner", "home <3", DayOfWeek.Wednesday);
 
             //employeeServiceControl.getAvailableSessions()
@@ -435,17 +453,17 @@ namespace ServiceScheduling_App.Controllers
         /************************************** Select Lists for Form **************************************/
 
         // Converts List to SelectListItems
-        // @returns a list of service titles
+        // @returns a list with the Text = service titles and Value = service Id
         private List<SelectListItem> GetSerTitleList()
         {
             ServiceShiftTypeController serviceShiftTypeControllerObj = new ServiceShiftTypeController(_context);
 
-            List<SelectListItem> list = serviceShiftTypeControllerObj.servTitleList.ConvertAll<SelectListItem>(item =>
+            List<SelectListItem> list = serviceShiftTypeControllerObj.serviceIdTitleList.ConvertAll<SelectListItem>(item =>
             {
                 return new SelectListItem()
                 {
-                    Text = item,
-                    Value = item,
+                    Text = item.servTitle,
+                    Value = item.id.ToString(),
                     Selected = false
                 };
             });
@@ -510,44 +528,6 @@ namespace ServiceScheduling_App.Controllers
             return list;
         }
 
-        ////Converts List to SelectListItems
-        //// @returns a list of service start time
-        //private List<SelectListItem> GetSerStartTime()
-        //{
-        //    ServiceShiftTypeController serviceShiftTypeControllerObj = new ServiceShiftTypeController(_context);
-
-        //    List<SelectListItem> list = serviceShiftTypeControllerObj.timeEndList.ConvertAll<SelectListItem>(item =>
-        //    {
-        //        return new SelectListItem()
-        //        {
-        //            Text = item.ToString(),
-        //            Value = item.ToString(),
-        //            Selected = false
-        //        };
-        //    });
-
-        //    return list;
-        //}
-
-        ////Converts List to SelectListItems
-        //// @returns a list of service end time
-        //private List<SelectListItem> GetSerEndTime()
-        //{
-        //    ServiceShiftTypeController serviceShiftTypeControllerObj = new ServiceShiftTypeController(_context);
-
-        //    List<SelectListItem> list = serviceShiftTypeControllerObj.timeStartList.ConvertAll<SelectListItem>(item =>
-        //    {
-        //        return new SelectListItem()
-        //        {
-        //            Text = item.ToString(),
-        //            Value = item.ToString(),
-        //            Selected = false
-        //        };
-        //    });
-
-        //    return list;
-        //}
-
         /**************************************************************************************************************/
 
         // GET: ServiceShifts
@@ -592,12 +572,6 @@ namespace ServiceScheduling_App.Controllers
 
             // service start and end time viewbag
             ViewBag.SerStartEndTime = GetSerStartEndTime();
-
-            // service start and end time viewbag
-            //ViewBag.SerStartTime = GetSerStartTime();
-
-            // service start and end time viewbag
-            //ViewBag.SerEndTime = GetSerEndTime();
 
             return View();
         }
