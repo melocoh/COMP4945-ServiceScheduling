@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using ServiceScheduling_App;
 using ServiceScheduling_App.Models;
 
+//using System.Web.Script.Serialization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 namespace ServiceScheduling_App.Controllers
 {
 
@@ -58,7 +61,6 @@ namespace ServiceScheduling_App.Controllers
         public TimeSpan startTime;
         public TimeSpan endTime;
         public int empId;
-        public string FullName;
         public string fullName;
         public string startToEndTime;
 
@@ -98,10 +100,11 @@ namespace ServiceScheduling_App.Controllers
     //contains information about a weekly session for employees
     public class EmployeeServiceInfo
     {
-        public int numberOfEmployees;
-        public int numberOfMaxEmployees;
-        public List<string> employeeNames;
-        public int serviceShiftId;
+        public int numberOfEmployees { get; set; }
+        public int numberOfMaxEmployees { get; set; }
+        public List<string> employeeNames { get; set; }
+        public int serviceShiftId { get; set; }
+
         public EmployeeServiceInfo(int numberOfMaxEmployees, int serviceShiftId)
         {
             this.numberOfEmployees = 0;
@@ -208,7 +211,8 @@ namespace ServiceScheduling_App.Controllers
             for (int i = 0; i < query.Count; i++)
             {
                 // calls all / two parameter constructor
-                EmployeeService2 employeeService = new EmployeeService2(query[i].serId, query[i].servTitle, query[i].location, query[i].dayOfWeek, query[i].startTime, query[i].endTime);
+                EmployeeService2 employeeService = new EmployeeService2(query[i].serId, query[i].servTitle, query[i].maxNoEmp, query[i].serviceShiftId, query[i].dayOfWeek, 
+                    query[i].location, query[i].startTime, query[i].endTime, query[i].empId, query[i].fullName);
                 EmployeeService2 serviceIdTitle = new EmployeeService2(query[i].serId, query[i].servTitle);
 
                 // populates all lists
@@ -222,9 +226,6 @@ namespace ServiceScheduling_App.Controllers
             // ensures distinct data in the list
             employeeServiceList = employeeServiceList.Distinct().ToList();
             serviceIdTitleList = serviceIdTitleList.Distinct(new DistinctItemComparer2()).ToList(); // custom Distinct because there are different type elements
-            serLocationList = serLocationList.Distinct().ToList();
-            dayOfWeekList = dayOfWeekList.Distinct().ToList();
-            startToEndTimeList = startToEndTimeList.Distinct().ToList();
         }
 
         //returns a list of all services
@@ -251,7 +252,7 @@ namespace ServiceScheduling_App.Controllers
                 }
             }
 
-            return filteredLocations;
+            return filteredLocations.Distinct().ToList();
         }
 
         //returns a list of all services day of the week filtered by their title and location
@@ -266,7 +267,7 @@ namespace ServiceScheduling_App.Controllers
                 }
             }
 
-            return filteredDayOfTheWeek;
+            return filteredDayOfTheWeek.Distinct().ToList();
         }
 
         //returns a list of all services (start + end time) filtered by their title, location, and day of the week
@@ -284,7 +285,7 @@ namespace ServiceScheduling_App.Controllers
                 }
             }
 
-            return filteredStartAndEndTime;
+            return filteredStartAndEndTime.Distinct().ToList();
         }
 
 
@@ -294,8 +295,8 @@ namespace ServiceScheduling_App.Controllers
         //numberOfMaxEmployees
         //List<string> employeeNames
         //it is filtered by a service title, location, day of the week, and (start + end time)
-        public List<EmployeeServiceInfo> FilterAvailableShifts(string servTitle, string location, string dayOfWeek, string startToEndTime)
-        {
+        public string FilterAvailableShifts(string servTitle, string location, string dayOfWeek, string startToEndTime)
+        { 
             List<EmployeeServiceInfo> availableSessions = new List<EmployeeServiceInfo>();
             for (int i = 0; i < employeeServiceList.Count; i++)
             {
@@ -306,7 +307,7 @@ namespace ServiceScheduling_App.Controllers
                 {
                     int currentSerShiftID = employeeServiceList[i].serviceShiftId;
                     int currentSerShiftMaxEmployees = employeeServiceList[i].maxNoEmp;
-                    string currentSerShiftEmployeeName = employeeServiceList[i].FullName;
+                    string currentSerShiftEmployeeName = employeeServiceList[i].fullName;
                     bool addedEmployeeToList = false;
                     for (int f = 0; f < availableSessions.Count; f++)
                     {
@@ -329,7 +330,9 @@ namespace ServiceScheduling_App.Controllers
                 }
             }
 
-            return availableSessions;
+            var serializer = JsonSerializer.Serialize(availableSessions);
+
+            return serializer;
         }
     }
 
