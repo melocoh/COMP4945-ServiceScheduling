@@ -95,6 +95,36 @@ namespace ServiceScheduling_App.Controllers
         }
     }
 
+    //contains information about a weekly session for employees
+    public class EmployeeServiceInfo
+    {
+        public int numberOfEmployees;
+        public int numberOfMaxEmployees;
+        public List<string> employeeNames;
+        public int serviceShiftId;
+        public EmployeeServiceInfo(int numberOfMaxEmployees, int serviceShiftId)
+        {
+            this.numberOfEmployees = 0;
+            this.numberOfMaxEmployees = numberOfMaxEmployees;
+            this.serviceShiftId = serviceShiftId;
+            employeeNames = new List<string>();
+        }
+
+        public bool addEmployee(string newEmployeeName)
+        {
+            if (employeeNames.Count < numberOfMaxEmployees)
+            {
+                employeeNames.Add(newEmployeeName);
+                numberOfEmployees++;
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
 
     /*************************************************** Query executing objects ********************************************************/
 
@@ -342,7 +372,6 @@ namespace ServiceScheduling_App.Controllers
         // @returns a list with the Text = service titles and Value = service Id
         private List<SelectListItem> GetSerTitleList()
         {
-            //EmpShiftsController empShiftsControllerObj = new EmpShiftsController(_context);
 
             List<SelectListItem> list = employeeServiceControl.serviceIdTitleList.ConvertAll<SelectListItem>(item =>
             {
@@ -454,31 +483,31 @@ namespace ServiceScheduling_App.Controllers
             return View();
         }
 
-        // POST: EmpShifts/GetFilteredLocations
+        // GET: EmpShifts/GetFilteredLocations
         [HttpGet]
         public ActionResult GetFilteredLocations(string servTitle)
         {
             var res = employeeServiceControl.FilterLocations(servTitle);
 
             // service location viewbag
-            ViewBag.SerLocation = GetSerLocationList(res);
+            //ViewBag.SerLocation = GetSerLocationList(res);
 
             return Ok(res);
         }
 
-        // POST: EmpShifts/GetFilteredDayOfWeek
+        // GET: EmpShifts/GetFilteredDayOfWeek
         [HttpGet]
         public ActionResult GetFilteredDayOfWeek(string servTitle, string location)
         {
             var res = employeeServiceControl.FilterDayOfTheWeek(servTitle, location);
 
             // service day of week viewbag
-            ViewBag.SerDayOfWeek = GetSerDayOfWeek(res);
+            //ViewBag.SerDayOfWeek = GetSerDayOfWeek(res);
 
             return Ok(res);
         }
 
-        // POST: EmpShifts/GetFilteredTime
+        // GET: EmpShifts/GetFilteredTime
         [HttpGet]
         public ActionResult GetFilteredTime(string servTitle, string location, string dayOfWeek)
         {
@@ -486,12 +515,12 @@ namespace ServiceScheduling_App.Controllers
             var res = employeeServiceControl.FilterStartAndEndTime(servTitle, location, dayOfWeek);
 
             // service start and end time viewbag
-            ViewBag.SerStartEndTime = GetSerStartEndTime(res);
+            //ViewBag.SerStartEndTime = GetSerStartEndTime(res);
 
             return Ok(res);
         }
 
-        // POST: EmpShifts/GetFilteredShifts
+        // GET: EmpShifts/GetFilteredShifts
         [HttpGet]
         public ActionResult GetFilteredShifts(string servTitle, string location, string dayOfWeek, string startToEndTime)
         {

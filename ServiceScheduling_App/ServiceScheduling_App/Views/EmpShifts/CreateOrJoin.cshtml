@@ -219,21 +219,22 @@
 
         $("#serviceInput").change(function () {
 
+            var select = $("#serviceInput option:selected").text();
+            console.log(select);
+
+            // removes all location options
+            $('#locationInput option').remove();
+
+            // next input is enabled.
             $('#locationInput').prop("disabled", false); // Element(s) are now enabled.
 
+            // enters filtered location options
             getFilteredLocations();
         });
 
-
+        // ajax call to send parameter and fetch filtered locations
+        // ROUTE: /EmpShifts/GetFilteredLocations
         function getFilteredLocations() {
-
-            // to do
-            // when clicking an item in the dropdown list
-            // 1) check if there are other selected options in the other forms
-            // - figure how to clear selected input when identified
-            // - remove existing options
-            // 2) ajax filter
-
 
             $.ajax({
                 type: 'GET',
@@ -254,22 +255,105 @@
         $("#locationInput").click(function () {
 
             var select = $("#locationInput option:selected").text();
-            $('#dayInput').prop("disabled", false); // Element(s) are now enabled.
             console.log(select);
+
+            // removes all day options
+            $('#dayInput option').remove();
+
+            // next input is enabled.
+            $('#dayInput').prop("disabled", false);
+
+            // enters filtered day options
+            getFilteredDayOfWeek();
         });
+
+        // ajax call to send parameter and fetch filtered day
+        // ROUTE: /EmpShifts/GetFilteredDayOfWeek
+        function getFilteredDayOfWeek() {
+
+            let daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+            $.ajax({
+                type: 'GET',
+                url: '/EmpShifts/GetFilteredDayOfWeek?servTitle=' + $("#serviceInput option:selected").text() + '&location=' + $("#locationInput option:selected").text(),
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data);
+
+                    for (let i = 0; i < data.length; i++) {
+                        $("#dayInput").append($("<option/>", {
+                            text: daysOfWeek[data[i]]
+                        }));
+                    }
+                }
+            });
+        }
 
         $("#dayInput").click(function () {
 
             var select = $("#dayInput option:selected").val();
-            $('#timeInput').prop("disabled", false); // Element(s) are now enabled.
             console.log(select);
+
+            // removes all time options
+            $('#timeInput option').remove();
+
+            // next input is enabled.
+            $('#timeInput').prop("disabled", false); // Element(s) are now enabled.
+
+            // enters filtered time options
+            getFilteredTime();
         });
+
+        // ajax call to send parameter and fetch filtered time
+        // ROUTE: /EmpShifts/GetFilteredTime
+        function getFilteredTime() {
+
+            $.ajax({
+                type: 'GET',
+                url: '/EmpShifts/GetFilteredTime?servTitle=' + $("#serviceInput option:selected").text() + '&location=' + $("#locationInput option:selected").text() + '&dayOfWeek=' + $("#dayInput option:selected").text(),
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data);
+
+                    for (let i = 0; i < data.length; i++) {
+                        $("#timeInput").append($("<option/>", {
+                            text: data[i]
+                        }));
+                    }
+                }
+            });
+        }
 
         $("#timeInput").click(function () {
 
             var select = $("#timeInput option:selected").text();
             console.log(select);
+
+            // enters filtered shifts options
+            getFilteredShifts();
         });
+
+        // ajax call to send parameter and fetch filtered shifts
+        // ROUTE: /EmpShifts/GetFilteredShifts
+        function getFilteredShifts() {
+
+            $.ajax({
+                type: 'GET',
+                url: '/EmpShifts/GetFilteredShifts?servTitle=' + $("#serviceInput option:selected").text() + '&location=' + $("#locationInput option:selected").text()
+                    + '&dayOfWeek=' + $("#dayInput option:selected").text() + '&startToEndTime=' + $("#timeInput option:selected").text(),
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data);
+
+                    @*for (let i = 0; i < data.length; i++) {
+                    @*for (let i = 0; i < data.length; i++) {
+                        $("#timeInput").append($("<option/>", {
+                            text: data[i]
+                        }));
+                    }*@
+                }
+            });
+        }
 
     </script>
 </body>
