@@ -57,6 +57,23 @@ namespace cstestproject2.Controllers
             return RedirectToAction("Login", formData);
         }
 
+        public void GetNotifications()
+        {
+            HttpContext.Session.GetInt32("empID");
+            var query = _context.Appointments
+            .Join(
+            _context.Services,
+            appointment => appointment.AppId,
+            service => service.ServId,
+            (appointment, service) => new
+            {
+                ServId = service.ServId,
+                Start = appointment.StartDateTime,
+                End = appointment.EndDateTime,
+            }
+            ).ToList();
+        }
+
         public IActionResult RoleSelection()
         {
             return View();
