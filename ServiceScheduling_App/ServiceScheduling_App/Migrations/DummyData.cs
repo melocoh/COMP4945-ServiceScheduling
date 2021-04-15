@@ -191,6 +191,16 @@ namespace ServiceScheduling_App.Migrations
                     EmpId = 1,
                     CertId = 1
                 },
+                new EmpCertification  // 1 
+                {
+                    EmpId = 3,
+                    CertId = 1
+                },
+                new EmpCertification  // 1 
+                {
+                    EmpId = 4,
+                    CertId = 1
+                },
                 new EmpCertification  // 2
                 {
                     EmpId = 2,
@@ -275,6 +285,16 @@ namespace ServiceScheduling_App.Migrations
                 {
                     ServiceShiftId = 1,
                     EmpId = 1
+                },
+                new EmpShift  // 1
+                {
+                    ServiceShiftId = 1,
+                    EmpId = 3
+                },
+                new EmpShift  // 1
+                {
+                    ServiceShiftId = 1,
+                    EmpId = 4
                 },
                 new EmpShift  // 2
                 {

@@ -59,6 +59,10 @@
         .splitline {
             width: 100%;
         }
+
+        .scrolldiv {
+            overflow-y: scroll;
+        }
     </style>
 </head>
 
@@ -81,9 +85,6 @@
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group">
                                 <label for="Service" class="control-label">Service</label>
-
-                                @* this inserts to the servid, so this is not right
-                                    MUST assign id to the value*@
                                 <select for="ServId" id="serviceInput" class="form-control" asp-items="ViewBag.SerTitle">
                                     <option id="serviceOption" value="">Select a service</option>
                                 </select>
@@ -102,27 +103,22 @@
                                 </select>
                                 <span for="DayOfWeek" class="text-danger"></span>
                             </div>
-
-                            @* This part is not the final version. We should follow the figma*@
                             <div class="form-group">
                                 <label for="StartEndTime" class="control-label">Time</label>
                                 <select for="StartEndTime" id="timeInput" class="form-control" disabled asp-items="ViewBag.SerStartEndTime">
                                     <option value="">Select a time</option>
                                 </select>
                             </div>
-                            @*<div class="form-group">
-                                    <input type="submit" value="Create" class="btn btn-primary" />
-                                </div>*@
                         </form>
                         <div class="form-group">
                             @*Button trigger modal*@
                             </br>
-                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">
-                                Create Session
+                            <button type="button" id="btn-create" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">
+                                Create Shift
                             </button>
 
-                            <button type="button" class="btn btn-primary" onclick="createCard()">
-                                Check Session
+                            <button type="button" id="btn-check" class="btn btn-primary">
+                                Check Shift
                             </button>
 
                             @*Modal*@
@@ -130,16 +126,16 @@
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Service Session Confirmation</h5>
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Service Shift Confirmation</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <p>Service: Therapy</p>
-                                            <p>Location: Burnaby</p>
-                                            <p>Day of Week: Monday</p>
-                                            <p>Time: 11:00:00</p>
+                                            <p id='serviceTitle'>Service: Therapy</p>
+                                            <p id='serviceLocation'>Location: Burnaby</p>
+                                            <p id='serviceDay'>Day of Week: Monday</p>
+                                            <p id='serviceTime'>Time: 11:00:00</p>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
@@ -158,7 +154,7 @@
                         <div id="schedulebox" class="d-flex flex-column bd-highlight mb-3">
                             <h4 style="text-align: center;" class="mt-1">Available Weekly Sessions</h4>
 
-                            <div class="container" id="scheduleContainer">
+                            <div class="container scrolldiv" id="scheduleContainer">
                             </div>
                         </div>
                     </div>
@@ -181,42 +177,38 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
             integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous">
     </script>
-    <script>
-        function createCard() {
-            let createDiv = document.createElement("div");
-            createDiv.setAttribute('class', "row border");
-            document.getElementById("scheduleContainer").appendChild(createDiv);
-
-            let createDiv2 = document.createElement("div");
-            createDiv2.setAttribute('class', "col-9");
-            createDiv.appendChild(createDiv2);
-
-            let createP = document.createElement("p");
-            createP.appendChild(document.createTextNode("Num of Employee: 2/4"));
-            createDiv2.appendChild(createP);
-
-            createP = document.createElement("p");
-            createP.appendChild(document.createTextNode("Employee: Eric #1, Vincent"));
-            createDiv2.appendChild(createP);
-
-            let createDiv3 = document.createElement("div");
-            createDiv3.setAttribute('class', "col-3");
-            createDiv3.setAttribute('style', "padding: 30px;");
-            createDiv.appendChild(createDiv3);
-
-            let createButton = document.createElement("button");
-            createButton.setAttribute('type', "button");
-            createButton.setAttribute('class', "btn btn-info");
-            createButton.setAttribute('data-toggle', "modal");
-            createButton.setAttribute('data-target', "#exampleModalCenter");
-            createButton.appendChild(document.createTextNode("Join"));
-            createDiv3.appendChild(createButton);
-        }
-    </script>
 
     <script>
 
+        $(document).on('click', '#btn-create', function () {
+            let serviceType = document.getElementById("serviceTitle");
+            serviceType.innerText =  "Service: " + $("#serviceInput option:selected").text();
+            let serviceLoc = document.getElementById("serviceLocation");
+            serviceLoc.innerText = "Location: " + $("#locationInput option:selected").text();
+            let serviceDay = document.getElementById("serviceDay");
+            serviceDay.innerText = "Day of Week: " + $("#dayInput option:selected").text();
+            let serviceTime = document.getElementById("serviceTime");
+            serviceTime.innerText = "Time: " + $("#timeInput option:selected").text();
+        });
 
+        // when check shifts button is clicked
+        $(document).on('click', '#btn-check', function () {
+
+            @* manually add data to the div *@
+            @* addShiftToSchedule({
+                employeeNames: ["Saem Lee"],
+                numberOfEmployees: 1,
+                numberOfMaxEmployees: 3,
+                serviceShiftId: 3
+            }) *@
+
+            @* add generated data *@
+            getFilteredShifts();
+        });
+
+
+
+        // when service is selected
         $("#serviceInput").change(function () {
 
             var select = $("#serviceInput option:selected").text();
@@ -228,31 +220,13 @@
             // next input is enabled.
             $('#locationInput').prop("disabled", false); // Element(s) are now enabled.
 
+
             // enters filtered location options
             getFilteredLocations();
         });
 
-        // ajax call to send parameter and fetch filtered locations
-        // ROUTE: /EmpShifts/GetFilteredLocations
-        function getFilteredLocations() {
-
-            $.ajax({
-                type: 'GET',
-                url: '/EmpShifts/GetFilteredLocations?servTitle=' + $("#serviceInput option:selected").text(),
-                dataType: 'JSON',
-                success: function (data) {
-                    console.log(data);
-
-                    for (let i = 0; i < data.length; i++) {
-                        $("#locationInput").append($("<option/>", {
-                            text: data[i]
-                        }));
-                    }
-                }
-            });
-        }
-
-        $("#locationInput").click(function () {
+        // when location is selected
+        $("#locationInput").change(function () {
 
             var select = $("#locationInput option:selected").text();
             console.log(select);
@@ -267,29 +241,8 @@
             getFilteredDayOfWeek();
         });
 
-        // ajax call to send parameter and fetch filtered day
-        // ROUTE: /EmpShifts/GetFilteredDayOfWeek
-        function getFilteredDayOfWeek() {
-
-            let daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-            $.ajax({
-                type: 'GET',
-                url: '/EmpShifts/GetFilteredDayOfWeek?servTitle=' + $("#serviceInput option:selected").text() + '&location=' + $("#locationInput option:selected").text(),
-                dataType: 'JSON',
-                success: function (data) {
-                    console.log(data);
-
-                    for (let i = 0; i < data.length; i++) {
-                        $("#dayInput").append($("<option/>", {
-                            text: daysOfWeek[data[i]]
-                        }));
-                    }
-                }
-            });
-        }
-
-        $("#dayInput").click(function () {
+        // when day is selected
+        $("#dayInput").change(function () {
 
             var select = $("#dayInput option:selected").val();
             console.log(select);
@@ -304,6 +257,58 @@
             getFilteredTime();
         });
 
+
+        // ajax call to send parameter and fetch filtered locations
+        // GET
+        // ROUTE: /EmpShifts/GetFilteredLocations
+        function getFilteredLocations() {
+
+            $.ajax({
+                type: 'GET',
+                url: '/EmpShifts/GetFilteredLocations?servTitle=' + $("#serviceInput option:selected").text(),
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data);
+
+                    $("#locationInput").append($("<option/>", {
+                        text: "Select Location"
+                    }));
+
+                    for (let i = 0; i < data.length; i++) {
+                        $("#locationInput").append($("<option/>", {
+                            text: data[i]
+                        }));
+                    }
+                }
+            });
+        }
+
+        // ajax call to send parameter and fetch filtered day
+        // ROUTE: /EmpShifts/GetFilteredDayOfWeek
+        function getFilteredDayOfWeek() {
+
+            let daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+            $.ajax({
+                type: 'GET',
+                url: '/EmpShifts/GetFilteredDayOfWeek?servTitle=' + $("#serviceInput option:selected").text() + '&location=' + $("#locationInput option:selected").text(),
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data);
+
+                    $("#dayInput").append($("<option/>", {
+                        text: "Select Location"
+                    }));
+
+                    for (let i = 0; i < data.length; i++) {
+                        $("#dayInput").append($("<option/>", {
+                            text: daysOfWeek[data[i]]
+                        }));
+                    }
+                }
+            });
+        }
+
         // ajax call to send parameter and fetch filtered time
         // ROUTE: /EmpShifts/GetFilteredTime
         function getFilteredTime() {
@@ -315,6 +320,10 @@
                 success: function (data) {
                     console.log(data);
 
+                    $("#timeInput").append($("<option/>", {
+                        text: "Select Location"
+                    }));
+
                     for (let i = 0; i < data.length; i++) {
                         $("#timeInput").append($("<option/>", {
                             text: data[i]
@@ -323,15 +332,6 @@
                 }
             });
         }
-
-        $("#timeInput").click(function () {
-
-            var select = $("#timeInput option:selected").text();
-            console.log(select);
-
-            // enters filtered shifts options
-            getFilteredShifts();
-        });
 
         // ajax call to send parameter and fetch filtered shifts
         // ROUTE: /EmpShifts/GetFilteredShifts
@@ -344,15 +344,89 @@
                 dataType: 'JSON',
                 success: function (data) {
                     console.log(data);
+                    document.getElementById("scheduleContainer").innerHTML = '';
+                    for(let i = 0; i < data.length; i++)
+                    {
+                        addShiftToSchedule(data[i]);
+                    }
 
-                    @*for (let i = 0; i < data.length; i++) {
-                    @*for (let i = 0; i < data.length; i++) {
-                        $("#timeInput").append($("<option/>", {
-                            text: data[i]
-                        }));
-                    }*@
                 }
             });
+        }
+
+        // ajax call to send parameter and fetch filtered shifts
+        // ROUTE: /EmpShifts/GetFilteredShifts
+        @*function getShiftInfo(serviceShiftId) {
+            let daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            $.ajax({
+                type: 'GET',
+                url: '/EmpShifts/GetShiftInfo?servShiftId=' + serviceShiftId,
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data);
+
+
+                    let serviceType = document.getElementById("serviceTitle");
+                    serviceType.innerText =  "Service: " + data.servTitle;
+                    let serviceLoc = document.getElementById("serviceLocation");
+                    serviceLoc.innerText = "Location: " + data.location;
+                    let serviceDay = document.getElementById("serviceDay");
+                    serviceDay.innerText = "Day of Week: " + daysOfWeek[data.dayOfWeek];
+                    let serviceTime = document.getElementById("serviceTime");
+                    serviceTime.innerText = "Time: " + data.time;
+                }
+            });
+        }*@
+
+
+        @* Helper *@
+
+        function addShiftToSchedule(data) {
+
+            let createDiv = document.createElement("div");
+            createDiv.setAttribute('class', "row border m-3");
+            document.getElementById("scheduleContainer").appendChild(createDiv);
+
+            let createDiv2 = document.createElement("div");
+            createDiv2.setAttribute('class', "col-9");
+            createDiv.appendChild(createDiv2);
+
+            let createP = document.createElement("p");
+            createP.appendChild(document.createTextNode(`Num of Employee: ${data.numberOfEmployees}/${data.numberOfMaxEmployees}`));
+            createDiv2.appendChild(createP);
+
+            createP = document.createElement("p");
+
+            let names = "";
+
+            for(let i = 0; i < data.employeeNames.length; i++)
+            {
+                names += data.employeeNames[i] + ((i == i - 1) ? ', ' : ' ');
+            }
+
+            createP.appendChild(document.createTextNode(`Employee: ${names}`));
+            createDiv2.appendChild(createP);
+
+            let createDiv3 = document.createElement("div");
+            createDiv3.setAttribute('class', "col-3");
+            createDiv3.setAttribute('style', "padding: 30px;");
+            createDiv.appendChild(createDiv3);
+
+            let createButton = document.createElement("button");
+            createButton.setAttribute('type', "button");
+            createButton.setAttribute('class', "btn btn-info");
+            createButton.setAttribute('data-toggle', "modal");
+            createButton.setAttribute('data-target', "#exampleModalCenter");
+            createButton.appendChild(document.createTextNode("Join"));
+            createDiv3.appendChild(createButton);
+
+            createButton.addEventListener('click', function () {
+                @* get shift info via service shift ID *@
+
+                @* generates the modal for the service *@
+                @* getShiftInfo(data.serviceShiftId); *@
+            });
+
         }
 
     </script>

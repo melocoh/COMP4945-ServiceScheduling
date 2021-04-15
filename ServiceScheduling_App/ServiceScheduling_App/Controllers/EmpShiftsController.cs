@@ -330,12 +330,13 @@ namespace ServiceScheduling_App.Controllers
                 }
             }
 
+            availableSessions.Distinct().ToList();
+
             var serializer = JsonSerializer.Serialize(availableSessions);
 
             return serializer;
         }
     }
-
 
     // Custom class that makes rows distinct
     class DistinctItemComparer2 : IEqualityComparer<EmployeeService2>
@@ -530,6 +531,7 @@ namespace ServiceScheduling_App.Controllers
 
             return Ok(employeeServiceControl.FilterAvailableShifts(servTitle, location, dayOfWeek, startToEndTime));
         }
+
 
         // POST: EmpShifts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
