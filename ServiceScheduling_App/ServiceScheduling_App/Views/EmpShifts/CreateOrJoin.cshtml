@@ -113,9 +113,9 @@
                         <div class="form-group">
                             @*Button trigger modal*@
                             </br>
-                            <button type="button" id="btn-create" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">
-                                Create Shift
-                            </button>
+                            @*<button type="button" id="btn-create" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">
+                                Back
+                            </button>*@
 
                             <button type="button" id="btn-check" class="btn btn-primary">
                                 Check Shift
@@ -140,7 +140,7 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                             <a href="@Url.Action("EmpShifts","Index")">
-                                                <button type="button" class="btn btn-primary">Confirm</button>
+                                                <button type="button" id ="btn-confirm"class="btn btn-primary">Confirm</button>
                                             </a>
                                         </div>
                                     </div>
@@ -181,6 +181,7 @@
     <script>
 
         $(document).on('click', '#btn-create', function () {
+
             let serviceType = document.getElementById("serviceTitle");
             serviceType.innerText =  "Service: " + $("#serviceInput option:selected").text();
             let serviceLoc = document.getElementById("serviceLocation");
@@ -200,13 +201,11 @@
                 numberOfEmployees: 1,
                 numberOfMaxEmployees: 3,
                 serviceShiftId: 3
-            })*@ 
+            })*@
 
             @* add generated data *@
             getFilteredShifts();
         });
-
-
 
         // when service is selected
         $("#serviceInput").change(function () {
@@ -257,6 +256,13 @@
             getFilteredTime();
         });
 
+        function clickConfirm(serviceShiftId) {
+            
+            $(document).on('click', '#btn-confirm', function () {
+                postJoinShift(serviceShiftId);
+
+            });
+        }
 
         // ajax call to send parameter and fetch filtered locations
         // GET
@@ -354,6 +360,26 @@
             });
         }
 
+
+        // ajax call to send parameter and fetch filtered shifts
+        // ROUTE: /EmpShifts/JoinShift
+        function postJoinShift(serviceShiftId) {
+
+            $.ajax({
+                type: 'POST',
+                url: '/EmpShifts/JoinShift?EmpId=' + 4 + '&ServiceShiftId=' + serviceShiftId,
+                dataType: 'JSON',
+                success: function (data) {
+                alert(data.success);
+            },
+            error: function (xhr, textStatus, error) {
+                console.log(error);
+            }
+        });
+        }
+
+       
+
         // ajax call to send parameter and fetch filtered shifts
         // ROUTE: /EmpShifts/GetFilteredShifts
         @*function getShiftInfo(serviceShiftId) {
@@ -391,11 +417,11 @@
             createDiv2.setAttribute('class', "col-9");
             createDiv.appendChild(createDiv2);
 
-            let createP = document.createElement("p");
-            createP.appendChild(document.createTextNode(`Num of Employee: ${data.numberOfEmployees}/${data.numberOfMaxEmployees}`));
-            createDiv2.appendChild(createP);
+            let shiftDetailsText = document.createElement("p");
+            shiftDetailsText.appendChild(document.createTextNode(`Num of Employee: ${data.numberOfEmployees}/${data.numberOfMaxEmployees}`));
+            createDiv2.appendChild(shiftDetailsText);
 
-            createP = document.createElement("p");
+            shiftDetailsText = document.createElement("p");
 
             let names = "";
 
@@ -404,28 +430,29 @@
                 names += data.employeeNames[i] + ((i == i - 1) ? ', ' : ' ');
             }
 
-            createP.appendChild(document.createTextNode(`Employee: ${names}`));
-            createDiv2.appendChild(createP);
+            shiftDetailsText.appendChild(document.createTextNode(`Employee: ${names}`));
+            createDiv2.appendChild(shiftDetailsText);
 
             let createDiv3 = document.createElement("div");
             createDiv3.setAttribute('class', "col-3");
             createDiv3.setAttribute('style', "padding: 30px;");
             createDiv.appendChild(createDiv3);
 
-            let createButton = document.createElement("button");
-            createButton.setAttribute('type', "button");
-            createButton.setAttribute('class', "btn btn-info");
-            createButton.setAttribute('data-toggle', "modal");
-            createButton.setAttribute('data-target', "#exampleModalCenter");
-            createButton.appendChild(document.createTextNode("Join"));
-            createDiv3.appendChild(createButton);
+            let joinButton = document.createElement("button");
+            joinButton.setAttribute('type', "button");
+            joinButton.setAttribute('class', "btn btn-info");
+            joinButton.setAttribute('data-toggle', "modal");
+            joinButton.setAttribute('data-target', "#exampleModalCenter");
+            joinButton.appendChild(document.createTextNode("Join"));
+            createDiv3.appendChild(joinButton);
 
-            createButton.addEventListener('click', function () {
+            joinButton.addEventListener('click', function (data) { clickConfirm(data.serviceShiftId)});
+
                 @* get shift info via service shift ID *@
 
                 @* generates the modal for the service *@
                 @* getShiftInfo(data.serviceShiftId); *@
-            });
+            
 
         }
 

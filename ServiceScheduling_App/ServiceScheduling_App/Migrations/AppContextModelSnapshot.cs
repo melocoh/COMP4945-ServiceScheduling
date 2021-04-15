@@ -154,18 +154,13 @@ namespace ServiceScheduling_App.Migrations
 
             modelBuilder.Entity("ServiceScheduling_App.Models.EmpShift", b =>
                 {
-                    b.Property<int>("EmpShiftId")
-                        .HasColumnType("int");
-
                     b.Property<int>("EmpId")
                         .HasColumnType("int");
 
                     b.Property<int>("ServiceShiftId")
                         .HasColumnType("int");
 
-                    b.HasKey("EmpShiftId", "EmpId");
-
-                    b.HasIndex("EmpId");
+                    b.HasKey("EmpId", "ServiceShiftId");
 
                     b.HasIndex("ServiceShiftId");
 

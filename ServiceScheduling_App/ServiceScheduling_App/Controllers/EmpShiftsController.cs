@@ -296,8 +296,9 @@ namespace ServiceScheduling_App.Controllers
         //List<string> employeeNames
         //it is filtered by a service title, location, day of the week, and (start + end time)
         public string FilterAvailableShifts(string servTitle, string location, string dayOfWeek, string startToEndTime)
-        { 
-            List<EmployeeServiceInfo> availableSessions = new List<EmployeeServiceInfo>();
+        {   
+            // list of available
+            List<EmployeeServiceInfo> availableShifts = new List<EmployeeServiceInfo>();
             for (int i = 0; i < employeeServiceList.Count; i++)
             {
                 string startTime = employeeServiceList[i].startTime.Hours.ToString("D2") + ":" + employeeServiceList[i].startTime.Minutes.ToString("D2");
@@ -309,12 +310,12 @@ namespace ServiceScheduling_App.Controllers
                     int currentSerShiftMaxEmployees = employeeServiceList[i].maxNoEmp;
                     string currentSerShiftEmployeeName = employeeServiceList[i].fullName;
                     bool addedEmployeeToList = false;
-                    for (int f = 0; f < availableSessions.Count; f++)
+                    for (int f = 0; f < availableShifts.Count; f++)
                     {
-                        if (currentSerShiftID == availableSessions[f].serviceShiftId)
+                        if (currentSerShiftID == availableShifts[f].serviceShiftId)
                         {
                             //session already exists so add to it
-                            availableSessions[f].addEmployee(currentSerShiftEmployeeName);
+                            availableShifts[f].addEmployee(currentSerShiftEmployeeName);
                             addedEmployeeToList = true;
                             break;
                         }
@@ -325,14 +326,14 @@ namespace ServiceScheduling_App.Controllers
                     {
                         EmployeeServiceInfo newEmployeeServiceInfo = new EmployeeServiceInfo(currentSerShiftMaxEmployees, currentSerShiftID);
                         newEmployeeServiceInfo.addEmployee(currentSerShiftEmployeeName);
-                        availableSessions.Add(newEmployeeServiceInfo);
+                        availableShifts.Add(newEmployeeServiceInfo);
                     }
                 }
             }
 
-            availableSessions.Distinct().ToList();
+            //availableShifts.Distinct().ToList();
 
-            var serializer = JsonSerializer.Serialize(availableSessions);
+            var serializer = JsonSerializer.Serialize(availableShifts);
 
             return serializer;
         }
@@ -531,6 +532,58 @@ namespace ServiceScheduling_App.Controllers
 
             return Ok(employeeServiceControl.FilterAvailableShifts(servTitle, location, dayOfWeek, startToEndTime));
         }
+
+        // POST: EmpShifts/JoinShift
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        public ActionResult JoinShift(int EmpId, int ServiceShiftId)
+        {
+            EmpShift empShift = new EmpShift(EmpId, ServiceShiftId);
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(empShift);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return Ok();
+        }
+
+        //// POST: EmpShifts/JoinShift
+        //// To protect from overposting attacks, enable the specific properties you want to bind to.
+        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //public async Task<IActionResult> JoinShift([Bind("EmpId,ServiceShiftId")] EmpShift empShift)
+        //{
+        //    var test = 1;
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(empShift);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+
+        //    return Ok(empShift);
+        //}
+
+        ////// POST: EmpShifts/JoinShift
+        ////// To protect from overposting attacks, enable the specific properties you want to bind to.
+        ////// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //public async Task<IActionResult> JoinShift([FromBody] EmpShift empShift)
+        //{
+        //    var test = 1;
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(empShift);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+
+        //    return Ok(empShift);
+        //}
 
 
         // POST: EmpShifts/Create

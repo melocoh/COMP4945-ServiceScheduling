@@ -74,7 +74,7 @@ namespace ServiceScheduling_App
                 .WithMany(t => t.EmpCertifications)
                 .HasForeignKey(pt => pt.CertId);
 
-            modelBuilder.Entity<EmpShift>().HasKey(es => new { es.EmpShiftId, es.EmpId });
+            modelBuilder.Entity<EmpShift>().HasKey(es => new { es.EmpId, es.ServiceShiftId });
 
             modelBuilder.Entity<EmpShift>()
                 .HasOne(pt => pt.Employee)
