@@ -7,6 +7,7 @@ namespace ServiceScheduling_App.Models
 {
     public class EmpShift
     {
+        public int EmpShiftId { get; set; }
         public int EmpId { get; set; }
         public Employee Employee { get; set; }
 
