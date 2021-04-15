@@ -15,15 +15,20 @@ namespace ServiceScheduling_App.Models
         [ForeignKey("ServiceType")]
         public int ServId { get; set; }
 
+        [Display(Name = "Day of Week")]
         public DayOfWeek DayOfWeek { get; set; }
 
+        [Display(Name = "Start Time")]
         public TimeSpan TimeStart { get; set; }
 
+        [Display(Name = "End Time")]
         public TimeSpan TimeEnd { get; set; }
 
-
+        [Display(Name = "Location")]
+        public string SerLocation { get; set; }
 
         // References ServiceType object
+        [Display(Name = "Service Type")]
         public virtual ServiceType ServiceType { get; set; }
 
         // References EmpShift object

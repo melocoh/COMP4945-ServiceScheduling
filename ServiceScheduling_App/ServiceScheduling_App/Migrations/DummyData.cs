@@ -191,6 +191,16 @@ namespace ServiceScheduling_App.Migrations
                     EmpId = 1,
                     CertId = 1
                 },
+                new EmpCertification  // 1 
+                {
+                    EmpId = 3,
+                    CertId = 1
+                },
+                new EmpCertification  // 1 
+                {
+                    EmpId = 4,
+                    CertId = 1
+                },
                 new EmpCertification  // 2
                 {
                     EmpId = 2,
@@ -219,42 +229,48 @@ namespace ServiceScheduling_App.Migrations
                     ServId = 1,
                     DayOfWeek = DayOfWeek.Monday,
                     TimeStart = new TimeSpan (7,30,00),
-                    TimeEnd = new TimeSpan (15,30,00)
+                    TimeEnd = new TimeSpan (15,30,00),
+                    SerLocation = "Burnaby"
                 },
                 new ServiceShift  // 2 
                 {
                     ServId = 1,
                     DayOfWeek = DayOfWeek.Wednesday,
                     TimeStart = new TimeSpan (07,30,00),
-                    TimeEnd = new TimeSpan (15,30,00)
+                    TimeEnd = new TimeSpan (15,30,00),
+                    SerLocation = "Burnaby"
                 },
                 new ServiceShift  // 3
                 {
                     ServId = 2,
                     DayOfWeek = DayOfWeek.Friday,
                     TimeStart = new TimeSpan (07,30,00),
-                    TimeEnd = new TimeSpan (15,30,00)
+                    TimeEnd = new TimeSpan (15,30,00),
+                    SerLocation = "Richmond"
                 },
                 new ServiceShift  // 4
                 {
                     ServId = 3,
                     DayOfWeek = DayOfWeek.Thursday,
                     TimeStart = new TimeSpan (17,00,00),
-                    TimeEnd = TimeSpan.Zero
+                    TimeEnd = TimeSpan.Zero,
+                    SerLocation = "Burnaby"
                 },
                 new ServiceShift  // 5
                 {
                     ServId = 4,
                     DayOfWeek = DayOfWeek.Saturday,
                     TimeStart = new TimeSpan (12,30,00),
-                    TimeEnd = TimeSpan.Zero
+                    TimeEnd = TimeSpan.Zero,
+                    SerLocation = "Richmond"
                 },
                 new ServiceShift  // 6
                 {
                     ServId = 4,
                     DayOfWeek = DayOfWeek.Tuesday,
                     TimeStart = new TimeSpan (12,30,00),
-                    TimeEnd = TimeSpan.Zero
+                    TimeEnd = TimeSpan.Zero,
+                    SerLocation = "Vancouver"
                 }
             };
 
@@ -269,6 +285,16 @@ namespace ServiceScheduling_App.Migrations
                 {
                     ServiceShiftId = 1,
                     EmpId = 1
+                },
+                new EmpShift  // 1
+                {
+                    ServiceShiftId = 1,
+                    EmpId = 3
+                },
+                new EmpShift  // 1
+                {
+                    ServiceShiftId = 1,
+                    EmpId = 4
                 },
                 new EmpShift  // 2
                 {

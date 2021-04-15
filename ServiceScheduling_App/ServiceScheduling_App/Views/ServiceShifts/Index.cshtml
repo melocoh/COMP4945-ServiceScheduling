@@ -1,0 +1,59 @@
+﻿@model IEnumerable<ServiceScheduling_App.Models.ServiceShift>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DayOfWeek)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeEnd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SerLocation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ServiceType)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DayOfWeek)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeEnd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SerLocation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ServiceType.ServId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ServiceShiftId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ServiceShiftId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ServiceShiftId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
