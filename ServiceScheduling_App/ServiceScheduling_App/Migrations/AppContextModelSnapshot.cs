@@ -62,6 +62,7 @@ namespace ServiceScheduling_App.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("varchar(50)");
 
                     b.HasKey("AppSessionId");
@@ -94,12 +95,15 @@ namespace ServiceScheduling_App.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("varchar(50)");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("varchar(50)");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("varchar(50)");
 
                     b.HasKey("ClientId");
@@ -175,15 +179,18 @@ namespace ServiceScheduling_App.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("varchar(50)");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("varchar(50)");
 
                     b.Property<int>("JobId")
                         .HasColumnType("int");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("varchar(50)");
 
                     b.HasKey("EmpId");

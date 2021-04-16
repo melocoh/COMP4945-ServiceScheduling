@@ -13,16 +13,20 @@ namespace ServiceScheduling_App.Models
         public int EmpId { get; set; }
 
         [Column(TypeName = "varchar(50)")]
+        [Required] // Input validation
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")] // Input validation
         public string FullName { get; set; }
 
         [ForeignKey("JobType")] //Foreign Key attribute takes another Model class name
         public int JobId { get; set; }
 
-        //[RegularExpression("^[\\w -\\.] +@([\\w -] +\\.)+[\\w-]{2,4}$")]
         [Column(TypeName = "varchar(50)")]
+        [Required] // Input validation
+        [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "E-mail is not valid")] // Input validation
         public string Email { get; set; }
 
         [Column(TypeName = "varchar(50)")]
+        [Required] // Input validation
         public string Password { get; set; }
 
 

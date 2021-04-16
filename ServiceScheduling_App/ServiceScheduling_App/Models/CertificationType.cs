@@ -13,6 +13,7 @@ namespace ServiceScheduling_App.Models
         public int CertId { get; set; }
 
         [Column(TypeName = "varchar(50)")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")] // Input validation
         public string CertTitle { get; set; }
 
         /*****************************************/

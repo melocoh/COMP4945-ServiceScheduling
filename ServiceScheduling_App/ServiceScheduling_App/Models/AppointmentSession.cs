@@ -15,13 +15,19 @@ namespace ServiceScheduling_App.Models
         [ForeignKey("Appointment")] // Foreign key that references Appointment
         public int AppId { get; set;}
 
+        [Required] // Input validation
+        [Range(1, 10)] // range validation
         public int SessionNo { get; set; }
 
         [Column(TypeName = "varchar(50)")]
+        [Required] // Input validation
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")] // Input validation
         public string Status { get; set; }
 
+        [Required] // Input validation
         public DateTime StartDateTime { get; set; }
 
+        [Required] // Input validation
         public DateTime EndDateTime { get; set; }
 
         /*****************************************/
