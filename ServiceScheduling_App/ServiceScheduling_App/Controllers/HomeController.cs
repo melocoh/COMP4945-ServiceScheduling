@@ -70,6 +70,27 @@ namespace ServiceScheduling_App.Controllers
             return list;
         }
 
+        //Builds Certification List Viewbag
+        private List<SelectListItem> GetCertificateTypeList()
+        {
+            // grabs list of JobType objects from the JobType table
+            List<CertificationType> certificationTypeList = _context.CertificationTypes.ToList<CertificationType>();
+
+            //certificationTypeList.Distinct();
+
+            // converts jobTypeList into selectListItem list
+            List<SelectListItem> list = certificationTypeList.ConvertAll<SelectListItem>(item =>
+            {
+                return new SelectListItem()
+                {
+                    Text = item.CertTitle,
+                    Value = item.CertId.ToString(),
+                    Selected = false
+                };
+            });
+            return list;
+        }
+
         [HttpPost]
         public IActionResult SubmitRegistration(Employee formData)
         {
@@ -112,14 +133,7 @@ namespace ServiceScheduling_App.Controllers
         {
             ViewBag.JobTypes = GetJobTypeList();
 
-
-            ViewBag.CertificationTypes = new List<SelectListItem>()
-            {
-                new SelectListItem() { Text = "Hamburger University Degree", Value = "Hamburger University Degree" },
-                new SelectListItem() { Text = "First Aid Certification", Value = "First Aid Certification" },
-                new SelectListItem() { Text = "Scuba Diving Certification", Value = "Scuba Diving Certification" },
-                new SelectListItem() { Text = "Nurse Practitioning Certification", Value = "Nurse Practitioning Certification" }
-            };
+            ViewBag.CertificationTypes = GetCertificateTypeList();
 
             ViewBag.Locations = new List<SelectListItem>()
             {
