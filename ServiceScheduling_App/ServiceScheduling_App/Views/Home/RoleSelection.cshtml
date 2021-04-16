@@ -31,15 +31,19 @@
     </style>
 </head>
 <body>
+
     <div id="mainContainer">
         <div id="blockContainer">
             <div id="dynamicContainer" class="d-flex flex-column">
                 <div class="d-flex justify-content-center">
-                    <p id="message">Ready for your schedule?</p>
+                    <p id="message">Select Your Role</p>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <a href="@Url.Action("RoleSelection","Home")">
-                        <button class="btn btn-info statusbutton">Start Now</button>
+                    <a href="@Url.Action("ClientSignIn","Home")">
+                        <button class="btn btn-outline-primary statusbutton">Client</button>
+                    </a>
+                    <a href="@Url.Action("EmployeeSignIn","Home")">
+                        <button class="btn btn-outline-primary statusbutton">Employee</button>
                     </a>
                 </div>
             </div>
