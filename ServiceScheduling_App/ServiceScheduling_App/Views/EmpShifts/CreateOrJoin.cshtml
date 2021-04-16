@@ -368,32 +368,6 @@
         }
 
 
-
-        // ajax call to send parameter and fetch filtered shifts
-        // ROUTE: /EmpShifts/GetFilteredShifts
-        @*function getShiftInfo(serviceShiftId) {
-            let daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            $.ajax({
-                type: 'GET',
-                url: '/EmpShifts/GetShiftInfo?servShiftId=' + serviceShiftId,
-                dataType: 'JSON',
-                success: function (data) {
-                    console.log(data);
-
-
-                    let serviceType = document.getElementById("serviceTitle");
-                    serviceType.innerText =  "Service: " + data.servTitle;
-                    let serviceLoc = document.getElementById("serviceLocation");
-                    serviceLoc.innerText = "Location: " + data.location;
-                    let serviceDay = document.getElementById("serviceDay");
-                    serviceDay.innerText = "Day of Week: " + daysOfWeek[data.dayOfWeek];
-                    let serviceTime = document.getElementById("serviceTime");
-                    serviceTime.innerText = "Time: " + data.time;
-                }
-            });
-        }*@
-
-
         @* Helper *@
 
         function addShiftToSchedule(data) {
@@ -435,10 +409,6 @@
             joinButton.setAttribute('data-target', "#exampleModalCenter");
             joinButton.appendChild(document.createTextNode("Join"));
             createDiv3.appendChild(joinButton);
-
-             @*joinButton.addEventListener('click', function () {
-                postJoinShift(data.serviceShiftId);
-            });*@
 
             let confirmButton = document.getElementById("btn-confirm");
             confirmButton.addEventListener('click', function () {

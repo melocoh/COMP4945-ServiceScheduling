@@ -1,0 +1,311 @@
+﻿<head>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <title>Index</title>
+
+    <style>
+
+        #blockContainer {
+            display: block;
+            margin-left: 0%;
+            margin-right: 5%;
+            margin-top: 0%;
+            margin-bottom: auto;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            padding: 1px;
+        }
+
+        #message {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        #message2 {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        #schedulebox {
+            border: 5px solid grey;
+            width: 100%;
+            height: 600px;
+            margin: 20px;
+        }
+
+        .statusbutton {
+            margin: 15px;
+            width: 120px;
+        }
+
+        .hyperlinks {
+            margin: 15px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .logininput {
+            width: 300px;
+        }
+
+        .splitline {
+            width: 100%;
+        }
+
+        .scrolldiv {
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="mainContainer">
+        @*<div id="blockContainer">*@
+        <div id="dynamicContainer" class="d-flex flex-column">
+            <div class="d-flex justify-content-start">
+                <div>
+                    <h1>Booking Appointment</h1>
+                </div>
+            </div>
+            <hr class="splitline">
+
+            <p>Filter necessary information to view available appointments.</p></br>
+            <div class="container">
+                <div class="row">
+                    <!-- Fill Out Information -->
+                    <div class="col">
+                        <form asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <!-- Service Type -->
+                            <div class="form-group">
+                                <label class="control-label">Service:</label>
+                                <select class="form-control" asp-items="ViewBag.ServiceTypes"></select>
+                                <span class="text-danger"></span>
+                            </div>
+
+                            <!-- DateTime Range (min date) -->
+                            <div class="form-group">
+                                <label class="control-label">Date & Time Range:</label>
+                                <input for="StartDate" type="datetime-local" placeholder="Start Date & Time" class="form-control" />
+                                <p>to</p>
+                                <input for="EndDate" type="datetime-local" placeholder="End Date & Time" class="form-control" />
+                                <span class="text-danger"></span>
+                            </div>
+
+                            <!-- Location -->
+                            <div class="form-group">
+                                <label class="control-label">Location:</label>
+                                <select class="form-control" asp-items="ViewBag.ServiceTypes"></select>
+                                <span class="text-danger"></span>
+                            </div>
+
+                            <!-- Day of Week -->
+                            <div class="form-group">
+                                <label class="control-label">Day of Week:</label>
+                                <select class="form-control" asp-items="Html.GetEnumSelectList<DayOfWeek>()">
+                                    <option value="">Select Day of the Week</option>
+                                </select>
+                                <span class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                            </div>
+
+                        </form>
+                        <div class="form-group">
+                            @*Button trigger modal*@
+                            <button type="button" class="btn btn-primary" onclick="createCard()">
+                                Check Availability
+                            </button>
+
+                            @*Modal*@
+                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Service Session Confirmation</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div>
+                                                <p>Wed, 2020-11-16 at 10:00 - 12:00</p>
+                                                <p>Burnaby</p>
+                                                <p>Rate ($/session): 80.00</p>
+                                                <p>Employee: Jason Chi Fai Lee</p>
+                                            </div>
+                                            <!-- Checkbox -->
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    weekly service
+                                                </label>
+                                            </div>
+                                            <!-- Hidden Div -->
+                                            <div id="hiddenDiv" style="display: none;">
+                                                <p>Please choose the <u>number of weeks</u> you'd like to subscribe to this service:</p>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        Number of weeks
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <a class="dropdown-item" href="#">2</a>
+                                                        <a class="dropdown-item" href="#">3</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                            <a href="@Url.Action("BookingAppointment","Home")">
+                                                <button type="button" class="btn btn-success">Confirm</button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Available Weekly Sessions -->
+                    <div class="col">
+                        <div id="schedulebox" class="d-flex flex-column bd-highlight mb-3">
+                            <h4 style="text-align: center;" class="mt-1">Available Weekly Sessions</h4>
+
+                            <div class="container scrolldiv" id="scheduleContainer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*</div>*@
+    </div>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
+            integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous">
+    </script>
+    <script>
+        function createCard() {
+            // Row 1
+            let createDiv = document.createElement("div");
+            createDiv.setAttribute('class', "row border");
+            document.getElementById("scheduleContainer").appendChild(createDiv);
+
+            let createDiv2 = document.createElement("div");
+            createDiv2.setAttribute('class', "col-9");
+            createDiv.appendChild(createDiv2);
+
+            let createP = document.createElement("p");
+            createP.appendChild(document.createTextNode("Wed, 2020-11-16 at 10:00 - 12:00"));
+            createDiv2.appendChild(createP);
+
+            createP = document.createElement("p");
+            createP.appendChild(document.createTextNode("Burnaby"));
+            createDiv2.appendChild(createP);
+
+            let createDiv3 = document.createElement("div");
+            createDiv3.setAttribute('class', "col-3");
+            createDiv3.setAttribute('style', "padding: 30px;");
+            createDiv.appendChild(createDiv3);
+
+            let createButton = document.createElement("button");
+            createButton.setAttribute('type', "button");
+            createButton.setAttribute('class', "btn btn-info");
+            createButton.setAttribute('data-toggle', "modal");
+            createButton.setAttribute('data-target', "#exampleModalCenter");
+            createButton.appendChild(document.createTextNode("Book"));
+            createDiv3.appendChild(createButton);
+
+            // Row 2
+            let createDiv4 = document.createElement("div");
+            createDiv4.setAttribute('class', "row border");
+            document.getElementById("scheduleContainer").appendChild(createDiv4);
+
+            let createDiv5 = document.createElement("div");
+            createDiv5.setAttribute('class', "col-9");
+            createDiv4.appendChild(createDiv5);
+
+            let createP2 = document.createElement("p");
+            createP2.appendChild(document.createTextNode("Wed, 2020-11-16 at 10:00 - 12:00"));
+            createDiv5.appendChild(createP2);
+
+            createP2 = document.createElement("p");
+            createP2.appendChild(document.createTextNode("Burnaby"));
+            createDiv5.appendChild(createP2);
+
+            let createDiv6 = document.createElement("div");
+            createDiv6.setAttribute('class', "col-3");
+            createDiv6.setAttribute('style', "padding: 30px;");
+            createDiv4.appendChild(createDiv6);
+
+            let createButton2 = document.createElement("button");
+            createButton2.setAttribute('type', "button");
+            createButton2.setAttribute('class', "btn btn-info");
+            createButton2.setAttribute('data-toggle', "modal");
+            createButton2.setAttribute('data-target', "#exampleModalCenter");
+            createButton2.appendChild(document.createTextNode("Book"));
+            createDiv6.appendChild(createButton2);
+
+            // Row 3
+            let createDiv7 = document.createElement("div");
+            createDiv7.setAttribute('class', "row border");
+            document.getElementById("scheduleContainer").appendChild(createDiv7);
+
+            let createDiv8 = document.createElement("div");
+            createDiv8.setAttribute('class', "col-9");
+            createDiv7.appendChild(createDiv8);
+
+            let createP3 = document.createElement("p");
+            createP3.appendChild(document.createTextNode("Wed, 2020-11-16 at 10:00 - 12:00"));
+            createDiv8.appendChild(createP3);
+
+            createP3 = document.createElement("p");
+            createP3.appendChild(document.createTextNode("Burnaby"));
+            createDiv8.appendChild(createP3);
+
+            let createDiv9 = document.createElement("div");
+            createDiv9.setAttribute('class', "col-3");
+            createDiv9.setAttribute('style', "padding: 30px;");
+            createDiv7.appendChild(createDiv9);
+
+            let createButton3 = document.createElement("button");
+            createButton3.setAttribute('type', "button");
+            createButton3.setAttribute('class', "btn btn-info");
+            createButton3.setAttribute('data-toggle', "modal");
+            createButton3.setAttribute('data-target', "#exampleModalCenter");
+            createButton3.appendChild(document.createTextNode("Book"));
+            createDiv9.appendChild(createButton3);
+        }
+
+        // reveals the div when the checkbox is checked
+        // hides the div when the checkbox is unchecked
+        $("#flexCheckDefault").click(function () {
+            if (this.checked) {
+                $('#hiddenDiv').css('display', 'inline-block');
+            } else {
+                $('#hiddenDiv').css('display', 'none');
+            }
+        });
+    </script>
+</body>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
