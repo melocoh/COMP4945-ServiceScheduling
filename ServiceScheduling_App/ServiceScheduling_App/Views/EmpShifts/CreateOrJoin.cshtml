@@ -1,8 +1,6 @@
 ﻿@model ServiceScheduling_App.Models.ServiceShift
 
-@{
-    ViewData["Title"] = "Create or Join";
-}
+@{ ViewData["Title"] = "Create or Join"; }
 
 
 <head>
@@ -114,8 +112,8 @@
                             @*Button trigger modal*@
                             </br>
                             @*<button type="button" id="btn-create" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">
-                                Back
-                            </button>*@
+                                    Back
+                                </button>*@
 
                             <button type="button" id="btn-check" class="btn btn-primary">
                                 Check Shift
@@ -139,9 +137,9 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                            <a href="@Url.Action("EmpShifts","Index")">
-                                                <button type="button" id ="btn-confirm"class="btn btn-primary">Confirm</button>
-                                            </a>
+                                            @*<a href="@Url.Action("EmpShifts","Index")">*@
+                                            <button type="button" id="btn-confirm" class="btn btn-primary">Confirm</button>
+                                            @*</a>*@
                                         </div>
                                     </div>
                                 </div>
@@ -169,14 +167,11 @@
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-    </script>
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
-    </script>
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
-            integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous">
-    </script>
+            integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
 
     <script>
 
@@ -256,13 +251,7 @@
             getFilteredTime();
         });
 
-        function clickConfirm(serviceShiftId) {
-            
-            $(document).on('click', '#btn-confirm', function () {
-                postJoinShift(serviceShiftId);
 
-            });
-        }
 
         // ajax call to send parameter and fetch filtered locations
         // GET
@@ -378,7 +367,7 @@
         });
         }
 
-       
+
 
         // ajax call to send parameter and fetch filtered shifts
         // ROUTE: /EmpShifts/GetFilteredShifts
@@ -410,6 +399,7 @@
         function addShiftToSchedule(data) {
 
             let createDiv = document.createElement("div");
+            createDiv.setAttribute('id', data.serviceShiftId);
             createDiv.setAttribute('class', "row border m-3");
             document.getElementById("scheduleContainer").appendChild(createDiv);
 
@@ -446,14 +436,21 @@
             joinButton.appendChild(document.createTextNode("Join"));
             createDiv3.appendChild(joinButton);
 
-            joinButton.addEventListener('click', function (data) { clickConfirm(data.serviceShiftId)});
+             @*joinButton.addEventListener('click', function () {
+                postJoinShift(data.serviceShiftId);
+            });*@
+
+            let confirmButton = document.getElementById("btn-confirm");
+            confirmButton.addEventListener('click', function () {
+                postJoinShift(data.serviceShiftId);
+            });
+
+            @*joinButton.addEventListener('click', function (data) { clickConfirm(data.serviceShiftId)});*@
 
                 @* get shift info via service shift ID *@
 
                 @* generates the modal for the service *@
                 @* getShiftInfo(data.serviceShiftId); *@
-            
-
         }
 
     </script>
