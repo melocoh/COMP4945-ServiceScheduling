@@ -16,10 +16,10 @@ namespace ServiceScheduling_App.Controllers
 
     /****************************************************** Objects for storing data from queries ***********************************************************/
 
-    // ServiceShiftType2
+    // ServiceShiftType
     // object that contains elements from ServiceShift and ServiceType
     // @usage form input prototype
-    public class ServiceShiftType2
+    public class ServiceShiftType
     {
         public int id;
         public string servTitle;
@@ -29,7 +29,7 @@ namespace ServiceScheduling_App.Controllers
         public TimeSpan endTime;
         public string startToEndTime;
 
-        public ServiceShiftType2(int id, string servTitle, string location, DayOfWeek dayOfWeek, TimeSpan startTime, TimeSpan endTime)
+        public ServiceShiftType(int id, string servTitle, string location, DayOfWeek dayOfWeek, TimeSpan startTime, TimeSpan endTime)
         {
             this.id = id;
             this.servTitle = servTitle;
@@ -40,17 +40,17 @@ namespace ServiceScheduling_App.Controllers
             this.startToEndTime = startTime.Hours.ToString("D2") + ":" + startTime.Minutes.ToString("D2") + " - " + endTime.Hours.ToString("D2") + ":" + endTime.Minutes.ToString("D2");
         }
 
-        public ServiceShiftType2(int id, string servTitle)
+        public ServiceShiftType(int id, string servTitle)
         {
             this.id = id;
             this.servTitle = servTitle;
         }
     }
 
-    // EmployeeService2
+    // EmployeeService
     // object that contains elements from ServiceShift, ServiceType, EmpShift, and Employee
     // @usage form input
-    public class EmployeeService2
+    public class EmployeeService
     {
         public int serId;
         public string servTitle;
@@ -64,7 +64,7 @@ namespace ServiceScheduling_App.Controllers
         public string fullName;
         public string startToEndTime;
 
-        public EmployeeService2(int serId, string servTitle, int maxNoEmp, int serviceShiftId, DayOfWeek dayOfWeek, string location, TimeSpan startTime, TimeSpan endTime, int empId, string fullName)
+        public EmployeeService(int serId, string servTitle, int maxNoEmp, int serviceShiftId, DayOfWeek dayOfWeek, string location, TimeSpan startTime, TimeSpan endTime, int empId, string fullName)
         {
             this.serId = serId;
             this.servTitle = servTitle;
@@ -79,7 +79,7 @@ namespace ServiceScheduling_App.Controllers
             this.startToEndTime = startTime.Hours.ToString("D2") + ":" + startTime.Minutes.ToString("D2") + " - " + endTime.Hours.ToString("D2") + ":" + endTime.Minutes.ToString("D2");
         }
 
-        public EmployeeService2(int serId, string servTitle, string location, DayOfWeek dayOfWeek, TimeSpan startTime, TimeSpan endTime)
+        public EmployeeService(int serId, string servTitle, string location, DayOfWeek dayOfWeek, TimeSpan startTime, TimeSpan endTime)
         {
             this.serId = serId;
             this.servTitle = servTitle;
@@ -90,7 +90,7 @@ namespace ServiceScheduling_App.Controllers
             this.startToEndTime = startTime.Hours.ToString("D2") + ":" + startTime.Minutes.ToString("D2") + " - " + endTime.Hours.ToString("D2") + ":" + endTime.Minutes.ToString("D2");
         }
 
-        public EmployeeService2(int serId, string servTitle)
+        public EmployeeService(int serId, string servTitle)
         {
             this.serId = serId;
             this.servTitle = servTitle;
@@ -131,14 +131,13 @@ namespace ServiceScheduling_App.Controllers
 
     /*************************************************** Query executing objects ********************************************************/
 
-
-    public class EmployeeServiceControl2
+    public class EmployeeServiceControl
     {
         // ServiceShiftType list that holds every element
-        public List<EmployeeService2> employeeServiceList;
+        public List<EmployeeService> employeeServiceList;
 
         // ServiceShiftType list that holds id and serTitle
-        public List<EmployeeService2> serviceIdTitleList;
+        public List<EmployeeService> serviceIdTitleList;
 
         // string list that holds location
         public List<string> serLocationList;
@@ -150,7 +149,7 @@ namespace ServiceScheduling_App.Controllers
         public List<string> startToEndTimeList;
 
         //load all the data from tables into this object
-        public EmployeeServiceControl2(AppContext context)
+        public EmployeeServiceControl(AppContext context)
         {
             GetServiceEmployee(context);
         }
@@ -202,8 +201,8 @@ namespace ServiceScheduling_App.Controllers
             }).ToList();
 
             // instantiates all lists
-            employeeServiceList = new List<EmployeeService2>();
-            serviceIdTitleList = new List<EmployeeService2>();
+            employeeServiceList = new List<EmployeeService>();
+            serviceIdTitleList = new List<EmployeeService>();
             serLocationList = new List<string>();
             dayOfWeekList = new List<DayOfWeek>();
             startToEndTimeList = new List<string>();
@@ -211,9 +210,10 @@ namespace ServiceScheduling_App.Controllers
             for (int i = 0; i < query.Count; i++)
             {
                 // calls all / two parameter constructor
-                EmployeeService2 employeeService = new EmployeeService2(query[i].serId, query[i].servTitle, query[i].maxNoEmp, query[i].serviceShiftId, query[i].dayOfWeek, 
-                    query[i].location, query[i].startTime, query[i].endTime, query[i].empId, query[i].fullName);
-                EmployeeService2 serviceIdTitle = new EmployeeService2(query[i].serId, query[i].servTitle);
+                EmployeeService employeeService = new EmployeeService(query[i].serId, query[i].servTitle, query[i].maxNoEmp, 
+                    query[i].serviceShiftId, query[i].dayOfWeek, query[i].location, query[i].startTime, query[i].endTime, 
+                    query[i].empId, query[i].fullName);
+                EmployeeService serviceIdTitle = new EmployeeService(query[i].serId, query[i].servTitle);
 
                 // populates all lists
                 serviceIdTitleList.Add(employeeService);
@@ -296,8 +296,9 @@ namespace ServiceScheduling_App.Controllers
         //List<string> employeeNames
         //it is filtered by a service title, location, day of the week, and (start + end time)
         public string FilterAvailableShifts(string servTitle, string location, string dayOfWeek, string startToEndTime)
-        { 
-            List<EmployeeServiceInfo> availableSessions = new List<EmployeeServiceInfo>();
+        {
+            // list of available
+            List<EmployeeServiceInfo> availableShifts = new List<EmployeeServiceInfo>();
             for (int i = 0; i < employeeServiceList.Count; i++)
             {
                 string startTime = employeeServiceList[i].startTime.Hours.ToString("D2") + ":" + employeeServiceList[i].startTime.Minutes.ToString("D2");
@@ -309,12 +310,12 @@ namespace ServiceScheduling_App.Controllers
                     int currentSerShiftMaxEmployees = employeeServiceList[i].maxNoEmp;
                     string currentSerShiftEmployeeName = employeeServiceList[i].fullName;
                     bool addedEmployeeToList = false;
-                    for (int f = 0; f < availableSessions.Count; f++)
+                    for (int f = 0; f < availableShifts.Count; f++)
                     {
-                        if (currentSerShiftID == availableSessions[f].serviceShiftId)
+                        if (currentSerShiftID == availableShifts[f].serviceShiftId)
                         {
                             //session already exists so add to it
-                            availableSessions[f].addEmployee(currentSerShiftEmployeeName);
+                            availableShifts[f].addEmployee(currentSerShiftEmployeeName);
                             addedEmployeeToList = true;
                             break;
                         }
@@ -325,28 +326,28 @@ namespace ServiceScheduling_App.Controllers
                     {
                         EmployeeServiceInfo newEmployeeServiceInfo = new EmployeeServiceInfo(currentSerShiftMaxEmployees, currentSerShiftID);
                         newEmployeeServiceInfo.addEmployee(currentSerShiftEmployeeName);
-                        availableSessions.Add(newEmployeeServiceInfo);
+                        availableShifts.Add(newEmployeeServiceInfo);
                     }
                 }
             }
 
-            availableSessions.Distinct().ToList();
+            //availableShifts.Distinct().ToList();
 
-            var serializer = JsonSerializer.Serialize(availableSessions);
+            var serializer = JsonSerializer.Serialize(availableShifts);
 
             return serializer;
         }
     }
 
     // Custom class that makes rows distinct
-    class DistinctItemComparer2 : IEqualityComparer<EmployeeService2>
+    class DistinctItemComparer2 : IEqualityComparer<EmployeeService>
     {
-        public bool Equals(EmployeeService2 x, EmployeeService2 y)
+        public bool Equals(EmployeeService x, EmployeeService y)
         {
             return x.serId == y.serId;
         }
 
-        public int GetHashCode(EmployeeService2 obj)
+        public int GetHashCode(EmployeeService obj)
         {
             return obj.serId.GetHashCode();
         }
@@ -359,18 +360,18 @@ namespace ServiceScheduling_App.Controllers
     {
         private readonly AppContext _context;
 
-        public EmployeeServiceControl2 employeeServiceControl;
+        public EmployeeServiceControl employeeServiceControl;
 
         // Constructor
         public EmpShiftsController(AppContext context)
         {
             _context = context;
 
-            employeeServiceControl = new EmployeeServiceControl2(_context);
+            employeeServiceControl = new EmployeeServiceControl(_context);
         }
 
 
-       
+
 
         // Converts List to SelectListItems
         // @returns a list with the Text = service titles and Value = service Id
@@ -531,6 +532,58 @@ namespace ServiceScheduling_App.Controllers
 
             return Ok(employeeServiceControl.FilterAvailableShifts(servTitle, location, dayOfWeek, startToEndTime));
         }
+
+        // POST: EmpShifts/JoinShift
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        public ActionResult JoinShift(int EmpId, int ServiceShiftId)
+        {
+            EmpShift empShift = new EmpShift(EmpId, ServiceShiftId);
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(empShift);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return Ok();
+        }
+
+        //// POST: EmpShifts/JoinShift
+        //// To protect from overposting attacks, enable the specific properties you want to bind to.
+        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //public async Task<IActionResult> JoinShift([Bind("EmpId,ServiceShiftId")] EmpShift empShift)
+        //{
+        //    var test = 1;
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(empShift);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+
+        //    return Ok(empShift);
+        //}
+
+        ////// POST: EmpShifts/JoinShift
+        ////// To protect from overposting attacks, enable the specific properties you want to bind to.
+        ////// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //public async Task<IActionResult> JoinShift([FromBody] EmpShift empShift)
+        //{
+        //    var test = 1;
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(empShift);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+
+        //    return Ok(empShift);
+        //}
 
 
         // POST: EmpShifts/Create

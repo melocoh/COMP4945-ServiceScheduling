@@ -17,6 +17,9 @@ namespace ServiceScheduling_App.Models
 
         public DateTime EntryDate { get; set; }
 
+        [DataType(DataType.Currency)]
+        [Range(0.0, Double.MaxValue, ErrorMessage = "The field {0} must be greater than {1}.")] // input validation
+        [RegularExpression(@"^\d+\.\d{2}$", ErrorMessage = "Must fit currency format")] // Input validation
         public double TotalFee { get; set; }
 
         /*****************************************/
