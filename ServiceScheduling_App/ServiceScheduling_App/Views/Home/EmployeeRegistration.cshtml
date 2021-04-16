@@ -65,8 +65,8 @@
                         <div class="d-flex flex-column bd-highlight mb-3">
 
                             <div class="p-2 bd-highlight">
-                                <label asp-for="FullName">Full Name</label><br>
-                                <input asp-for="FullName" class="logininput control-label" type="text" id="loginfullname" />
+                                <label class="control-label" asp-for="FullName">Full Name</label><br>
+                                <input asp-for="FullName" class="logininput form-control" type="text" id="loginfullname" />
                             </div>
 
                             <div class="p-2 bd-highlight">
@@ -79,14 +79,14 @@
 
 
                             <div class="p-2 bd-highlight">
-                                <label>Certification</label><br>
-                                <select id="certificationType" class="logininput dropdown control-label" asp-items="ViewBag.CertificationTypes" multiple>
+                                <label class="control-label">Certification</label><br>
+                                <select id="certificationType" class="logininput dropdown form-control" asp-items="ViewBag.CertificationTypes" multiple>
                                 </select>
                             </div>
 
                             <div class="p-2 bd-highlight">
-                                <label asp-for="Email">Email</label><br>
-                                <input asp-for="Email" class="logininput control-label" type="text" id="loginemail" />
+                                <label class="control-label" asp-for="Email">Email</label><br>
+                                <input asp-for="Email" class="logininput form-control" type="text" id="loginemail" />
                             </div>
                         </div>
                     </div>
