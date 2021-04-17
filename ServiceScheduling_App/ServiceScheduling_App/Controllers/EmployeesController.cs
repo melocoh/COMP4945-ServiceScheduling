@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ namespace ServiceScheduling_App.Controllers
     {
         private readonly AppContext _context;
 
+        
         public EmployeesController(AppContext context)
         {
             _context = context;
@@ -29,7 +31,7 @@ namespace ServiceScheduling_App.Controllers
         // GET: Employees/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            id = 1;
+            id = HttpContext.Session.GetInt32("empID");
 
             if (id == null)
             {
@@ -50,7 +52,10 @@ namespace ServiceScheduling_App.Controllers
         // GET: Employees/Create
         public IActionResult Create()
         {
-            ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobId");
+
+            ViewData["CertId"] = new SelectList(_context.CertificationTypes, "CertId", "CertTitle");
+
+            ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobTitle");
             return View();
         }
 
@@ -61,13 +66,14 @@ namespace ServiceScheduling_App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("EmpId,FullName,JobId,Email,Password")] Employee employee)
         {
+
             if (ModelState.IsValid)
             {
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobId", employee.JobId);
+            //ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobId", employee.JobId);
             return View(employee);
         }
 
@@ -84,7 +90,7 @@ namespace ServiceScheduling_App.Controllers
             {
                 return NotFound();
             }
-            ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobId", employee.JobId);
+            //ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobId", employee.JobId);
             return View(employee);
         }
 
@@ -157,6 +163,27 @@ namespace ServiceScheduling_App.Controllers
         private bool EmployeeExists(int id)
         {
             return _context.Employees.Any(e => e.EmpId == id);
+        }
+
+        [HttpGet]
+        public JsonResult ChartDetailsRevenue()
+        {
+            Console.WriteLine("Called");
+            return Json(new Chart("line", new[] { 65, 59, 80, 81, 56, 55, 40 }));
+        }
+
+        [HttpGet]
+        public JsonResult ChartDetailsOutcome()
+        {
+            Console.WriteLine("Called");
+            return Json(new Chart("bar", new[] { 65, 59, 80, 81, 56, 55, 40 }));
+        }
+
+        [HttpGet]
+        public JsonResult ChartDetailsPerformance()
+        {
+            Console.WriteLine("Called");
+            return Json(new Chart("line", new[] { 65, 59, 80, 81, 56, 55, 40 }));
         }
     }
 }

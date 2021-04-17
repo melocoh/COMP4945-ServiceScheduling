@@ -16,19 +16,22 @@ namespace ServiceScheduling_App.Models
         public int ServId { get; set; }
 
         [Display(Name = "Day of Week")]
+        [Required] // Input validation
         public DayOfWeek DayOfWeek { get; set; }
 
         [Display(Name = "Start Time")]
+        [Required] // Input validation
         public TimeSpan TimeStart { get; set; }
 
         [Display(Name = "End Time")]
+        [Required] // Input validation
         public TimeSpan TimeEnd { get; set; }
 
         [Display(Name = "Location")]
+        [RegularExpression(@"^[a-zA-Z ]+$", ErrorMessage = "Use letters and spaces only please")] // Input validation
         public string SerLocation { get; set; }
 
         // References ServiceType object
-        [Display(Name = "Service Type")]
         public virtual ServiceType ServiceType { get; set; }
 
         // References EmpShift object

@@ -1,4 +1,7 @@
-﻿@model Employee
+﻿@{
+    ViewData["Title"] = "LoggedIn";
+}
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <!-- Bootstrap CSS -->
@@ -12,7 +15,7 @@
             display: block;
             margin-left: 5%;
             margin-right: 5%;
-            margin-top: 5%;
+            margin-top: 10%;
             margin-bottom: auto;
             border: 1px solid transparent;
             border-radius: 10px;
@@ -23,6 +26,7 @@
             font-size: 30px;
             font-weight: bold;
             text-align: center;
+            margin-bottom: 15%;
         }
 
         .statusbutton {
@@ -30,14 +34,12 @@
             width: 120px;
         }
 
-        .hyperlinks {
-            margin: 15px;
-            font-size: 12px;
+        .icon {
             text-align: center;
         }
 
-        .logininput {
-            width: 300px;
+        img {
+            width: 60%;
         }
     </style>
 </head>
@@ -47,39 +49,21 @@
         <div id="blockContainer">
             <div id="dynamicContainer" class="d-flex flex-column">
                 <div class="d-flex justify-content-center">
-                    <p id="message">Employee Log In</p>
+                    <p id="message">Hey, @ViewBag.AccountName <br> Welcome to your service space</p>
                 </div>
-                <form asp-action="Login" asp-controller="Home">
                 <div class="d-flex justify-content-center">
-                    <div class="d-flex flex-column bd-highlight mb-3">
-
-                        <div class="p-2 bd-highlight">
-                            <label asp-for="Email">Email</label><br>
-                            <input asp-for="Email" class="logininput" type="text" id="loginemail">
-                        </div>
-
-                        <div class="p-2 bd-highlight">
-                            <label>Password</label><br>
-                            <input class="logininput" type="password" id="loginpassword">
-                        </div>
-
-                        <div class="p-2 bd-highlight">
-                            <input type="checkbox" id="remember1" name="remember1" value="Remember">
-                            <label for="remember1">Remember me?</label><br>
-                        </div>
-
+                    <div class="icon">
+                        <img src="~/Images/icon_Profile.png" />
+                        <p>Set your profile</p>
                     </div>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <a href="@Url.Action("RoleSelection","Home")">
-                        <button class="btn btn-info statusbutton">Go Back</button>
-                    </a>
-                    <input type="submit" value="Log In" class="btn btn-primary statusbutton"/>
-                </div>
-                </form>
-                <div class="d-flex justify-content-center">
-                    <a href="" class="hyperlinks">Forgot your password?</a>
-                    <a href="@Url.Action("EmployeeRegistration", "Home")" class="hyperlinks">Register as a new user</a>
+                    <div class="icon">
+                        <img src="~/Images/icon_ServiceTimeTable.png" />
+                        <p>View Service Timetable</p>
+                    </div>
+                    <div class="icon">
+                        <img src="~/Images/icon_Appointments.png" />
+                        <p>Check your appointments</p>
+                    </div>
                 </div>
             </div>
         </div>

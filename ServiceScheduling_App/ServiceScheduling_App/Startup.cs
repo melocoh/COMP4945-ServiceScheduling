@@ -31,6 +31,9 @@ namespace ServiceScheduling_App
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+
             services.AddControllersWithViews();
         }
 
@@ -54,6 +57,8 @@ namespace ServiceScheduling_App
 
             app.UseAuthorization();
 
+            app.UseSession();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -61,7 +66,7 @@ namespace ServiceScheduling_App
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            //DummyData.Initialize(app);
+            DummyData.Initialize(app);
         }
     }
 }

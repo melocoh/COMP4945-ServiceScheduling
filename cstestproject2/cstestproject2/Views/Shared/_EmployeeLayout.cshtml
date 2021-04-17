@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model Employee
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -18,8 +19,9 @@
         }
 
         @@media only screen and (max-width: 575px) {
-            #bellnotificationcontainer {
-                display: none;
+
+            #bellnotificationcontainer{
+                display:none;
             }
         }
     </style>
@@ -42,6 +44,9 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="EmployeeShift">EmployeeShift</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index">Profile</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Services" asp-action="Index">Services</a>
                         </li>
                         <li class="nav-item">
@@ -50,17 +55,16 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="BookingAppointment">Booking</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ServiceCalender">Service Calender</a>
-                        </li>
                     </ul>
-
+                   
                     <ul class="navbar-nav ml-auto">
                         @* Bell Notification - Begin *@
                         @* Added dropdown button on the navigation bar using bell with dot, photos are in wwwroot -> images folder *@
                         <li id="bellnotificationcontainer" class="nav-item dropdown">
                             <div class="notificationbell">
-                                <img id="imagedropdown" class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src="~/images/bell-notification-red.png" alt="notificationwithdot" width="90%" height="90%">
+                                <a asp-controller="Home" asp-action="GetNotifications">
+                                    <img id="imagedropdown" class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src="~/images/bell-notification-red.png" alt="notificationwithdot" width="90%" height="90%">
+                                </a>
                                 <ul class="dropdown-menu dropdown-menu-right">
                                     <li class="dropdown-header notificationbellheader" aria-labelledby="dropdown01">Notifications</li>
                                     <li class="dropdown-divider"></li>
@@ -80,7 +84,9 @@
                         </li>
                         @* Bell Notification - End *@
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Registration</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
+                                Registration
+                            </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Login</a>

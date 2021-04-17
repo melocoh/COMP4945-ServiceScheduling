@@ -18,8 +18,8 @@ namespace ServiceScheduling_App.Migrations
                 context.Database.EnsureCreated();
                 //context.Database.Migrate();
 
-                //if (context.Clients != null && context.Clients.Any())
-                //    return;   // DB has already been seeded
+                if (context.Clients != null && context.Clients.Any())
+                    return;   // DB has already been seeded
 
 
                 var jobTypes = DummyData.GetJobTypes().ToArray();
@@ -109,6 +109,12 @@ namespace ServiceScheduling_App.Migrations
                 JobId = 4,
                 Email = "eric@mail.com",
                 Password = "1234"
+                },
+            new Employee {  // 5
+                FullName = "Melody NumbaOne",
+                JobId = 4,
+                Email = "eric@mail.com",
+                Password = "1234"
                 }
             };
             return employees;
@@ -153,7 +159,7 @@ namespace ServiceScheduling_App.Migrations
             new ServiceType {  // 1
                 ServTitle = "Rap",
                 CertificationRqt = 1,
-                MaxNoEmp = 1,
+                MaxNoEmp = 5,
                 MaxNoClient = 20,
                 Rate = 10
                 },
@@ -271,7 +277,23 @@ namespace ServiceScheduling_App.Migrations
                     TimeStart = new TimeSpan (12,30,00),
                     TimeEnd = TimeSpan.Zero,
                     SerLocation = "Vancouver"
-                }
+                },
+                new ServiceShift  // 7
+                {
+                    ServId = 4,
+                    DayOfWeek = DayOfWeek.Tuesday,
+                    TimeStart = new TimeSpan (12,30,00),
+                    TimeEnd = TimeSpan.Zero,
+                    SerLocation = "Vancouver"
+                },
+                new ServiceShift  // 8
+                {
+                    ServId = 4,
+                    DayOfWeek = DayOfWeek.Tuesday,
+                    TimeStart = new TimeSpan (12,30,00),
+                    TimeEnd = TimeSpan.Zero,
+                    SerLocation = "Vancouver"
+                },
             };
 
             return serviceShifts;
@@ -303,7 +325,7 @@ namespace ServiceScheduling_App.Migrations
                 },
                 new EmpShift  // 3
                 {
-                    ServiceShiftId = 3,
+                    ServiceShiftId = 7,
                     EmpId = 2
                 },
                 new EmpShift  // 4

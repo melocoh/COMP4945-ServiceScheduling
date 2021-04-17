@@ -62,6 +62,7 @@ namespace ServiceScheduling_App.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("varchar(50)");
 
                     b.HasKey("AppSessionId");
@@ -94,13 +95,17 @@ namespace ServiceScheduling_App.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("varchar(50)");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("varchar(50)");
 
                     b.Property<string>("Password")
-                        .HasColumnType("varchar(50)");
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)");
 
                     b.HasKey("ClientId");
 
@@ -175,21 +180,24 @@ namespace ServiceScheduling_App.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("varchar(50)");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("varchar(50)");
 
                     b.Property<int>("JobId")
                         .HasColumnType("int");
 
                     b.Property<string>("Password")
-                        .HasColumnType("varchar(50)");
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)");
 
                     b.HasKey("EmpId");
 
-                    b.HasIndex("JobId")
-                        .IsUnique();
+                    b.HasIndex("JobId");
 
                     b.ToTable("Employee");
                 });
@@ -369,8 +377,8 @@ namespace ServiceScheduling_App.Migrations
             modelBuilder.Entity("ServiceScheduling_App.Models.Employee", b =>
                 {
                     b.HasOne("ServiceScheduling_App.Models.JobType", "JobType")
-                        .WithOne("Employee")
-                        .HasForeignKey("ServiceScheduling_App.Models.Employee", "JobId")
+                        .WithMany("Employees")
+                        .HasForeignKey("JobId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -431,7 +439,7 @@ namespace ServiceScheduling_App.Migrations
 
             modelBuilder.Entity("ServiceScheduling_App.Models.JobType", b =>
                 {
-                    b.Navigation("Employee");
+                    b.Navigation("Employees");
                 });
 
             modelBuilder.Entity("ServiceScheduling_App.Models.ServiceShift", b =>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +29,7 @@ namespace ServiceScheduling_App.Controllers
         // GET: Clients/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            id = 1;
+            id = HttpContext.Session.GetInt32("clientID");
 
             if (id == null)
             {
@@ -62,7 +63,7 @@ namespace ServiceScheduling_App.Controllers
             {
                 _context.Add(client);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("LoggedInClient", "Home");
             }
             return View(client);
         }

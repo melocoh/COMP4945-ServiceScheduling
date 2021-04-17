@@ -13,10 +13,15 @@ namespace ServiceScheduling_App.Models
         public int JobId { get; set; }
 
         [Column(TypeName = "varchar(50)")]
+        [RegularExpression(@"^[a-zA-Z ]+$", ErrorMessage = "Use letters and spaces only please")] // Input validation
         public string JobTitle { get; set; }
 
 
         // References ServiceType object
-        public virtual Employee Employee { get; set; }
+        //public virtual Employee Employee { get; set; }
+
+        // References Appointment object
+        // @relation one-to-many
+        public ICollection<Employee> Employees { get; set; }
     }
 }
