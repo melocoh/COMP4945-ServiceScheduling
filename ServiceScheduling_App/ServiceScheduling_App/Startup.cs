@@ -66,7 +66,7 @@ namespace ServiceScheduling_App
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            //DummyData.Initialize(app);
+            DummyData.Initialize(app);
         }
     }
 }
