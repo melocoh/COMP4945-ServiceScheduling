@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ServiceScheduling_App;
 using ServiceScheduling_App.Models;
@@ -449,6 +450,13 @@ namespace ServiceScheduling_App.Controllers
         // GET: EmpShifts
         public async Task<IActionResult> Index()
         {
+            int? id = HttpContext.Session.GetInt32("empID");
+            if (id == null)
+            {
+                return RedirectToAction("RoleSelection","Home");
+            }
+            ViewBag.accountID = id;
+            ViewBag.accountName = _context.Employees.Where(emp => emp.EmpId == id).FirstOrDefault().FullName;
             var appContext = _context.EmpShifts.Include(e => e.Employee).Include(e => e.ServiceShift);
             return View(await appContext.ToListAsync());
         }

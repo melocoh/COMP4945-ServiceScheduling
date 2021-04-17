@@ -19,7 +19,7 @@ namespace ServiceScheduling_App.Models
         [Display(Name = "Full Name")]
         public string FullName { get; set; }
 
-        [ForeignKey("JobType")] //Foreign Key attribute takes another Model class name
+        [ForeignKey("JobType")]
         public int JobId { get; set; }
 
         [Column(TypeName = "varchar(50)")]

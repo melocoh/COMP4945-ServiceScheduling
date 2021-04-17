@@ -1,4 +1,5 @@
-﻿<html xmlns="http://www.w3.org/1999/xhtml">
+﻿@model Client
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
@@ -53,13 +54,13 @@
                         <div class="d-flex flex-column bd-highlight mb-3">
 
                             <div class="p-2 bd-highlight">
-                                <label class="control-label">Email</label><br>
-                                <input class="logininput form-control" type="text" id="loginemail" name="loginemail">
+                                <label asp-for="Email">Email</label><br>
+                                <input asp-for="Email" class="logininput" type="text" id="loginemail" name="loginemail">
                             </div>
 
                             <div class="p-2 bd-highlight">
-                                <label class="control-label">Password</label><br>
-                                <input class="logininput form-control" type="password" id="loginpassword" name="loginpassword">
+                                <label asp-for="Password">Password</label><br>
+                                <input asp-for="Password" class="logininput" type="password" id="loginpassword" name="loginpassword">
                             </div>
 
                             <div class="p-2 bd-highlight">

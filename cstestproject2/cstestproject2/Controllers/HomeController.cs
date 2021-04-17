@@ -15,7 +15,6 @@ namespace cstestproject2.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly AppContext _context;
-        private bool loggedin = false;
 
         public HomeController(ILogger<HomeController> logger, AppContext context)
         {
@@ -25,97 +24,35 @@ namespace cstestproject2.Controllers
 
         public IActionResult Index()
         {
+            var empID = HttpContext.Session.GetInt32("empID");
+            if (empID != null)
+            {
+                Employee account = _context.Employees.Where(emp => emp.EmpId == empID).FirstOrDefault<Employee>();
+                return RedirectToAction("Login", account);
+            }
             return View();
         }
 
-        public IActionResult Login(Employee credentials)
+        
+
+        public void GetNotifications()
         {
-            Employee account = _context.Employees.Where(emp => emp.Email == credentials.Email).FirstOrDefault<Employee>();
-            ViewBag.AccountName = account.FullName;
-
-            HttpContext.Session.SetInt32("empID", account.EmpId);
-            return View("LoggedIn");
+            HttpContext.Session.GetInt32("empID");
+            var query = _context.Appointments
+            .Join(_context.Services,
+                   appointment => appointment.AppId,
+            service => service.ServId,
+            (appointment, service) => new
+            {
+                ServId = service.ServId,
+                Start = appointment.StartDateTime,
+                End = appointment.EndDateTime,
+            }
+            ).ToList().Where(appointServ => appointServ.Start > DateTime.Now);
         }
-
-        //CLIENT SIDE OF LOGGING IN
-        //register works but not login
-        public IActionResult LoginClient(Client credentials)
-        {
-            Client account = _context.Clients.Where(emp => emp.Email == credentials.Email).FirstOrDefault<Client>();
-            ViewBag.AccountName = account.FullName;
-
-            HttpContext.Session.SetInt32("clientID", account.ClientId);
-            return View("LoggedInClient");
-        }
-
-        [HttpPost]
-        public IActionResult SubmitRegistration(Employee formData)
-        {
-            _context.Add(formData);
-            _context.SaveChanges();
-            
-            return RedirectToAction("Login", formData);
-        }
-
-        [HttpPost]
-        public IActionResult SubmitRegistrationClient(Client formData)
-        {
-            _context.Add(formData);
-            _context.SaveChanges();
-
-            return RedirectToAction("LoginClient", formData);
-        }
-
-        public IActionResult RoleSelection()
-        {
-            return View();
-        }
-
-        public IActionResult ClientSignIn()
-        {
-            return View();
-        }
-
-        public IActionResult ClientRegistration()
-        {
-            return View();
-        }
-
-        public IActionResult EmployeeSignIn()
-        {
-            return View();
-        }
-
+        
         public IActionResult Chart()
         {
-            return View();
-        }
-
-        public IActionResult EmployeeRegistration()
-        {
-            ViewBag.CertificationTypes = new List<SelectListItem>()
-            {
-                new SelectListItem() { Text = "Hamburger University Degree", Value = "Hamburger University Degree" },
-                new SelectListItem() { Text = "First Aid Certification", Value = "First Aid Certification" },
-                new SelectListItem() { Text = "Scuba Diving Certification", Value = "Scuba Diving Certification" },
-                new SelectListItem() { Text = "Nurse Practitioning Certification", Value = "Nurse Practitioning Certification" }
-            };
-
-            ViewBag.Locations = new List<SelectListItem>()
-            {
-                new SelectListItem() { Text = "Burnaby", Value = "Burnaby" },
-                new SelectListItem() { Text = "Richmond", Value = "Richmond" },
-                new SelectListItem() { Text = "Vancouver", Value = "Vancouver" }
-            };
-
-            ViewBag.ServiceTypes = new List<SelectListItem>()
-            {
-                new SelectListItem() { Text = "Teach", Value = "Teach" },
-                new SelectListItem() { Text = "Chew food", Value = "Chew food" },
-                new SelectListItem() { Text = "Rap", Value = "Rap" },
-                new SelectListItem() { Text = "Provide vaccine", Value = "Provide vaccine" }
-            };
-
             return View();
         }
 
@@ -125,11 +62,6 @@ namespace cstestproject2.Controllers
         }
 
         public IActionResult test()
-        {
-            return View();
-        }
-
-        public IActionResult ServiceCalender()
         {
             return View();
         }
@@ -164,27 +96,6 @@ namespace cstestproject2.Controllers
         {
             Console.WriteLine("Called");
             return Json(new Chart("bar", new[] { 100, 200, 300 }));
-        }
-
-        [HttpGet]
-        public JsonResult ChartDetailsRevenue()
-        {
-            Console.WriteLine("Called");
-            return Json(new Chart("line", new[] { 65, 59, 80, 81, 56, 55, 40 }));
-        }
-
-        [HttpGet]
-        public JsonResult ChartDetailsOutcome()
-        {
-            Console.WriteLine("Called");
-            return Json(new Chart("bar", new[] { 65, 59, 80, 81, 56, 55, 40 }));
-        }
-
-        [HttpGet]
-        public JsonResult ChartDetailsPerformance()
-        {
-            Console.WriteLine("Called");
-            return Json(new Chart("line", new[] { 65, 59, 80, 81, 56, 55, 40 }));
         }
 
         public IActionResult Modal()
