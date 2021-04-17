@@ -158,5 +158,31 @@ namespace ServiceScheduling_App.Controllers
         {
             return _context.Employees.Any(e => e.EmpId == id);
         }
+
+        public IActionResult EmployeeProfile()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public JsonResult ChartDetailsRevenue()
+        {
+            Console.WriteLine("Called");
+            return Json(new Chart("line", new[] { 65, 59, 80, 81, 56, 55, 40 }));
+        }
+
+        [HttpGet]
+        public JsonResult ChartDetailsOutcome()
+        {
+            Console.WriteLine("Called");
+            return Json(new Chart("bar", new[] { 65, 59, 80, 81, 56, 55, 40 }));
+        }
+
+        [HttpGet]
+        public JsonResult ChartDetailsPerformance()
+        {
+            Console.WriteLine("Called");
+            return Json(new Chart("line", new[] { 65, 59, 80, 81, 56, 55, 40 }));
+        }
     }
 }
