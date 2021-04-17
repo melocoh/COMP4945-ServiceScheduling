@@ -94,8 +94,11 @@ namespace ServiceScheduling_App.Controllers
         [HttpPost]
         public IActionResult SubmitRegistration(Employee formData)
         {
-            _context.Add(formData);
-            _context.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                _context.Add(formData);
+                _context.SaveChanges();
+            }
 
             return RedirectToAction("Login", formData);
         }
@@ -103,8 +106,11 @@ namespace ServiceScheduling_App.Controllers
         [HttpPost]
         public IActionResult SubmitRegistrationClient(Client formData)
         {
-            _context.Add(formData);
-            _context.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                _context.Add(formData);
+                _context.SaveChanges();
+            }
 
             return RedirectToAction("LoginClient", formData);
         }
