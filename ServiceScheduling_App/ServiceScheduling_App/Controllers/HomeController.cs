@@ -15,7 +15,6 @@ namespace ServiceScheduling_App.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly AppContext _context;
-        private bool loggedin = false;
 
         public HomeController(ILogger<HomeController> logger, AppContext context)
         {
@@ -137,6 +136,24 @@ namespace ServiceScheduling_App.Controllers
             };
 
             return View();
+        }
+
+        public IActionResult Profile()
+        {
+            if(HttpContext.Session.GetInt32("empID") != null)
+            {
+                return RedirectToAction("Details", "Employees");
+            } else if (HttpContext.Session.GetInt32("clientID") != null)
+            {
+                return RedirectToAction("Details", "Clients");
+            }
+            ViewBag.AlertMessage = "Log-in to view profile information.";
+            return View("RoleSelection");
+        }
+
+        public void GetNotifications()
+        {
+
         }
     }
 }

@@ -45,7 +45,6 @@ namespace cstestproject2.Controllers
         // GET: Appointments
         public async Task<IActionResult> Index()
         {
-            Console.WriteLine(HttpContext.Session.GetInt32("empID"));
             var appContext = _context.Appointments.Include(a => a.Service);
             return View(await appContext.ToListAsync());
         }

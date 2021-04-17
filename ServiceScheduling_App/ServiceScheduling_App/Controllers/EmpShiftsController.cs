@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ServiceScheduling_App;
 using ServiceScheduling_App.Models;
@@ -447,6 +448,7 @@ namespace ServiceScheduling_App.Controllers
         // GET: EmpShifts
         public async Task<IActionResult> Index()
         {
+            HttpContext.Session.GetInt32("empId");
             var appContext = _context.EmpShifts.Include(e => e.Employee).Include(e => e.ServiceShift);
             return View(await appContext.ToListAsync());
         }

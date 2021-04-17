@@ -17,7 +17,7 @@ namespace ServiceScheduling_App.Models
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")] // Input validation
         public string FullName { get; set; }
 
-        [ForeignKey("JobType")] //Foreign Key attribute takes another Model class name
+        [ForeignKey("JobType")]
         public int JobId { get; set; }
 
         [Column(TypeName = "varchar(50)")]

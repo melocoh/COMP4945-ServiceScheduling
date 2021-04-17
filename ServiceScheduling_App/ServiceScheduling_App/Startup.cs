@@ -31,6 +31,9 @@ namespace ServiceScheduling_App
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+
             services.AddControllersWithViews();
         }
 
@@ -53,6 +56,8 @@ namespace ServiceScheduling_App
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
