@@ -50,7 +50,10 @@ namespace ServiceScheduling_App.Controllers
         // GET: Employees/Create
         public IActionResult Create()
         {
-            ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobId");
+
+            ViewData["CertId"] = new SelectList(_context.CertificationTypes, "CertId", "CertTitle");
+
+            ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobTitle");
             return View();
         }
 
@@ -61,6 +64,7 @@ namespace ServiceScheduling_App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("EmpId,FullName,JobId,Email,Password")] Employee employee)
         {
+
             if (ModelState.IsValid)
             {
                 _context.Add(employee);
