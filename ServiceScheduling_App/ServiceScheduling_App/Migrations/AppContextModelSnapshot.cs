@@ -195,8 +195,7 @@ namespace ServiceScheduling_App.Migrations
 
                     b.HasKey("EmpId");
 
-                    b.HasIndex("JobId")
-                        .IsUnique();
+                    b.HasIndex("JobId");
 
                     b.ToTable("Employee");
                 });
@@ -376,8 +375,8 @@ namespace ServiceScheduling_App.Migrations
             modelBuilder.Entity("ServiceScheduling_App.Models.Employee", b =>
                 {
                     b.HasOne("ServiceScheduling_App.Models.JobType", "JobType")
-                        .WithOne("Employee")
-                        .HasForeignKey("ServiceScheduling_App.Models.Employee", "JobId")
+                        .WithMany("Employees")
+                        .HasForeignKey("JobId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -438,7 +437,7 @@ namespace ServiceScheduling_App.Migrations
 
             modelBuilder.Entity("ServiceScheduling_App.Models.JobType", b =>
                 {
-                    b.Navigation("Employee");
+                    b.Navigation("Employees");
                 });
 
             modelBuilder.Entity("ServiceScheduling_App.Models.ServiceShift", b =>

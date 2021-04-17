@@ -14,7 +14,9 @@ namespace ServiceScheduling_App.Models
 
         [Column(TypeName = "varchar(50)")]
         [Required] // Input validation
-        [RegularExpression(@"^[a-zA-Z ]+$", ErrorMessage = "Use letters and spaces only please")] // Input validation
+
+        [RegularExpression(@"^[a-zA-Z ]+$", ErrorMessage = "Use letters only please")] // Input validation
+        [Display(Name = "Full Name")]
         public string FullName { get; set; }
 
         [ForeignKey("JobType")] //Foreign Key attribute takes another Model class name

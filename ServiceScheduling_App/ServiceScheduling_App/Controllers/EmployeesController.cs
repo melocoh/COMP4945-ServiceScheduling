@@ -71,7 +71,7 @@ namespace ServiceScheduling_App.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobId", employee.JobId);
+            //ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobId", employee.JobId);
             return View(employee);
         }
 
@@ -88,7 +88,7 @@ namespace ServiceScheduling_App.Controllers
             {
                 return NotFound();
             }
-            ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobId", employee.JobId);
+            //ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobId", employee.JobId);
             return View(employee);
         }
 
