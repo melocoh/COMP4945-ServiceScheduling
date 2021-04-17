@@ -1,4 +1,5 @@
-﻿<html xmlns="http://www.w3.org/1999/xhtml">
+﻿@model Client
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
@@ -53,13 +54,13 @@
                         <div class="d-flex flex-column bd-highlight mb-3">
 
                             <div class="p-2 bd-highlight">
-                                <label class="control-label">Email</label><br>
-                                <input class="logininput form-control" type="text" id="loginemail" name="loginemail">
+                                <label asp-for="Email">Email</label><br>
+                                <input asp-for="Email" class="logininput" type="text" id="loginemail" name="loginemail">
                             </div>
 
                             <div class="p-2 bd-highlight">
-                                <label class="control-label">Password</label><br>
-                                <input class="logininput form-control" type="password" id="loginpassword" name="loginpassword">
+                                <label asp-for="Password">Password</label><br>
+                                <input asp-for="Password" class="logininput" type="password" id="loginpassword" name="loginpassword">
                             </div>
 
                             <div class="p-2 bd-highlight">
@@ -70,16 +71,15 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <a href="@Url.Action("RoleSelection","Home")">
-                            <button class="btn btn-info statusbutton">Go Back</button>
+                        <a href="@Url.Action("RoleSelection","Home")" class="btn btn-info statusbutton">
+                            Go Back
                         </a>
-                        @*<button class="btn btn-primary statusbutton">Log In</button>*@
                         <input type="submit" value="Log In" class="btn btn-primary statusbutton" />
                     </div>
                 </form>
                 <div class="d-flex justify-content-center">
                     <a href="" class="hyperlinks">Forgot your password?</a>
-                    <a href="@Url.Action("ClientRegistration", "Home")" class="hyperlinks">Register as a new user</a>
+                    <a href="@Url.Action("Create", "Clients")" class="hyperlinks">Register as a new user</a>
                 </div>
             </div>
         </div>

@@ -1,4 +1,5 @@
 ﻿@model Client
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <!-- Bootstrap CSS -->
@@ -25,6 +26,12 @@
             text-align: center;
         }
 
+        #addcertificatebutton {
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
         .statusbutton {
             margin: 15px;
             width: 120px;
@@ -39,6 +46,10 @@
         .logininput {
             width: 300px;
         }
+
+        .dropdown {
+            text-align-last: center;
+        }
     </style>
 </head>
 <body>
@@ -49,42 +60,41 @@
                 <div class="d-flex justify-content-center">
                     <p id="message">Client Registration</p>
                 </div>
-                <form asp-action="SubmitRegistrationClient" asp-controller="Home">
+                <form asp-action="SubmitRegistration" asp-controller="Home">
                     <div class="d-flex justify-content-center">
                         <div class="d-flex flex-column bd-highlight mb-3">
 
                             <div class="p-2 bd-highlight">
                                 <label asp-for="FullName">Full Name</label><br>
-                                <input asp-for="FullName" class="logininput" type="text" id="loginfullname">
+                                <input asp-for="FullName" class="logininput" type="text" />
                             </div>
 
                             <div class="p-2 bd-highlight">
                                 <label asp-for="Email">Email</label><br>
-                                <input asp-for="Email" class="logininput" type="text" id="loginemail">
+                                <input asp-for="Email" class="logininput" type="text" />
                             </div>
 
                             <div class="p-2 bd-highlight">
-                                <label>Password</label><br>
-                                <input class="logininput" type="password" id="loginpassword">
+                                <label asp-for="Password">Email</label><br>
+                                <input asp-for="Password" class="logininput" type="text" />
                             </div>
 
                             <div class="p-2 bd-highlight">
-                                <label>Confirm Password</label><br>
-                                <input class="logininput" type="password" id="confirmloginpassword">
+                                <label for="confirm">Confirm Password</label><br>
+                                <input name="confirm" class="logininput" type="text" />
                             </div>
-
                         </div>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <a href="@Url.Action("RoleSelection","Home")">
-                            <button class="btn btn-info statusbutton">Go Back</button>
+                        <a href="@Url.Action("RoleSelection","Home")" class="btn btn-info statusbutton">
+                            Go Back
                         </a>
-                        <button type="submit" class="btn btn-primary statusbutton">Sign Up</button>
+                        <input type="submit" class="btn btn-primary statusbutton" value="Sign Up">
                     </div>
                 </form>
-                    <div class="d-flex justify-content-center">
-                        <a href="@Url.Action("ClientSignIn", "Home")" class="hyperlinks">Already a user?</a>
-                    </div>
+                <div class="d-flex justify-content-center">
+                    <a href="@Url.Action("ClientSignIn", "Home")" class="hyperlinks">Already a user?</a>
+                </div>
             </div>
         </div>
     </div>
@@ -99,5 +109,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
             integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous">
     </script>
+
 </body>
 </html>

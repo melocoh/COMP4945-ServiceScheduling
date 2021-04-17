@@ -8,6 +8,7 @@
     <title>Index</title>
 
     <style>
+
         #blockContainer {
             display: block;
             margin-left: 5%;
@@ -25,7 +26,7 @@
             text-align: center;
         }
 
-        #addcertificatebutton {
+        #addcertificatebutton{
             font-size: 15px;
             font-weight: bold;
             border-radius: 5px;
@@ -49,6 +50,7 @@
         .dropdown {
             text-align-last: center;
         }
+
     </style>
 </head>
 <body>
@@ -59,45 +61,62 @@
                 <div class="d-flex justify-content-center">
                     <p id="message">Employee Registration</p>
                 </div>
-                <form asp-action="SubmitRegistration" asp-controller="Home">
+                <form asp-action="SubmitRegistration" asp-controller="Login">
                     <div class="d-flex justify-content-center">
                         <div class="d-flex flex-column bd-highlight mb-3">
 
                             <div class="p-2 bd-highlight">
-                                <label class="control-label" asp-for="FullName">Full Name</label><br>
-                                <input asp-for="FullName" class="logininput form-control" type="text" id="loginfullname" />
+                                <label asp-for="FullName">Full Name</label><br>
+                                <input asp-for="FullName" class="logininput" type="text" id="loginfullname"/>
                             </div>
 
                             <div class="p-2 bd-highlight">
-                                @*<label for="JobTitle">Job Title</label><br>*@
-                                <label asp-for="JobId" class="control-label">Job Title</label>  @* change all forms so it has this bootstrap class *@
-                                <select asp-for="JobId" id="JobTitleInput" class="form-control" asp-items="ViewBag.JobTypes">
-                                    <option value="">Select a Job</option>
+                                <label asp-for="JobTitle">Job Title</label><br>
+                                <select asp-for="JobTitle" id="loginjobtitle" class="logininput dropdown">
+                                    <option style="display:none">-- Select Job --</option>
+                                    <option value="Clout Gang Tik Tocker">Clout Gang Tik Tocker</option>
+                                    <option value="Fire Fighter">Fire Fighter</option>
+                                    <option value="Nurse">Nurse</option>
+                                    <option value="SoundCloud Rapper">SoundCloud Rapper</option>
+                                    <option value="CST Instructor">CST Instructor</option>
                                 </select>
                             </div>
 
 
+                            <div id="certificatecontainer" class="p-2 bd-highlight">
+                                <label>Certification</label><br>
+                                <select id="logincertification" class="logininput dropdown">
+                                    <option style="display:none">-- Select Certificate --</option>
+                                    <option value="Hamburger University Degree">Hamburger University Degree</option>
+                                    <option value="First Aid Certification">First Aid Certification</option>
+                                    <option value="Scuba Diving Certification">Scuba Diving Certification</option>
+                                    <option value="Nurse Practitioning Certification">Nurse Practitioning Certification</option>
+                                </select>
+                                <button id="addcertificatebutton">+</button>
+                            </div>
+
+
                             <div class="p-2 bd-highlight">
-                                <label class="control-label">Certification</label><br>
-                                <select id="certificationType" class="logininput dropdown form-control" asp-items="ViewBag.CertificationTypes" multiple>
+                                <label>Certification</label><br>
+                                <select id="certificationType" class="logininput dropdown" asp-items="ViewBag.CertificationTypes" multiple>
                                 </select>
                             </div>
 
                             <div class="p-2 bd-highlight">
-                                <label class="control-label" asp-for="Email">Email</label><br>
-                                <input asp-for="Email" class="logininput form-control" type="text" id="loginemail" />
+                                <label asp-for="Email">Email</label><br>
+                                <input asp-for="Email" class="logininput" type="text" id="loginemail" />
                             </div>
                         </div>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <a href="@Url.Action("RoleSelection","Home")">
+                        <a href="@Url.Action("Index","Login")">
                             <button class="btn btn-info statusbutton">Go Back</button>
                         </a>
                         <input type="submit" class="btn btn-primary statusbutton" value="Sign Up">
                     </div>
                 </form>
                 <div class="d-flex justify-content-center">
-                    <a href="@Url.Action("EmployeeSignIn", "Home")" class="hyperlinks">Already a user?</a>
+                    <a href="@Url.Action("EmployeeSignIn", "Login")" class="hyperlinks">Already a user?</a>
                 </div>
             </div>
         </div>

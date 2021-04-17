@@ -61,6 +61,12 @@ namespace ServiceScheduling_App
             .WithMany(g => g.Appointments)
             .HasForeignKey(s => s.ServiceShiftId);
 
+            // One to many with JobType and Employee
+            modelBuilder.Entity<Employee>()
+            .HasOne<JobType>(s => s.JobType)
+            .WithMany(g => g.Employees)
+            .HasForeignKey(s => s.JobId);
+
             // Intermediate table creation with composite keys
             modelBuilder.Entity<EmpCertification>().HasKey(ec => new { ec.EmpId, ec.CertId });
 

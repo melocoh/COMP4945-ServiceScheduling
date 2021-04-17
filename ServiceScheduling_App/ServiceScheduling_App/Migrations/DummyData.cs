@@ -109,6 +109,12 @@ namespace ServiceScheduling_App.Migrations
                 JobId = 4,
                 Email = "eric@mail.com",
                 Password = "1234"
+                },
+            new Employee {  // 5
+                FullName = "Melody NumbaOne",
+                JobId = 4,
+                Email = "eric@mail.com",
+                Password = "1234"
                 }
             };
             return employees;
