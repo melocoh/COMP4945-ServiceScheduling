@@ -11,6 +11,8 @@ using ServiceScheduling_App.Models;
 //using System.Web.Script.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http;
+
 namespace ServiceScheduling_App.Controllers
 {
 
@@ -537,8 +539,10 @@ namespace ServiceScheduling_App.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public ActionResult JoinShift(int EmpId, int ServiceShiftId)
+        public ActionResult JoinShift(int ServiceShiftId)
         {
+            int EmpId = (int)HttpContext.Session.GetInt32("empID");
+
             EmpShift empShift = new EmpShift(EmpId, ServiceShiftId);
 
             if (ModelState.IsValid)
