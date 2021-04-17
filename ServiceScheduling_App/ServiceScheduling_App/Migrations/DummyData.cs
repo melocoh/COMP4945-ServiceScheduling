@@ -18,8 +18,8 @@ namespace ServiceScheduling_App.Migrations
                 context.Database.EnsureCreated();
                 //context.Database.Migrate();
 
-                //if (context.Clients != null && context.Clients.Any())
-                //    return;   // DB has already been seeded
+                if (context.Clients != null && context.Clients.Any())
+                    return;   // DB has already been seeded
 
 
                 var jobTypes = DummyData.GetJobTypes().ToArray();
