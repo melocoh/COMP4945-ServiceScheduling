@@ -18,6 +18,10 @@ namespace ServiceScheduling_App.Models
 
 
         // References ServiceType object
-        public virtual Employee Employee { get; set; }
+        //public virtual Employee Employee { get; set; }
+
+        // References Appointment object
+        // @relation one-to-many
+        public ICollection<Employee> Employees { get; set; }
     }
 }
