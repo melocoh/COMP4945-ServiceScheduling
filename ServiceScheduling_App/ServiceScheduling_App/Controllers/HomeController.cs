@@ -30,9 +30,15 @@ namespace ServiceScheduling_App.Controllers
         public IActionResult Login(Employee credentials)
         {
             Employee account = _context.Employees.Where(emp => emp.Email == credentials.Email).FirstOrDefault<Employee>();
-            ViewBag.AccountName = account.FullName;
+            if (account != null)
+            {
+                ViewBag.AccountName = account.FullName;
+                HttpContext.Session.SetInt32("empID", account.EmpId);
+                return View("LoggedIn");
+            }
 
-            HttpContext.Session.SetInt32("empID", account.EmpId);
+            ModelState.AddModelError("Email", "User with that email not found.");
+            //return View("EmployeeSignIn");
             return View("LoggedIn");
         }
 
@@ -69,11 +75,35 @@ namespace ServiceScheduling_App.Controllers
             return list;
         }
 
+        //Builds Certification List Viewbag
+        private List<SelectListItem> GetCertificateTypeList()
+        {
+            // grabs list of JobType objects from the JobType table
+            List<CertificationType> certificationTypeList = _context.CertificationTypes.ToList<CertificationType>();
+
+            //certificationTypeList.Distinct();
+
+            // converts jobTypeList into selectListItem list
+            List<SelectListItem> list = certificationTypeList.ConvertAll<SelectListItem>(item =>
+            {
+                return new SelectListItem()
+                {
+                    Text = item.CertTitle,
+                    Value = item.CertId.ToString(),
+                    Selected = false
+                };
+            });
+            return list;
+        }
+
         [HttpPost]
         public IActionResult SubmitRegistration(Employee formData)
         {
-            _context.Add(formData);
-            _context.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                _context.Add(formData);
+                _context.SaveChanges();
+            }
 
             return RedirectToAction("Login", formData);
         }
@@ -81,8 +111,11 @@ namespace ServiceScheduling_App.Controllers
         [HttpPost]
         public IActionResult SubmitRegistrationClient(Client formData)
         {
-            _context.Add(formData);
-            _context.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                _context.Add(formData);
+                _context.SaveChanges();
+            }
 
             return RedirectToAction("LoginClient", formData);
         }
@@ -111,14 +144,7 @@ namespace ServiceScheduling_App.Controllers
         {
             ViewBag.JobTypes = GetJobTypeList();
 
-
-            ViewBag.CertificationTypes = new List<SelectListItem>()
-            {
-                new SelectListItem() { Text = "Hamburger University Degree", Value = "Hamburger University Degree" },
-                new SelectListItem() { Text = "First Aid Certification", Value = "First Aid Certification" },
-                new SelectListItem() { Text = "Scuba Diving Certification", Value = "Scuba Diving Certification" },
-                new SelectListItem() { Text = "Nurse Practitioning Certification", Value = "Nurse Practitioning Certification" }
-            };
+            ViewBag.CertificationTypes = GetCertificateTypeList();
 
             ViewBag.Locations = new List<SelectListItem>()
             {

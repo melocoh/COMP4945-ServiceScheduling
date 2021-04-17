@@ -62,7 +62,7 @@ namespace ServiceScheduling_App.Controllers
             {
                 _context.Add(client);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("LoggedInClient", "Home");
             }
             return View(client);
         }

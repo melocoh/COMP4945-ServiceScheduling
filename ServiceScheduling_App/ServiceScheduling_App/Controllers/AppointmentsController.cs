@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ServiceScheduling_App;
 using ServiceScheduling_App.Models;
+using ServiceScheduling_App.ViewModels;
 
 namespace ServiceScheduling_App.Controllers
 {
@@ -48,6 +49,13 @@ namespace ServiceScheduling_App.Controllers
         // GET: Appointments/Booking
         public IActionResult Booking()
         {
+            ViewData["Service"] = new SelectList(_context.ServiceTypes, "ServId", "ServTitle");
+
+            ViewData["Location"] = new SelectList(_context.ServiceShifts, "SerLocation", "SerLocation");
+
+            ViewData["Day"] = new SelectList(_context.ServiceShifts, "DayOfWeek", "DayOfWeek");
+
+
             ViewData["ServiceShiftId"] = new SelectList(_context.ServiceShifts, "ServiceShiftId", "ServiceShiftId");
             return View();
         }

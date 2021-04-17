@@ -8,7 +8,6 @@
     <title>Index</title>
 
     <style>
-
         #blockContainer {
             display: block;
             margin-left: 5%;
@@ -65,6 +64,7 @@
                         <div class="d-flex flex-column bd-highlight mb-3">
 
                             <div class="p-2 bd-highlight">
+<<<<<<< HEAD
                                 <label asp-for="FullName">Full Name</label><br>
                                 <input asp-for="FullName" class="logininput" type="text"/>
                             </div>
@@ -94,6 +94,30 @@
                             <div class="p-2 bd-highlight">
                                 <label for="confirm">Confirm Password</label><br>
                                 <input name="confirm" class="logininput" type="text"/>
+=======
+                                <label class="control-label" asp-for="FullName">Full Name</label><br>
+                                <input asp-for="FullName" class="logininput form-control" type="text" id="loginfullname" />
+                            </div>
+
+                            <div class="p-2 bd-highlight">
+                                @*<label for="JobTitle">Job Title</label><br>*@
+                                <label asp-for="JobId" class="control-label">Job Title</label>  @* change all forms so it has this bootstrap class *@
+                                <select asp-for="JobId" id="JobTitleInput" class="form-control" asp-items="ViewBag.JobTypes">
+                                    <option value="">Select a Job</option>
+                                </select>
+                            </div>
+
+
+                            <div class="p-2 bd-highlight">
+                                <label class="control-label">Certification</label><br>
+                                <select id="certificationType" class="logininput dropdown form-control" asp-items="ViewBag.CertificationTypes" multiple>
+                                </select>
+                            </div>
+
+                            <div class="p-2 bd-highlight">
+                                <label class="control-label" asp-for="Email">Email</label><br>
+                                <input asp-for="Email" class="logininput form-control" type="text" id="loginemail" />
+>>>>>>> 93e9033260511d60301c414c55719aab526685fa
                             </div>
                         </div>
                     </div>
