@@ -8,7 +8,6 @@
     <title>Index</title>
 
     <style>
-
         #blockContainer {
             display: block;
             margin-left: 5%;
@@ -71,8 +70,8 @@
 
                             <div class="p-2 bd-highlight">
                                 @*<label for="JobTitle">Job Title</label><br>*@
-                                <label for="JobTitle" class="control-label">Job Title</label>  @* change all forms so it has this bootstrap class *@
-                                <select for="JobTitle" id="JobTitleInput" class="form-control" asp-items="ViewBag.JobTypes">
+                                <label asp-for="JobId" class="control-label">Job Title</label>  @* change all forms so it has this bootstrap class *@
+                                <select asp-for="JobId" id="JobTitleInput" class="form-control" asp-items="ViewBag.JobTypes">
                                     <option value="">Select a Job</option>
                                 </select>
                             </div>
