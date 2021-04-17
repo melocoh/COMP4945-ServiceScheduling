@@ -31,9 +31,15 @@ namespace ServiceScheduling_App.Controllers
         public IActionResult Login(Employee credentials)
         {
             Employee account = _context.Employees.Where(emp => emp.Email == credentials.Email).FirstOrDefault<Employee>();
-            ViewBag.AccountName = account.FullName;
+            if (account != null)
+            {
+                ViewBag.AccountName = account.FullName;
+                HttpContext.Session.SetInt32("empID", account.EmpId);
+                return View("LoggedIn");
+            }
 
-            HttpContext.Session.SetInt32("empID", account.EmpId);
+            ModelState.AddModelError("Email", "User with that email not found.");
+            //return View("EmployeeSignIn");
             return View("LoggedIn");
         }
 
