@@ -30,8 +30,6 @@ namespace ServiceScheduling_App.Models
         [StringLength(15, MinimumLength = 6)]
         public string Password { get; set; }
 
-
-
         // References JobType object
         public virtual JobType JobType { get; set; }
 
