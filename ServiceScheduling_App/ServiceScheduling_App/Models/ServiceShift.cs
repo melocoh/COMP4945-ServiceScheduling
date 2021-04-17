@@ -28,7 +28,7 @@ namespace ServiceScheduling_App.Models
         public TimeSpan TimeEnd { get; set; }
 
         [Display(Name = "Location")]
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")] // Input validation
+        [RegularExpression(@"^[a-zA-Z ]+$", ErrorMessage = "Use letters and spaces only please")] // Input validation
         public string SerLocation { get; set; }
 
         // References ServiceType object

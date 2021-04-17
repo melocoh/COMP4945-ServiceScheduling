@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ServiceScheduling_App;
 using ServiceScheduling_App.Models;
+using ServiceScheduling_App.ViewModels;
 
 namespace ServiceScheduling_App.Controllers
 {
@@ -22,6 +24,10 @@ namespace ServiceScheduling_App.Controllers
         // GET: Appointments
         public async Task<IActionResult> Index()
         {
+            if (HttpContext.Session.GetInt32("empID") == null)
+            {
+                return RedirectToAction("RoleSelection", "Home");
+            }
             var appContext = _context.Appointments.Include(a => a.ServiceShift);
             return View(await appContext.ToListAsync());
         }
@@ -48,6 +54,13 @@ namespace ServiceScheduling_App.Controllers
         // GET: Appointments/Booking
         public IActionResult Booking()
         {
+            ViewData["Service"] = new SelectList(_context.ServiceTypes, "ServId", "ServTitle");
+
+            ViewData["Location"] = new SelectList(_context.ServiceShifts, "SerLocation", "SerLocation");
+
+            ViewData["Day"] = new SelectList(_context.ServiceShifts, "DayOfWeek", "DayOfWeek");
+
+
             ViewData["ServiceShiftId"] = new SelectList(_context.ServiceShifts, "ServiceShiftId", "ServiceShiftId");
             return View();
         }

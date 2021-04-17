@@ -18,8 +18,8 @@ namespace ServiceScheduling_App.Migrations
                 context.Database.EnsureCreated();
                 //context.Database.Migrate();
 
-                //if (context.Clients != null && context.Clients.Any())
-                //    return;   // DB has already been seeded
+                if (context.Clients != null && context.Clients.Any())
+                    return;   // DB has already been seeded
 
 
                 var jobTypes = DummyData.GetJobTypes().ToArray();
@@ -106,6 +106,12 @@ namespace ServiceScheduling_App.Migrations
                 },
             new Employee {  // 4
                 FullName = "Eric NumbaOne",
+                JobId = 4,
+                Email = "eric@mail.com",
+                Password = "1234"
+                },
+            new Employee {  // 5
+                FullName = "Melody NumbaOne",
                 JobId = 4,
                 Email = "eric@mail.com",
                 Password = "1234"
