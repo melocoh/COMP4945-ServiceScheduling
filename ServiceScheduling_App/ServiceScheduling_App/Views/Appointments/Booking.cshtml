@@ -73,7 +73,7 @@
             </div>
             <hr class="splitline">
 
-            <p>Filter necessary information to view available appointments.</p></br>
+            <p>Filter necessary information to view available appointments.</p><br />
             <div class="container">
                 <div class="row">
                     <!-- Fill Out Information -->
@@ -122,7 +122,7 @@
                         </form>
                         <div class="form-group">
                             @*Button trigger modal*@
-                            <button type="button" class="btn btn-primary" onclick="createCard()">
+                            <button id="check-availability" type="button" class="btn btn-primary">
                                 Check Availability
                             </button>
 
@@ -202,83 +202,53 @@
             integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous">
     </script>
     <script>
-        function createCard() {
-            // Row 1
-            let createDiv = document.createElement("div");
-            createDiv.setAttribute('class', "row border");
-            document.getElementById("scheduleContainer").appendChild(createDiv);
 
-            let createDiv2 = document.createElement("div");
-            createDiv2.setAttribute('class', "col-9");
-            createDiv.appendChild(createDiv2);
+        $("#check-availability").click(function () {
+            document.getElementById("scheduleContainer").innerHTML = '';
+            @* <div class="row border">
+                <div class="col-9">
+                    <p>Wed, 2020-11-16 at 10:00 - 12:00</p>
+                    <p>Burnaby</p>
+                </div>
+                <div class="col-3" style="padding: 30px;">
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">Book</button>
+                </div>
+            </div> *@
+            getFilteredAvailability();
+        });
 
-            let createP = document.createElement("p");
-            createP.appendChild(document.createTextNode("Wed, 2020-11-16 at 10:00 - 12:00"));
-            createDiv2.appendChild(createP);
 
-            createP = document.createElement("p");
-            createP.appendChild(document.createTextNode("Burnaby"));
-            createDiv2.appendChild(createP);
-
-            let createDiv3 = document.createElement("div");
-            createDiv3.setAttribute('class', "col-3");
-            createDiv3.setAttribute('style', "padding: 30px;");
-            createDiv.appendChild(createDiv3);
-
-            let createButton = document.createElement("button");
-            createButton.setAttribute('type', "button");
-            createButton.setAttribute('class', "btn btn-info");
-            createButton.setAttribute('data-toggle', "modal");
-            createButton.setAttribute('data-target', "#exampleModalCenter");
-            createButton.appendChild(document.createTextNode("Book"));
-            createDiv3.appendChild(createButton);
-
-            // Row 2
-            let createDiv4 = document.createElement("div");
-            createDiv4.setAttribute('class', "row border");
-            document.getElementById("scheduleContainer").appendChild(createDiv4);
-
-            let createDiv5 = document.createElement("div");
-            createDiv5.setAttribute('class', "col-9");
-            createDiv4.appendChild(createDiv5);
-
-            let createP2 = document.createElement("p");
-            createP2.appendChild(document.createTextNode("Wed, 2020-11-16 at 10:00 - 12:00"));
-            createDiv5.appendChild(createP2);
-
-            createP2 = document.createElement("p");
-            createP2.appendChild(document.createTextNode("Burnaby"));
-            createDiv5.appendChild(createP2);
-
-            let createDiv6 = document.createElement("div");
-            createDiv6.setAttribute('class', "col-3");
-            createDiv6.setAttribute('style', "padding: 30px;");
-            createDiv4.appendChild(createDiv6);
-
-            let createButton2 = document.createElement("button");
-            createButton2.setAttribute('type', "button");
-            createButton2.setAttribute('class', "btn btn-info");
-            createButton2.setAttribute('data-toggle', "modal");
-            createButton2.setAttribute('data-target', "#exampleModalCenter");
-            createButton2.appendChild(document.createTextNode("Book"));
-            createDiv6.appendChild(createButton2);
+        function createCard(data) {
+            let daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
             // Row 3
             let createDiv7 = document.createElement("div");
-            createDiv7.setAttribute('class', "row border");
+            createDiv7.setAttribute('class', "row border m-1");
             document.getElementById("scheduleContainer").appendChild(createDiv7);
 
             let createDiv8 = document.createElement("div");
             createDiv8.setAttribute('class', "col-9");
             createDiv7.appendChild(createDiv8);
 
-            let createP3 = document.createElement("p");
-            createP3.appendChild(document.createTextNode("Wed, 2020-11-16 at 10:00 - 12:00"));
+            let createP3 = document.createElement("div");
+            createP3.appendChild(document.createTextNode(`${daysOfWeek[data.day]}, ${data.date} at ${data.time}`));
             createDiv8.appendChild(createP3);
 
-            createP3 = document.createElement("p");
-            createP3.appendChild(document.createTextNode("Burnaby"));
+            createP3 = document.createElement("div");
+            createP3.appendChild(document.createTextNode(`Location: ${data.location}`));
             createDiv8.appendChild(createP3);
+
+            let shiftDetailsText = document.createElement("div");
+
+            let names = "";
+
+            for(let i = 0; i < data.employeeNames.length; i++)
+            {
+                names += data.employeeNames[i] + ((i == i - 1) ? ', ' : ' ');
+            }
+
+            shiftDetailsText.appendChild(document.createTextNode(`Employees: ${names}`));
+            createDiv8.appendChild(shiftDetailsText);
 
             let createDiv9 = document.createElement("div");
             createDiv9.setAttribute('class', "col-3");
@@ -303,6 +273,102 @@
                 $('#hiddenDiv').css('display', 'none');
             }
         });
+
+        function getFilteredAvailability()
+        {
+
+            // ===============================
+            // DO SHIT HERE
+            //      pull from DB
+            // ===============================
+
+
+            // ===============================
+            // example data
+            let data = [
+                {
+                    employeeNames:["Bebe ko"],
+                    appSessionId : 1,
+                    day:2,
+                    date: "2020-11-16",
+                    time: "10:00-12:00",
+                    location : "Burnaby"
+                },
+                {
+                    employeeNames:["Kuya"],
+                    appSessionId : 1,
+                    day:2,
+                    date: "2020-09-16",
+                    time: "08:00-10:00",
+                    location : "Burnaby"
+                },
+                {
+                    employeeNames:["Jason"],
+                    appSessionId : 2,
+                    day:3,
+                    date: "2020-12-16",
+                    time: "11:00-15:00",
+                    location : "Burnaby"
+                },
+            ];
+            // ===============================
+
+            // generate availaibity list
+
+            for(let i = 0; i < data.length; i++)
+            {
+                createCard(data[i]);
+            }
+        }
+
+        function addAvailability(data) {
+
+            let createDiv = document.createElement("div");
+            createDiv.setAttribute('class', "row border m-3");
+            document.getElementById("schedulebox").appendChild(createDiv);
+
+            let createDiv2 = document.createElement("div");
+            createDiv2.setAttribute('class', "col-9");
+            createDiv.appendChild(createDiv2);
+
+            let shiftDetailsText = document.createElement("p");
+            shiftDetailsText.appendChild(document.createTextNode(`Num of Employee: ${data.numberOfEmployees}/${data.numberOfMaxEmployees}`));
+            createDiv2.appendChild(shiftDetailsText);
+
+            shiftDetailsText = document.createElement("p");
+
+            let names = "";
+
+            for(let i = 0; i < data.employeeNames.length; i++)
+            {
+                names += data.employeeNames[i] + ((i == i - 1) ? ', ' : ' ');
+            }
+
+            shiftDetailsText.appendChild(document.createTextNode(`Employee: ${names}`));
+            createDiv2.appendChild(shiftDetailsText);
+
+            let createDiv3 = document.createElement("div");
+            createDiv3.setAttribute('class', "col-3");
+            createDiv3.setAttribute('style', "padding: 30px;");
+            createDiv.appendChild(createDiv3);
+
+            let joinButton = document.createElement("button");
+            joinButton.setAttribute('type', "button");
+            joinButton.setAttribute('class', "btn btn-info");
+            joinButton.setAttribute('data-toggle', "modal");
+            joinButton.setAttribute('data-target', "#exampleModalCenter");
+            joinButton.appendChild(document.createTextNode("Join"));
+            createDiv3.appendChild(joinButton);
+
+
+            joinButton.setAttribute('id', "joinID" + data.serviceShiftId);
+            joinButton.setAttribute('onClick', "clickConfirm(this.id)");
+
+
+
+        }
+
+
     </script>
 </body>
 
