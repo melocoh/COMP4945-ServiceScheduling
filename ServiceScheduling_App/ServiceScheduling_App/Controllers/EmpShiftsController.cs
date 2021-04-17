@@ -448,7 +448,13 @@ namespace ServiceScheduling_App.Controllers
         // GET: EmpShifts
         public async Task<IActionResult> Index()
         {
-            HttpContext.Session.GetInt32("empId");
+            int? id = HttpContext.Session.GetInt32("empID");
+            if (id == null)
+            {
+                return RedirectToAction("RoleSelection","Home");
+            }
+            ViewBag.accountID = id;
+            ViewBag.accountName = _context.Employees.Where(emp => emp.EmpId == id).FirstOrDefault().FullName;
             var appContext = _context.EmpShifts.Include(e => e.Employee).Include(e => e.ServiceShift);
             return View(await appContext.ToListAsync());
         }
