@@ -396,8 +396,8 @@ namespace ServiceScheduling_App.Migrations
                 {
                     AppId = 2,
                     SessionNo = 1,
-                    StartDateTime = new DateTime (2021, 12, 16, 09, 00, 00),
-                    EndDateTime = new DateTime (2021, 12, 16, 09, 30, 00),
+                    StartDateTime = new DateTime (2021, 10, 16, 09, 00, 00),
+                    EndDateTime = new DateTime (2021, 10, 16, 09, 30, 00),
                     Status = "Denied"
                 }
             };
