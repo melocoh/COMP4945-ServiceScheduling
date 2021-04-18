@@ -41,17 +41,27 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+<br />
+
 <div>
     <h2>Employee Stats</h2>
-    <select id="chartTypeSelect" class="dropdown" name="chartType">
-        <option style="display:none">-- Select Job --</option>
-        <option value="revenue">Revenue</option>
-        <option value="outcomes">Client Outcome</option>
-        <option value="performance">Performance</option>
-    </select>
+    <hr />
+    <div class="d-flex flex-row">
+        <div style="margin-right: 2px;">
+            <select id="chartTypeSelect" class="dropdown form-control" name="chartType">
+                <option style="display:none">-- Select Job --</option>
+                <option value="revenue">Revenue</option>
+                <option value="outcomes">Client Outcome</option>
+                <option value="performance">Performance</option>
+            </select>
+        </div>
+        <div style="margin-left: 2px;">
+            <button id="chart-gen" class="btn btn-info">Generate Bar Graph</button>
+        </div>
+    </div>
 
-    <button id="chart-gen">Generate Bar Graph</button>
     <br />
+    
     <canvas id="chart-container"></canvas>
 </div>
 
