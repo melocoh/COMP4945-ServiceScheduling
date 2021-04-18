@@ -371,7 +371,6 @@ namespace ServiceScheduling_App.Controllers
 
 
 
-
             //bool foundMatchingAppointment = false;
             //int clientCount = 0;
 
