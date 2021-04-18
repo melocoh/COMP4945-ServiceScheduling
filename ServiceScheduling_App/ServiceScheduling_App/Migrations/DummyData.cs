@@ -21,7 +21,6 @@ namespace ServiceScheduling_App.Migrations
                 if (context.Clients != null && context.Clients.Any())
                     return;   // DB has already been seeded
 
-
                 var jobTypes = DummyData.GetJobTypes().ToArray();
                 context.JobTypes.AddRange(jobTypes);
                 context.SaveChanges();
