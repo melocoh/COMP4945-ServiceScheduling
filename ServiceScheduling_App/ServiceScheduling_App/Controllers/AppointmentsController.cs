@@ -60,6 +60,11 @@ namespace ServiceScheduling_App.Controllers
 
             ViewData["Day"] = new SelectList(_context.ServiceShifts, "DayOfWeek", "DayOfWeek");
 
+            ViewData["NumOfWeeks"] = new List<SelectListItem>()
+            {
+                new SelectListItem() { Text = "2", Value = "2" },
+                new SelectListItem() { Text = "3", Value = "3" }
+            };
 
             ViewData["ServiceShiftId"] = new SelectList(_context.ServiceShifts, "ServiceShiftId", "ServiceShiftId");
             return View();
