@@ -68,6 +68,7 @@
                 <hr class="splitline">
                 <div class="d-flex justify-content-center">
                     <div id="schedulebox" class="d-flex flex-column bd-highlight mb-3">
+                        <div id="dp"></div>
                     </div>
                 </div>
                 <div class="d-flex justify-content-start">
@@ -112,6 +113,50 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
             integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous">
+    </script>
+    <script src="~/js/daypilot-all.min.js"></script>
+    <script>
+        
+        window.onload = (event) => {
+            $.ajax({
+                type: 'GET',
+                url: '/EmpShifts/GetCalendarShifts',
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data);
+
+                    var shiftsList = [];
+
+                    for (let i = 0; i < data.length; i++) {
+                        var startDate = data[i].startDate.slice(0, data[i].startDate.lastIndexOf('-'));
+                        var endDate = data[i].endDate.slice(0, data[i].endDate.lastIndexOf('-'));
+                        var shift = {
+                            id: DayPilot.guid(),
+                            text: convertText(data[i].serviceTitle, data[i].location),
+                            start: new DayPilot.Date(startDate),
+                            end: new DayPilot.Date(endDate)
+                        }
+                        shiftsList.push(shift);
+                    }
+
+                    console.log(shiftsList);
+
+                    var dp = new DayPilot.Calendar("dp");
+                    dp.viewType = "Week";
+                    dp.headerDateFormat = "ddd d MMMM yyyy";
+                    dp.businessBeginsHour = 0;
+                    dp.businessEndsHour = 24;
+                    dp.heightSpec = "Fixed";
+                    dp.height = 560;
+                    dp.events.list = shiftsList;
+                    dp.init();
+                }
+            });
+        };
+
+        var convertText = (service, location) => {
+            return `Service:\n ${service} \n Location:\n ${location}`;
+        }
     </script>
 </body>
 </html>

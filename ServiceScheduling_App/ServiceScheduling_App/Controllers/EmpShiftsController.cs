@@ -130,9 +130,26 @@ namespace ServiceScheduling_App.Controllers
         }
     }
 
-    /*************************************************** Query executing objects ********************************************************/
+    // Contains information about a single shift for employees to be displayed on calendar
+    public class EmployeeCalShift
+    {
+        public string serviceTitle { get; set; }
+        public string location { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
 
-    public class EmployeeServiceControl
+        public EmployeeCalShift(string serviceTitle, string location, DateTime startDate, DateTime endDate)
+        {
+            this.serviceTitle = serviceTitle;
+            this.location = location;
+            this.startDate = startDate;
+            this.endDate = endDate;
+        }
+    }
+
+        /*************************************************** Query executing objects ********************************************************/
+
+        public class EmployeeServiceControl
     {
         // ServiceShiftType list that holds every element
         public List<EmployeeService> employeeServiceList;
@@ -338,7 +355,43 @@ namespace ServiceScheduling_App.Controllers
 
             return serializer;
         }
+
+        //returns a list of service information that contains:
+        //serviceShiftId
+        //numberOfEmployees
+        //numberOfMaxEmployees
+        //List<string> employeeNames
+        //it is filtered by a service title, location, day of the week, and (start + end time)
+        public string FilterEmployeeShifts(int empId)
+        {
+            // list of employee shifts
+            List<EmployeeCalShift> empShifts = new List<EmployeeCalShift>();
+            for (int i = 0; i < employeeServiceList.Count; i++)
+            {
+                if (employeeServiceList[i].empId == empId)
+                {
+                    string service = employeeServiceList[i].servTitle;
+                    string location = employeeServiceList[i].location;
+                    DateTime baseDate = getBaseDateFromDay(employeeServiceList[i].dayOfWeek);
+                    DateTime start = baseDate.Add(employeeServiceList[i].startTime);
+                    DateTime end = baseDate.Add(employeeServiceList[i].endTime);
+                    empShifts.Add(new EmployeeCalShift(service, location, start, end));
+                }
+            }
+            var serializer = JsonSerializer.Serialize(empShifts);
+
+            return serializer;
+        }
+
+        public DateTime getBaseDateFromDay(DayOfWeek day)
+        {
+            DateTime dt = DateTime.Now;
+            int diff = dt.DayOfWeek - day;
+            return dt.AddDays(-1 * diff).Date;
+        }
     }
+
+    
 
     // Custom class that makes rows distinct
     class DistinctItemComparer2 : IEqualityComparer<EmployeeService>
@@ -457,6 +510,21 @@ namespace ServiceScheduling_App.Controllers
             ViewBag.accountName = _context.Employees.Where(emp => emp.EmpId == id).FirstOrDefault().FullName;
             var appContext = _context.EmpShifts.Include(e => e.Employee).Include(e => e.ServiceShift);
             return View(await appContext.ToListAsync());
+        }
+
+        // GET: EmpShifts/GetCalendarShifts
+        [HttpGet]
+        public ActionResult GetCalendarShifts()
+        {
+            int? id = HttpContext.Session.GetInt32("empID");
+            if (id == null)
+            {
+                return RedirectToAction("RoleSelection", "Home");
+            }
+            //var res = employeeServiceControl.FilterEmployeeShifts((int)id);
+            var res = employeeServiceControl.FilterEmployeeShifts(4);
+
+            return Ok(res);
         }
 
         // GET: EmpShifts/Details/5
