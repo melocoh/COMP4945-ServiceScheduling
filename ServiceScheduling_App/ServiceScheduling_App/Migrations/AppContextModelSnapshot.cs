@@ -388,7 +388,7 @@ namespace ServiceScheduling_App.Migrations
             modelBuilder.Entity("ServiceScheduling_App.Models.ServiceShift", b =>
                 {
                     b.HasOne("ServiceScheduling_App.Models.ServiceType", "ServiceType")
-                        .WithMany()
+                        .WithMany("ServiceShifts")
                         .HasForeignKey("ServId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -447,6 +447,11 @@ namespace ServiceScheduling_App.Migrations
                     b.Navigation("Appointments");
 
                     b.Navigation("EmpShifts");
+                });
+
+            modelBuilder.Entity("ServiceScheduling_App.Models.ServiceType", b =>
+                {
+                    b.Navigation("ServiceShifts");
                 });
 #pragma warning restore 612, 618
         }

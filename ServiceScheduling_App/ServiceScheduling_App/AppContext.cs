@@ -45,11 +45,10 @@ namespace ServiceScheduling_App
             modelBuilder.Entity<CertificationType>().ToTable("CertificationType");
             modelBuilder.Entity<ServiceType>().ToTable("ServiceType");
             modelBuilder.Entity<ServiceShift>().ToTable("ServiceShift");
-
-            // One to many with Appointment and Appointment Sessions
             modelBuilder.Entity<Appointment>().ToTable("Appointment");
             modelBuilder.Entity<AppointmentSession>().ToTable("AppointmentSession");
 
+            // One to many with Appointment and Appointment Sessions
             modelBuilder.Entity<AppointmentSession>()
             .HasOne<Appointment>(s => s.Appointment)
             .WithMany(g => g.AppointmentSessions)
@@ -66,6 +65,12 @@ namespace ServiceScheduling_App
             .HasOne<JobType>(s => s.JobType)
             .WithMany(g => g.Employees)
             .HasForeignKey(s => s.JobId);
+
+            // One to many with ServiceType and ServiceShift
+            modelBuilder.Entity<ServiceShift>()
+            .HasOne<ServiceType>(s => s.ServiceType)
+            .WithMany(g => g.ServiceShifts)
+            .HasForeignKey(s => s.ServId);
 
             // Intermediate table creation with composite keys
             modelBuilder.Entity<EmpCertification>().HasKey(ec => new { ec.EmpId, ec.CertId });
