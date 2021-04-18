@@ -259,7 +259,7 @@ namespace ServiceScheduling_App.Migrations
                     ServId = 3,
                     DayOfWeek = DayOfWeek.Thursday,
                     TimeStart = new TimeSpan (17,00,00),
-                    TimeEnd = TimeSpan.Zero,
+                    TimeEnd = new TimeSpan (20,30,00),
                     SerLocation = "Burnaby"
                 },
                 new ServiceShift  // 5
@@ -267,7 +267,7 @@ namespace ServiceScheduling_App.Migrations
                     ServId = 4,
                     DayOfWeek = DayOfWeek.Saturday,
                     TimeStart = new TimeSpan (12,30,00),
-                    TimeEnd = TimeSpan.Zero,
+                    TimeEnd = new TimeSpan (17,00,00),
                     SerLocation = "Richmond"
                 },
                 new ServiceShift  // 6
@@ -275,7 +275,7 @@ namespace ServiceScheduling_App.Migrations
                     ServId = 4,
                     DayOfWeek = DayOfWeek.Tuesday,
                     TimeStart = new TimeSpan (12,30,00),
-                    TimeEnd = TimeSpan.Zero,
+                    TimeEnd = new TimeSpan (17,00,00),
                     SerLocation = "Vancouver"
                 },
                 new ServiceShift  // 7
@@ -283,7 +283,7 @@ namespace ServiceScheduling_App.Migrations
                     ServId = 4,
                     DayOfWeek = DayOfWeek.Tuesday,
                     TimeStart = new TimeSpan (12,30,00),
-                    TimeEnd = TimeSpan.Zero,
+                    TimeEnd = new TimeSpan (17,00,00),
                     SerLocation = "Vancouver"
                 },
                 new ServiceShift  // 8
@@ -291,7 +291,7 @@ namespace ServiceScheduling_App.Migrations
                     ServId = 4,
                     DayOfWeek = DayOfWeek.Tuesday,
                     TimeStart = new TimeSpan (12,30,00),
-                    TimeEnd = TimeSpan.Zero,
+                    TimeEnd = new TimeSpan (17,00,00),
                     SerLocation = "Vancouver"
                 },
             };
