@@ -356,12 +356,12 @@ namespace ServiceScheduling_App.Controllers
             return serializer;
         }
 
-        //returns a list of service information that contains:
-        //serviceShiftId
-        //numberOfEmployees
-        //numberOfMaxEmployees
-        //List<string> employeeNames
-        //it is filtered by a service title, location, day of the week, and (start + end time)
+        // Returns a list of service information that contains:
+        // Service name
+        // Location
+        // Start DateTime
+        // End DateTime
+        // It is filtered by Employee ID
         public string FilterEmployeeShifts(int empId)
         {
             // list of employee shifts
@@ -521,8 +521,11 @@ namespace ServiceScheduling_App.Controllers
             {
                 return RedirectToAction("RoleSelection", "Home");
             }
-            //var res = employeeServiceControl.FilterEmployeeShifts((int)id);
-            var res = employeeServiceControl.FilterEmployeeShifts(4);
+
+            // Switch commented res to view employee shifts from logged in user
+            // or Nicki Minaj respectively
+            var res = employeeServiceControl.FilterEmployeeShifts((int)id);
+            //var res = employeeServiceControl.FilterEmployeeShifts(4);
 
             return Ok(res);
         }

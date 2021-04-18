@@ -148,6 +148,21 @@
                     dp.businessEndsHour = 24;
                     dp.heightSpec = "Fixed";
                     dp.height = 560;
+                    dp.eventMoveHandling = "Disabled";
+                    dp.eventClickHandling = "Disabled";
+                    dp.eventResizeHandling = "Disabled";
+                    dp.eventDeleteHandling = "Disabled";
+                    dp.eventHoverHandling = "Bubble";
+                    dp.bubble = new DayPilot.Bubble({
+                        onLoad: function (args) {
+                            // if event object doesn't specify "bubbleHtml" property 
+                            // this onLoad handler will be called to provide the bubble HTML
+                            console.log(typeof (args.source.text()));
+                            var text = args.source.text();
+                            text = spliceSlice(text, text.indexOf(" \n\n"), 0, ",");
+                            args.html = text;
+                        }
+                    }),
                     dp.events.list = shiftsList;
                     dp.init();
                 }
@@ -157,6 +172,19 @@
         var convertText = (service, location) => {
             return `Service:\n ${service} \n\n Location:\n ${location}`;
         }
+
+        function spliceSlice(str, index, count, add) {
+            // We cannot pass negative indexes directly to the 2nd slicing operation.
+            if (index < 0) {
+                index = str.length + index;
+                if (index < 0) {
+                    index = 0;
+                }
+            }
+
+            return str.slice(0, index) + (add || "") + str.slice(index + count);
+        }
+
     </script>
 </body>
 </html>
