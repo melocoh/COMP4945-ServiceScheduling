@@ -84,7 +84,7 @@
                             <!-- Service Type -->
                             <div class="form-group">
                                 <label class="control-label">Service:</label>
-                                <select class="form-control" asp-items="ViewBag.Service">
+                                <select class="form-control" id="serviceInput" asp-items="ViewBag.Service">
                                     <option value="">Select a Service</option>
                                 </select>
                                 <span class="text-danger"></span>
@@ -93,7 +93,7 @@
                             <!-- Location -->
                             <div class="form-group">
                                 <label asp-for="Location" class="control-label"></label>
-                                <select class="form-control" asp-items="ViewBag.Location">
+                                <select class="form-control" id="locationInput" asp-items="ViewBag.Location">
                                     <option value="">Select a Location</option>
                                 </select>
                                 <span class="text-danger"></span>
@@ -102,7 +102,7 @@
                             <!-- Day of Week -->
                             <div class="form-group">
                                 <label asp-for="Day" class="control-label"></label>
-                                <select class="form-control" asp-items="Html.GetEnumSelectList<DayOfWeek>()">
+                                <select class="form-control" id="dayInput" asp-items="Html.GetEnumSelectList<DayOfWeek>()">
                                     <option value="">Select Day of the Week</option>
                                 </select>
                                 <span class="text-danger"></span>
@@ -111,14 +111,14 @@
                             <!-- Min Date Range -->
                             <div class="form-group">
                                 <label asp-for="StartDate" class="control-label"></label>
-                                <input asp-for="StartDate" class="form-control" />
+                                <input asp-for="StartDate" class="form-control" id="startDateInput" />
                                 <span class="text-danger"></span>
                             </div>
 
                             <!-- Max Date Range -->
                             <div class="form-group">
                                 <label asp-for="EndDate" class="control-label"></label>
-                                <input asp-for="EndDate" class="form-control" />
+                                <input asp-for="EndDate" class="form-control" id="endDateInput"/>
                                 <span class="text-danger"></span>
                             </div>
 
@@ -142,7 +142,7 @@
                                         </div>
                                         <div class="modal-body">
                                             <div>
-                                                <p>Wed, 2020-11-16 at 10:00 - 12:00</p>
+                                                <p>Mon, 2020-04-19 at 10:00 - 12:00</p>
                                                 <p>Burnaby</p>
                                                 <p>Rate ($/session): 80.00</p>
                                                 <p>Employee: Jason Chi Fai Lee</p>
@@ -168,7 +168,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                            <a href="@Url.Action("BookingAppointment","Home")">
+                                            <a href="@Url.Action("Index","Appointments")">
                                                 <button type="button" class="btn btn-success">Confirm</button>
                                             </a>
                                         </div>
@@ -207,15 +207,7 @@
 
         $("#check-availability").click(function () {
             document.getElementById("scheduleContainer").innerHTML = '';
-            @* <div class="row border">
-                <div class="col-9">
-                    <p>Wed, 2020-11-16 at 10:00 - 12:00</p>
-                    <p>Burnaby</p>
-                </div>
-                <div class="col-3" style="padding: 30px;">
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">Book</button>
-                </div>
-            </div> *@
+            @*getFilterBookingAppointment();*@
             getFilteredAvailability();
         });
 
@@ -244,8 +236,7 @@
 
             let names = "";
 
-            for(let i = 0; i < data.employeeNames.length; i++)
-            {
+            for (let i = 0; i < data.employeeNames.length; i++) {
                 names += data.employeeNames[i] + ((i == i - 1) ? ', ' : ' ');
             }
 
@@ -276,8 +267,75 @@
             }
         });
 
-        function getFilteredAvailability()
-        {
+        // when service is selected
+        $("#serviceInput").change(function () {
+
+            var select = $("#serviceInput option:selected").text();
+            console.log(select);
+
+            // removes all location options
+            $('#locationInput option').remove();
+
+            // next input is enabled.
+            $('#locationInput').prop("disabled", false); // Element(s) are now enabled.
+
+
+            // enters filtered location options
+            getFilteredLocations();
+        });
+
+        // when service is selected
+        $("#startDateInput").change(function () {
+
+            var select = $("#startDateInput option:selected").text();
+            console.log(select);
+        });
+
+        // ajax call to send parameter and fetch filtered locations
+        // GET
+        // ROUTE: /Appointments/GetFilteredLocations
+        function getFilteredLocations() {
+
+            $.ajax({
+                type: 'GET',
+                url: '/Appointments/GetFilteredLocations?servTitle=' + $("#serviceInput option:selected").text(),
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data);
+
+                    $("#locationInput").append($("<option/>", {
+                        text: "Select Location"
+                    }));
+
+                    for (let i = 0; i < data.length; i++) {
+                        $("#locationInput").append($("<option/>", {
+                            text: data[i]
+                        }));
+                    }
+                }
+            });
+        }
+
+        // ajax call to send parameter and fetch filtered locations
+        // GET
+        // ROUTE: /Appointments/GetFilterBookingAppointment
+        function getFilterBookingAppointment() {
+
+            $.ajax({
+                type: 'GET',
+                url: '/Appointments/GetFilterBookingAppointment?servTitle=' + $("#serviceInput option:selected").text() + '&location=' + $("#locationInput option:selected").text()
+                    + '&dayOfWeek=' + $("#dayInput option:selected").text() + '&minDateRange=' + $("#startDateInput").text() + '&maxDateRange=' + $("#endDateInput").text(),
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data);
+
+                
+                }
+            });
+        }
+
+
+        function getFilteredAvailability() {
 
             // ===============================
             // DO SHIT HERE
@@ -289,36 +347,35 @@
             // example data
             let data = [
                 {
-                    employeeNames:["Bebe ko"],
-                    appSessionId : 1,
-                    day:2,
-                    date: "2020-11-16",
+                    employeeNames: ["Bebe ko"],
+                    appSessionId: 1,
+                    day: 2,
+                    date: "2020-04-19",
                     time: "10:00-12:00",
-                    location : "Burnaby"
+                    location: "Burnaby"
                 },
                 {
-                    employeeNames:["Kuya"],
-                    appSessionId : 1,
-                    day:2,
-                    date: "2020-09-16",
+                    employeeNames: ["Kuya"],
+                    appSessionId: 1,
+                    day: 2,
+                    date: "2020-04-26",
                     time: "08:00-10:00",
-                    location : "Burnaby"
+                    location: "Burnaby"
                 },
                 {
-                    employeeNames:["Jason"],
-                    appSessionId : 2,
-                    day:3,
-                    date: "2020-12-16",
+                    employeeNames: ["Jason"],
+                    appSessionId: 2,
+                    day: 3,
+                    date: "2020-04-19",
                     time: "11:00-15:00",
-                    location : "Burnaby"
+                    location: "Burnaby"
                 },
             ];
             // ===============================
 
             // generate availaibity list
 
-            for(let i = 0; i < data.length; i++)
-            {
+            for (let i = 0; i < data.length; i++) {
                 createCard(data[i]);
             }
         }
@@ -341,8 +398,7 @@
 
             let names = "";
 
-            for(let i = 0; i < data.employeeNames.length; i++)
-            {
+            for (let i = 0; i < data.employeeNames.length; i++) {
                 names += data.employeeNames[i] + ((i == i - 1) ? ', ' : ' ');
             }
 

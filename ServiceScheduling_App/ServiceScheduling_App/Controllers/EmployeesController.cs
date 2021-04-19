@@ -71,7 +71,8 @@ namespace ServiceScheduling_App.Controllers
             {
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction("LoggedIn","Home");
             }
             //ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobId", employee.JobId);
             return View(employee);

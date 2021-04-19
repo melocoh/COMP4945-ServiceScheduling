@@ -297,9 +297,9 @@ namespace ServiceScheduling_App.Controllers
             return filteredLocations.Distinct().ToList();
         }
 
-       
 
-        public void FilterBookingAppointment(string serviceTitle, string location, DayOfWeek dayOfWeek, DateTime minDateRange, DateTime maxDateRange)
+
+        public List<BookingAppointmentData> FilterBookingAppointment(string servTitle, string location, DayOfWeek dayOfWeek, DateTime minDateRange, DateTime maxDateRange)
         {
             List<BookingAppointmentData> bookingAppointmentDataList = new List<BookingAppointmentData>();
 
@@ -308,7 +308,7 @@ namespace ServiceScheduling_App.Controllers
             for (int i=0;i< clientEmployeeServiceList.Count; i++)
             {
                 //filter based on the methods arguments
-                if((clientEmployeeServiceList[i].servTitle== serviceTitle) && (clientEmployeeServiceList[i].location == location)
+                if((clientEmployeeServiceList[i].servTitle== servTitle) && (clientEmployeeServiceList[i].location == location)
                         && (clientEmployeeServiceList[i].dayOfWeek == dayOfWeek))
                 {
                     for(DateTime currentDateTime = minDateRange; currentDateTime < maxDateRange; currentDateTime+=new TimeSpan(1, 0, 0, 0))
@@ -369,7 +369,7 @@ namespace ServiceScheduling_App.Controllers
                 }
             }
 
-
+            return bookingAppointmentDataList;
 
             //bool foundMatchingAppointment = false;
             //int clientCount = 0;
@@ -478,7 +478,24 @@ namespace ServiceScheduling_App.Controllers
             _context = context;
 
             clientEmployeeServiceControl = new ClientEmployeeServiceControl(_context);
-            clientEmployeeServiceControl.FilterBookingAppointment("Rap", "Richmond", DayOfWeek.Saturday, new DateTime(2021,10,1,0,0,0), new DateTime(2021, 11, 30, 0, 0, 0));
+            //clientEmployeeServiceControl.FilterBookingAppointment("Rap", "Richmond", DayOfWeek.Saturday, new DateTime(2021,10,1,0,0,0), new DateTime(2021, 11, 30, 0, 0, 0));
+        }
+
+
+        // GET: Appointments/GetFilteredLocations
+        [HttpGet]
+        public ActionResult GetFilteredLocations(string servTitle)
+        {
+
+            return Ok(clientEmployeeServiceControl.FilterLocations(servTitle));
+        }
+
+        // GET: Appointments/GetFilteredLocations
+        [HttpGet]
+        public ActionResult GetFilterBookingAppointment(string servTitle, string location, DayOfWeek dayOfWeek, DateTime minDateRange, DateTime maxDateRange)
+        {
+
+            return Ok(clientEmployeeServiceControl.FilterBookingAppointment(servTitle, location, dayOfWeek, minDateRange, maxDateRange));
         }
 
         // GET: Appointments
