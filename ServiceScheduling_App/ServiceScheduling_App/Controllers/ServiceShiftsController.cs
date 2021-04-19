@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -267,6 +268,23 @@ namespace ServiceScheduling_App.Controllers
     //    }
     //}
 
+    // Contains information about a single service shift to be displayed on calendar
+    public class ServiceCalShift
+    {
+        public string serviceTitle { get; set; }
+        public string location { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
+
+        public ServiceCalShift(string serviceTitle, string location, DateTime startDate, DateTime endDate)
+        {
+            this.serviceTitle = serviceTitle;
+            this.location = location;
+            this.startDate = startDate;
+            this.endDate = endDate;
+        }
+    }
+
     // Custom class that makes rows distinct
     class DistinctItemComparer : IEqualityComparer<ServiceShiftType>
     {
@@ -450,6 +468,42 @@ namespace ServiceScheduling_App.Controllers
             return serviceAppointmentList;
         }
 
+        // Returns a list of service information that contains:
+        // Service name
+        // Location
+        // Start DateTime
+        // End DateTime
+        // It is filtered by Employee ID
+        public string FilterServiceShiftsById(int id)
+        {
+            // list of service shifts
+            List<ServiceCalShift> servShifts = new List<ServiceCalShift>();
+            List<ServiceShiftType> serviceShifts = GetServiceShiftTypeDetailsList();
+
+            for (int i = 0; i < serviceShifts.Count; i++)
+            {
+                if (serviceShifts[i].id == id)
+                {
+                    string service = serviceShifts[i].servTitle;
+                    string location = serviceShifts[i].location;
+                    DateTime baseDate = getBaseDateFromDay(serviceShifts[i].dayOfWeek);
+                    DateTime start = baseDate.Add(serviceShifts[i].startTime);
+                    DateTime end = baseDate.Add(serviceShifts[i].endTime);
+                    servShifts.Add(new ServiceCalShift(service, location, start, end));
+                }
+            }
+            var serializer = JsonSerializer.Serialize(servShifts);
+
+            return serializer;
+        }
+
+        public DateTime getBaseDateFromDay(DayOfWeek day)
+        {
+            DateTime dt = DateTime.Now;
+            int diff = dt.DayOfWeek - day;
+            return dt.AddDays(-1 * diff).Date;
+        }
+
         /************************************** Select Lists for Form **************************************/
 
         // Converts List to SelectListItems
@@ -533,8 +587,17 @@ namespace ServiceScheduling_App.Controllers
         // GET: ServiceShifts
         public async Task<IActionResult> Index()
         {
-            var appContext = _context.ServiceShifts.Include(s => s.ServiceType);
-            return View(await appContext.ToListAsync());
+            //var appContext = _context.ServiceShifts.Include(s => s.ServiceType);
+            //return View(await appContext.ToListAsync());
+            ViewBag.ServiceTypes = GetSerTitleList();
+            return View();
+        }
+
+        // GET: ServiceShifts/:id
+        public async Task<IActionResult> GetServiceShifts(int id)
+        {
+            var res = FilterServiceShiftsById(id);
+            return Ok(res);
         }
 
         // GET: ServiceShifts/Details/5

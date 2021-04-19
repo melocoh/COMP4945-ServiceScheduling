@@ -258,7 +258,7 @@ namespace ServiceScheduling_App.Migrations
                     ServId = 3,
                     DayOfWeek = DayOfWeek.Thursday,
                     TimeStart = new TimeSpan (17,00,00),
-                    TimeEnd = TimeSpan.Zero,
+                    TimeEnd = new TimeSpan (20,30,00),
                     SerLocation = "Burnaby"
                 },
                 new ServiceShift  // 5
@@ -266,7 +266,7 @@ namespace ServiceScheduling_App.Migrations
                     ServId = 4,
                     DayOfWeek = DayOfWeek.Saturday,
                     TimeStart = new TimeSpan (12,30,00),
-                    TimeEnd = TimeSpan.Zero,
+                    TimeEnd = new TimeSpan (17,00,00),
                     SerLocation = "Richmond"
                 },
                 new ServiceShift  // 6
@@ -274,7 +274,7 @@ namespace ServiceScheduling_App.Migrations
                     ServId = 4,
                     DayOfWeek = DayOfWeek.Tuesday,
                     TimeStart = new TimeSpan (12,30,00),
-                    TimeEnd = TimeSpan.Zero,
+                    TimeEnd = new TimeSpan (17,00,00),
                     SerLocation = "Vancouver"
                 },
                 new ServiceShift  // 7
@@ -282,7 +282,7 @@ namespace ServiceScheduling_App.Migrations
                     ServId = 4,
                     DayOfWeek = DayOfWeek.Tuesday,
                     TimeStart = new TimeSpan (12,30,00),
-                    TimeEnd = TimeSpan.Zero,
+                    TimeEnd = new TimeSpan (17,00,00),
                     SerLocation = "Vancouver"
                 },
                 new ServiceShift  // 8
@@ -290,7 +290,7 @@ namespace ServiceScheduling_App.Migrations
                     ServId = 4,
                     DayOfWeek = DayOfWeek.Tuesday,
                     TimeStart = new TimeSpan (12,30,00),
-                    TimeEnd = TimeSpan.Zero,
+                    TimeEnd = new TimeSpan (17,00,00),
                     SerLocation = "Vancouver"
                 },
             };
@@ -396,8 +396,8 @@ namespace ServiceScheduling_App.Migrations
                 {
                     AppId = 2,
                     SessionNo = 1,
-                    StartDateTime = new DateTime (2021, 12, 16, 09, 00, 00),
-                    EndDateTime = new DateTime (2021, 12, 16, 09, 30, 00),
+                    StartDateTime = new DateTime (2021, 10, 16, 09, 00, 00),
+                    EndDateTime = new DateTime (2021, 10, 16, 09, 30, 00),
                     Status = "Denied"
                 }
             };

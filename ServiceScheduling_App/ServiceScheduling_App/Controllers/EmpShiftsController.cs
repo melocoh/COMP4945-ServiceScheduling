@@ -12,6 +12,8 @@ using ServiceScheduling_App.Models;
 //using System.Web.Script.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http;
+
 namespace ServiceScheduling_App.Controllers
 {
 
@@ -130,9 +132,26 @@ namespace ServiceScheduling_App.Controllers
         }
     }
 
-    /*************************************************** Query executing objects ********************************************************/
+    // Contains information about a single shift for employees to be displayed on calendar
+    public class EmployeeCalShift
+    {
+        public string serviceTitle { get; set; }
+        public string location { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
 
-    public class EmployeeServiceControl
+        public EmployeeCalShift(string serviceTitle, string location, DateTime startDate, DateTime endDate)
+        {
+            this.serviceTitle = serviceTitle;
+            this.location = location;
+            this.startDate = startDate;
+            this.endDate = endDate;
+        }
+    }
+
+        /*************************************************** Query executing objects ********************************************************/
+
+        public class EmployeeServiceControl
     {
         // ServiceShiftType list that holds every element
         public List<EmployeeService> employeeServiceList;
@@ -338,7 +357,43 @@ namespace ServiceScheduling_App.Controllers
 
             return serializer;
         }
+
+        // Returns a list of service information that contains:
+        // Service name
+        // Location
+        // Start DateTime
+        // End DateTime
+        // It is filtered by Employee ID
+        public string FilterEmployeeShifts(int empId)
+        {
+            // list of employee shifts
+            List<EmployeeCalShift> empShifts = new List<EmployeeCalShift>();
+            for (int i = 0; i < employeeServiceList.Count; i++)
+            {
+                if (employeeServiceList[i].empId == empId)
+                {
+                    string service = employeeServiceList[i].servTitle;
+                    string location = employeeServiceList[i].location;
+                    DateTime baseDate = getBaseDateFromDay(employeeServiceList[i].dayOfWeek);
+                    DateTime start = baseDate.Add(employeeServiceList[i].startTime);
+                    DateTime end = baseDate.Add(employeeServiceList[i].endTime);
+                    empShifts.Add(new EmployeeCalShift(service, location, start, end));
+                }
+            }
+            var serializer = JsonSerializer.Serialize(empShifts);
+
+            return serializer;
+        }
+
+        public DateTime getBaseDateFromDay(DayOfWeek day)
+        {
+            DateTime dt = DateTime.Now;
+            int diff = dt.DayOfWeek - day;
+            return dt.AddDays(-1 * diff).Date;
+        }
     }
+
+    
 
     // Custom class that makes rows distinct
     class DistinctItemComparer2 : IEqualityComparer<EmployeeService>
@@ -459,6 +514,24 @@ namespace ServiceScheduling_App.Controllers
             return View(await appContext.ToListAsync());
         }
 
+        // GET: EmpShifts/GetCalendarShifts
+        [HttpGet]
+        public ActionResult GetCalendarShifts()
+        {
+            int? id = HttpContext.Session.GetInt32("empID");
+            if (id == null)
+            {
+                return RedirectToAction("RoleSelection", "Home");
+            }
+
+            // Switch commented res to view employee shifts from logged in user
+            // or Nicki Minaj respectively
+            var res = employeeServiceControl.FilterEmployeeShifts((int)id);
+            //var res = employeeServiceControl.FilterEmployeeShifts(4);
+
+            return Ok(res);
+        }
+
         // GET: EmpShifts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -545,9 +618,16 @@ namespace ServiceScheduling_App.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public ActionResult JoinShift(int EmpId, int ServiceShiftId)
+        public ActionResult JoinShift(int ServiceShiftId)
         {
-            EmpShift empShift = new EmpShift(EmpId, ServiceShiftId);
+            int? EmpId = HttpContext.Session.GetInt32("empID");
+
+            if (EmpId == null)
+            {
+                return RedirectToAction("RoleSelection", "Home");
+            }
+
+            EmpShift empShift = new EmpShift((int)EmpId, ServiceShiftId);
 
             if (ModelState.IsValid)
             {

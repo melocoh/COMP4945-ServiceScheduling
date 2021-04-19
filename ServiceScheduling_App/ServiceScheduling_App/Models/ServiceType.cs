@@ -30,6 +30,9 @@ namespace ServiceScheduling_App.Models
         [RegularExpression(@"^\d+\.\d{2}$", ErrorMessage = "Must fit currency format")] // Input validation
         public double Rate { get; set; }
 
+        // References EmpShift object
+        public ICollection<ServiceShift> ServiceShifts { get; set; }
+
         // References Employee object
         public virtual CertificationType CertificationType { get; set; }
     }
