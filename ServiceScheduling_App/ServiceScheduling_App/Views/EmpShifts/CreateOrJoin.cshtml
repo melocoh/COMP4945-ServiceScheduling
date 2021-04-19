@@ -180,17 +180,6 @@
 
     <script>
 
-        $(document).on('click', '#btn-create', function () {
-
-            let serviceType = document.getElementById("serviceTitle");
-            serviceType.innerText =  "Service: " + $("#serviceInput option:selected").text();
-            let serviceLoc = document.getElementById("serviceLocation");
-            serviceLoc.innerText = "Location: " + $("#locationInput option:selected").text();
-            let serviceDay = document.getElementById("serviceDay");
-            serviceDay.innerText = "Day of Week: " + $("#dayInput option:selected").text();
-            let serviceTime = document.getElementById("serviceTime");
-            serviceTime.innerText = "Time: " + $("#timeInput option:selected").text();
-        });
 
         // when check shifts button is clicked
         $(document).on('click', '#btn-check', function () {
@@ -259,6 +248,15 @@
         function clickConfirm(serviceShiftId) {
 
             console.log("clickedConfirm hit serviceShiftId " + serviceShiftId);
+
+            let serviceType = document.getElementById("serviceTitle");
+            serviceType.innerText = "Service: " + $("#serviceInput option:selected").text();
+            let serviceLoc = document.getElementById("serviceLocation");
+            serviceLoc.innerText = "Location: " + $("#locationInput option:selected").text();
+            let serviceDay = document.getElementById("serviceDay");
+            serviceDay.innerText = "Day of Week: " + $("#dayInput option:selected").text();
+            let serviceTime = document.getElementById("serviceTime");
+            serviceTime.innerText = "Time: " + $("#timeInput option:selected").text();
 
             let placeholder = "" + serviceShiftId;
 
