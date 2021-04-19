@@ -84,14 +84,18 @@
                             <!-- Service Type -->
                             <div class="form-group">
                                 <label class="control-label">Service:</label>
-                                <select class="form-control" asp-items="ViewBag.ServTitle"></select>
+                                <select class="form-control" asp-items="ViewBag.Service">
+                                    <option value="">Select a Service</option>
+                                </select>
                                 <span class="text-danger"></span>
                             </div>
 
                             <!-- Location -->
                             <div class="form-group">
                                 <label asp-for="Location" class="control-label"></label>
-                                <select class="form-control" asp-items="ViewBag.Location"></select>
+                                <select class="form-control" asp-items="ViewBag.Location">
+                                    <option value="">Select a Location</option>
+                                </select>
                                 <span class="text-danger"></span>
                             </div>
 
@@ -152,15 +156,13 @@
                                             </div>
                                             <!-- Hidden Div -->
                                             <div id="hiddenDiv" style="display: none;">
-                                                <p>Please choose the <u>number of weeks</u> you'd like to subscribe to this service:</p>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        Number of weeks
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <a class="dropdown-item" href="#">2</a>
-                                                        <a class="dropdown-item" href="#">3</a>
-                                                    </div>
+                                                <!-- Weekly subscri -->
+                                                <div class="form-group">
+                                                    <label class="control-label">Please choose the <u>number of weeks</u> you'd like to subscribe to this service:</label>
+                                                    <select class="form-control" asp-items="ViewBag.NumOfWeeks">
+                                                        <option value="">Select the number of weekly sessions</option>
+                                                    </select>
+                                                    <span class="text-danger"></span>
                                                 </div>
                                             </div>
                                         </div>

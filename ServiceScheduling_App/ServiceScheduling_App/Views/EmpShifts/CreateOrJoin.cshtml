@@ -380,7 +380,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '/EmpShifts/JoinShift?EmpId=' + 4 + '&ServiceShiftId=' + serviceShiftId,
+                url: '/EmpShifts/JoinShift?ServiceShiftId=' + serviceShiftId,
                 dataType: 'JSON',
                 success: function (data) {
                 alert(data.success);
