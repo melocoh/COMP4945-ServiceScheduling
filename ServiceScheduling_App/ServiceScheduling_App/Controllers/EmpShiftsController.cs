@@ -620,9 +620,14 @@ namespace ServiceScheduling_App.Controllers
         [HttpPost]
         public ActionResult JoinShift(int ServiceShiftId)
         {
-            int EmpId = (int)HttpContext.Session.GetInt32("empID");
+            int? EmpId = HttpContext.Session.GetInt32("empID");
 
-            EmpShift empShift = new EmpShift(EmpId, ServiceShiftId);
+            if (EmpId == null)
+            {
+                return RedirectToAction("RoleSelection", "Home");
+            }
+
+            EmpShift empShift = new EmpShift((int)EmpId, ServiceShiftId);
 
             if (ModelState.IsValid)
             {
