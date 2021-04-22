@@ -90,7 +90,8 @@ namespace ServiceScheduling_App.Controllers
             {
                 return NotFound();
             }
-            //ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobId", employee.JobId);
+
+            ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobTitle");
             return View(employee);
         }
 
