@@ -64,7 +64,7 @@ namespace ServiceScheduling_App.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmpId,FullName,JobId,Email,Password")] Employee employee)
+        public async Task<IActionResult> Create([Bind("EmpId,FullName,JobId,Email,Password,Age")] Employee employee)
         {
 
             if (ModelState.IsValid)
@@ -100,7 +100,7 @@ namespace ServiceScheduling_App.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EmpId,FullName,JobId,Email,Password")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("EmpId,FullName,JobId,Email,Password,Age")] Employee employee)
         {
             if (id != employee.EmpId)
             {

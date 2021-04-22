@@ -14,7 +14,6 @@ namespace ServiceScheduling_App.Models
 
         [Column(TypeName = "varchar(50)")]
         [Required] // Input validation
-
         [RegularExpression(@"^[a-zA-Z ]+$", ErrorMessage = "Use letters only please")] // Input validation
         [Display(Name = "Full Name")]
         public string FullName { get; set; }
@@ -31,6 +30,9 @@ namespace ServiceScheduling_App.Models
         [Required] // Input validation
         [StringLength(15, MinimumLength = 6)]
         public string Password { get; set; }
+
+        [Range(18, 120, ErrorMessage = "Your age must be between {0} and {1}")]
+        public int Age { get; set; }
 
         // References JobType object
         public virtual JobType JobType { get; set; }

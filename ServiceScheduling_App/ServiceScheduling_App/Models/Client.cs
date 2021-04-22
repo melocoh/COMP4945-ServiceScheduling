@@ -28,6 +28,9 @@ namespace ServiceScheduling_App.Models
         [StringLength(15, MinimumLength = 6)]
         public string Password { get; set; }
 
+        [Range(18, 120, ErrorMessage = "Your age must be between {0} and {1}")]
+        public int Age { get; set; }
+
         public ICollection<ClientAppointment> ClientAppointments { get; set; }
     }
 }

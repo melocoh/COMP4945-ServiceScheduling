@@ -87,6 +87,11 @@
                                 <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                             <div class="form-group">
+                                <label asp-for="Age" class="control-label"></label>
+                                <input asp-for="Age" class="logininput form-control" />
+                                <span asp-validation-for="Age" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
                                 <a class="btn btn-info statusbutton" href="@Url.Action("RoleSelection","Home")">Go Back</a>
                                 <button type="submit" value="Sign Up" class="btn btn-primary statusbutton">Sign Up</button>
                             </div>
