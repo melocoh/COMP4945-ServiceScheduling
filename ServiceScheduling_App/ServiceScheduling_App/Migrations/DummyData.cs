@@ -89,31 +89,31 @@ namespace ServiceScheduling_App.Migrations
                 FullName = "Nicki Minaj",
                 JobId = 1,
                 Email = "nicki@mail.com",
-                Password = "1234"
+                Password = "asdf123"
                 },
             new Employee {  // 2
                 FullName = "Jason Chi Fai Lee",
                 JobId = 2,
-                Email = "cflee@mail.com",
-                Password = "456"
+                Email = "jason@mail.com",
+                Password = "asdf123"
                 },
             new Employee {  // 3
-                FullName = "Saem Lee",
+                FullName = "Eunsaem Lee",
                 JobId = 3,
-                Email = "slee@mail.com",
-                Password = "hehe"
+                Email = "eunsaem@mail.com",
+                Password = "asdf123"
                 },
             new Employee {  // 4
                 FullName = "Eric NumbaOne",
                 JobId = 4,
                 Email = "eric@mail.com",
-                Password = "1234"
+                Password = "asdf123"
                 },
             new Employee {  // 5
                 FullName = "Melody NumbaOne",
                 JobId = 4,
-                Email = "eric@mail.com",
-                Password = "1234"
+                Email = "melody@mail.com",
+                Password = "asdf123"
                 }
             };
             return employees;
@@ -191,34 +191,64 @@ namespace ServiceScheduling_App.Migrations
         public static List<EmpCertification> GetEmpCertifications()
         {
             List<EmpCertification> empCertifications = new List<EmpCertification>() {
-                new EmpCertification  // 1 
+                new EmpCertification  // 1
                 {
                     EmpId = 1,
+                    CertId = 3
+                },
+                new EmpCertification  // 2
+                {
+                    EmpId = 1,
+                    CertId = 4
+                },
+                new EmpCertification  // 3
+                {
+                    EmpId = 2,
                     CertId = 1
                 },
-                new EmpCertification  // 1 
+                new EmpCertification  // 4
                 {
                     EmpId = 3,
                     CertId = 1
                 },
-                new EmpCertification  // 1 
+                new EmpCertification  // 5
                 {
-                    EmpId = 4,
-                    CertId = 1
-                },
-                new EmpCertification  // 2
-                {
-                    EmpId = 2,
+                    EmpId = 3,
                     CertId = 2
                 },
-                new EmpCertification  // 3
+                new EmpCertification  // 6
                 {
                     EmpId = 3,
                     CertId = 3
                 },
-                new EmpCertification  // 4
+                new EmpCertification  // 7
+                {
+                    EmpId = 3,
+                    CertId = 4
+                },
+                new EmpCertification  // 8
                 {
                     EmpId = 4,
+                    CertId = 1
+                },
+                new EmpCertification  // 9
+                {
+                    EmpId = 4,
+                    CertId = 2
+                },
+                new EmpCertification  // 10
+                {
+                    EmpId = 4,
+                    CertId = 4
+                },
+                new EmpCertification  // 11
+                {
+                    EmpId = 5,
+                    CertId = 1
+                },
+                new EmpCertification  // 12
+                {
+                    EmpId = 5,
                     CertId = 4
                 }
             };
@@ -234,64 +264,88 @@ namespace ServiceScheduling_App.Migrations
                     ServId = 1,
                     DayOfWeek = DayOfWeek.Monday,
                     TimeStart = new TimeSpan (7,30,00),
-                    TimeEnd = new TimeSpan (15,30,00),
+                    TimeEnd = new TimeSpan (10,30,00),
                     SerLocation = "Burnaby"
                 },
                 new ServiceShift  // 2 
                 {
                     ServId = 1,
                     DayOfWeek = DayOfWeek.Wednesday,
-                    TimeStart = new TimeSpan (07,30,00),
-                    TimeEnd = new TimeSpan (15,30,00),
+                    TimeStart = new TimeSpan (10,00,00),
+                    TimeEnd = new TimeSpan (12,30,00),
                     SerLocation = "Burnaby"
                 },
                 new ServiceShift  // 3
                 {
-                    ServId = 2,
+                    ServId = 1,
                     DayOfWeek = DayOfWeek.Friday,
-                    TimeStart = new TimeSpan (07,30,00),
+                    TimeStart = new TimeSpan (13,30,00),
                     TimeEnd = new TimeSpan (15,30,00),
-                    SerLocation = "Richmond"
+                    SerLocation = "New Westminster"
                 },
                 new ServiceShift  // 4
                 {
-                    ServId = 3,
-                    DayOfWeek = DayOfWeek.Thursday,
-                    TimeStart = new TimeSpan (17,00,00),
-                    TimeEnd = TimeSpan.Zero,
-                    SerLocation = "Burnaby"
+                    ServId = 2,
+                    DayOfWeek = DayOfWeek.Friday,
+                    TimeStart = new TimeSpan (16,30,00),
+                    TimeEnd = new TimeSpan (17,30,00),
+                    SerLocation = "Richmond"
                 },
                 new ServiceShift  // 5
                 {
-                    ServId = 4,
+                    ServId = 2,
                     DayOfWeek = DayOfWeek.Saturday,
-                    TimeStart = new TimeSpan (12,30,00),
-                    TimeEnd = TimeSpan.Zero,
-                    SerLocation = "Richmond"
+                    TimeStart = new TimeSpan (6,30,00),
+                    TimeEnd = new TimeSpan (10,30,00),
+                    SerLocation = "Surrey"
                 },
                 new ServiceShift  // 6
                 {
-                    ServId = 4,
-                    DayOfWeek = DayOfWeek.Tuesday,
-                    TimeStart = new TimeSpan (12,30,00),
-                    TimeEnd = TimeSpan.Zero,
-                    SerLocation = "Vancouver"
+                    ServId = 2,
+                    DayOfWeek = DayOfWeek.Sunday,
+                    TimeStart = new TimeSpan (10,00,00),
+                    TimeEnd = new TimeSpan (14,00,00),
+                    SerLocation = "Richmond"
                 },
                 new ServiceShift  // 7
                 {
-                    ServId = 4,
-                    DayOfWeek = DayOfWeek.Tuesday,
-                    TimeStart = new TimeSpan (12,30,00),
-                    TimeEnd = TimeSpan.Zero,
-                    SerLocation = "Vancouver"
+                    ServId = 3,
+                    DayOfWeek = DayOfWeek.Sunday,
+                    TimeStart = new TimeSpan (9,00,00),
+                    TimeEnd = new TimeSpan (11,00,00),
+                    SerLocation = "Delta"
                 },
                 new ServiceShift  // 8
                 {
+                    ServId = 3,
+                    DayOfWeek = DayOfWeek.Sunday,
+                    TimeStart = new TimeSpan (14,00,00),
+                    TimeEnd = new TimeSpan (16,00,00),
+                    SerLocation = "Pitt Meadows"
+                },
+                new ServiceShift  // 9
+                {
+                    ServId = 3,
+                    DayOfWeek = DayOfWeek.Monday,
+                    TimeStart = new TimeSpan (11,00,00),
+                    TimeEnd = new TimeSpan (14,00,00),
+                    SerLocation = "Mission"
+                },
+                new ServiceShift  // 10
+                {
                     ServId = 4,
                     DayOfWeek = DayOfWeek.Tuesday,
-                    TimeStart = new TimeSpan (12,30,00),
-                    TimeEnd = TimeSpan.Zero,
-                    SerLocation = "Vancouver"
+                    TimeStart = new TimeSpan (14,00,00),
+                    TimeEnd = new TimeSpan (17,30,00),
+                    SerLocation = "Maple Ridge"
+                },
+                new ServiceShift  // 11
+                {
+                    ServId = 4,
+                    DayOfWeek = DayOfWeek.Thursday,
+                    TimeStart = new TimeSpan (14,00,00),
+                    TimeEnd = new TimeSpan (17,30,00),
+                    SerLocation = "Maple Ridge"
                 },
             };
 
@@ -310,37 +364,57 @@ namespace ServiceScheduling_App.Migrations
                 new EmpShift  // 1
                 {
                     ServiceShiftId = 1,
-                    EmpId = 3
-                },
-                new EmpShift  // 1
-                {
-                    ServiceShiftId = 1,
-                    EmpId = 4
+                    EmpId = 5
                 },
                 new EmpShift  // 2
                 {
                     ServiceShiftId = 2,
-                    EmpId = 1
+                    EmpId = 3
                 },
                 new EmpShift  // 3
                 {
-                    ServiceShiftId = 7,
-                    EmpId = 2
+                    ServiceShiftId = 3,
+                    EmpId = 4
                 },
                 new EmpShift  // 4
                 {
                     ServiceShiftId = 4,
-                    EmpId = 3
+                    EmpId = 1
                 },
                 new EmpShift  // 5
                 {
                     ServiceShiftId = 5,
-                    EmpId = 4
+                    EmpId = 1
                 },
-                 new EmpShift  // 6
+                new EmpShift  // 6
                 {
                     ServiceShiftId = 6,
+                    EmpId = 3
+                },
+                new EmpShift  // 7
+                {
+                    ServiceShiftId = 7,
+                    EmpId = 3
+                },
+                new EmpShift  // 8
+                {
+                    ServiceShiftId = 8,
                     EmpId = 4
+                },
+                new EmpShift  // 9
+                {
+                    ServiceShiftId = 9,
+                    EmpId = 4
+                },
+                new EmpShift  // 10
+                {
+                    ServiceShiftId = 10,
+                    EmpId = 2
+                },
+                new EmpShift  // 11
+                {
+                    ServiceShiftId = 11,
+                    EmpId = 5
                 }
             };
 
