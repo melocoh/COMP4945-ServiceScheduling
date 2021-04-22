@@ -12,8 +12,6 @@ using ServiceScheduling_App.ViewModels;
 
 namespace ServiceScheduling_App.Controllers
 {
-
-
     // EmployeeService
     // object that contains elements from ServiceShift, ServiceType, EmpShift, and Employee
     // @usage form input
@@ -478,6 +476,9 @@ namespace ServiceScheduling_App.Controllers
             _context = context;
 
             clientEmployeeServiceControl = new ClientEmployeeServiceControl(_context);
+
+
+
             //clientEmployeeServiceControl.FilterBookingAppointment("Rap", "Richmond", DayOfWeek.Saturday, new DateTime(2021,10,1,0,0,0), new DateTime(2021, 11, 30, 0, 0, 0));
         }
 

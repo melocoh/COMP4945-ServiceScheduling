@@ -19,12 +19,69 @@ namespace ServiceScheduling_App.Controllers
             _context = context;
         }
 
-        // GET: AppointmentSessions
+        //GET: AppointmentSessions
         public async Task<IActionResult> Index()
         {
-            var appContext = _context.AppointmentSession.Include(a => a.Appointment);
-            return View(await appContext.ToListAsync());
+            var appContext = await _context.AppointmentSession.Include(a => a.Appointment)
+                .ToListAsync();
+
+            var orderedContext = appContext.OrderBy(x => x.AppId).ToList();
+
+            return View(orderedContext);
         }
+
+        public async Task<IActionResult> AppCount()
+        {
+            var appContext = await _context.AppointmentSession.Include(a => a.Appointment)
+                .ToListAsync();
+
+            var groupedContext = appContext.GroupBy(t => t.Status).ToList();
+
+            List<AppointmentSession> sortedAppointmentSessions = new List<AppointmentSession>();
+
+            foreach (var group in groupedContext)
+            {
+                foreach (AppointmentSession a in group)
+                {
+                    sortedAppointmentSessions.Add(a);
+                }
+            }
+
+            return View(sortedAppointmentSessions);
+        }
+
+        // GET: AppointmentSessions/AppCount
+        //public async Task<IActionResult> AppCount()
+        //{
+        //    var appContext = await _context.AppointmentSession.Include(a => a.Appointment)
+        //        .ToListAsync();
+
+
+        //    var groupedContext = appContext
+        //        .GroupBy(a => a.AppId)
+        //        .Select(g => new
+        //        {
+        //            AppId = appContext.Where(v => v.AppId == g.Key),
+        //            AppSessionQty = g.Count()
+        //        })
+        //        .ToList();
+
+        //    List<AppointmentSession> sortedAppointmentSessions = new List<AppointmentSession>();
+
+        //    foreach (var group in groupedContext)
+        //    {
+        //        foreach (AppointmentSession a in group)
+        //        {
+        //            sortedAppointmentSessions.Add(a);
+        //        }
+        //    }
+
+        //    return View(groupedContext);
+        //    //return View(sortedAppointmentSessions);
+        //}
+
+        
+
 
         // GET: AppointmentSessions/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -36,7 +93,9 @@ namespace ServiceScheduling_App.Controllers
 
             var appointmentSession = await _context.AppointmentSession
                 .Include(a => a.Appointment)
-                .FirstOrDefaultAsync(m => m.AppSessionId == id);
+                .FirstOrDefaultAsync(m => m.AppSessionId == id)
+                ;
+
             if (appointmentSession == null)
             {
                 return NotFound();

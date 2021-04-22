@@ -399,6 +399,22 @@ namespace ServiceScheduling_App.Migrations
                     StartDateTime = new DateTime (2021, 10, 16, 09, 00, 00),
                     EndDateTime = new DateTime (2021, 10, 16, 09, 30, 00),
                     Status = "Denied"
+                },
+                new AppointmentSession  // 2
+                {
+                    AppId = 3,
+                    SessionNo = 3,
+                    StartDateTime = new DateTime (2021, 12, 23, 12, 00, 00),
+                    EndDateTime = new DateTime (2021, 12, 23, 13, 00, 00),
+                    Status = "Pending"
+                },
+                new AppointmentSession  // 4
+                {
+                    AppId = 2,
+                    SessionNo = 2,
+                    StartDateTime = new DateTime (2022, 1, 16, 09, 00, 00),
+                    EndDateTime = new DateTime (2022, 1, 16, 09, 30, 00),
+                    Status = "Completed"
                 }
             };
             return appointmentsSessions;
