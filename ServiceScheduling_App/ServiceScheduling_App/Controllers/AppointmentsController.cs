@@ -10,6 +10,10 @@ using ServiceScheduling_App;
 using ServiceScheduling_App.Models;
 using ServiceScheduling_App.ViewModels;
 
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http;
+
 namespace ServiceScheduling_App.Controllers
 {
 
@@ -75,15 +79,15 @@ namespace ServiceScheduling_App.Controllers
 
     public class BookingAppointmentData
     {
-        public int serviceShiftID;
-        public DateTime date;
-        public string startTime;
-        public string endTime;
-        public int clientCount;
-        public int maxClients;
-        public string location;
-        public List<string> employeeNameList;
-        public double rate;
+        public int serviceShiftID { get; set; }
+        public DateTime date { get; set; }
+        public string startTime { get; set; }
+        public string endTime { get; set; }
+        public int clientCount { get; set; }
+        public int maxClients { get; set; }
+        public string location { get; set; }
+        public List<string> employeeNameList { get; set; }
+        public double rate { get; set; }
 
         public BookingAppointmentData(int serviceShiftID, DateTime date, string startTime, string endTime, int maxClients, string location, double rate)
         {
@@ -297,41 +301,55 @@ namespace ServiceScheduling_App.Controllers
             return filteredLocations.Distinct().ToList();
         }
 
+        //returns a list of all services day of the week filtered by their title and location
+        public List<DayOfWeek> FilterDayOfTheWeek(string servTitle, string location)
+        {
+            List<DayOfWeek> filteredDayOfTheWeek = new List<DayOfWeek>();
+            for (int i = 0; i < clientEmployeeServiceList.Count; i++)
+            {
+                if ((clientEmployeeServiceList[i].servTitle == servTitle) && (clientEmployeeServiceList[i].location == location))
+                {
+                    filteredDayOfTheWeek.Add(clientEmployeeServiceList[i].dayOfWeek);
+                }
+            }
+
+            return filteredDayOfTheWeek.Distinct().ToList();
+        }
 
 
-        public List<BookingAppointmentData> FilterBookingAppointment(string servTitle, string location, DayOfWeek dayOfWeek, DateTime minDateRange, DateTime maxDateRange)
+        public string FilterBookingAppointment(string servTitle, string location, DayOfWeek dayOfWeek, DateTime minDateRange, DateTime maxDateRange)
         {
             List<BookingAppointmentData> bookingAppointmentDataList = new List<BookingAppointmentData>();
 
 
             //loop through all of the clientEmployeeServiceList list
-            for (int i=0;i< clientEmployeeServiceList.Count; i++)
+            for (int i = 0; i < clientEmployeeServiceList.Count; i++)
             {
                 //filter based on the methods arguments
-                if((clientEmployeeServiceList[i].servTitle== servTitle) && (clientEmployeeServiceList[i].location == location)
+                if ((clientEmployeeServiceList[i].servTitle == servTitle) && (clientEmployeeServiceList[i].location == location)
                         && (clientEmployeeServiceList[i].dayOfWeek == dayOfWeek))
                 {
-                    for(DateTime currentDateTime = minDateRange; currentDateTime < maxDateRange; currentDateTime+=new TimeSpan(1, 0, 0, 0))
+                    for (DateTime currentDateTime = minDateRange; currentDateTime < maxDateRange; currentDateTime += new TimeSpan(1, 0, 0, 0))
                     {
-                        if(currentDateTime.DayOfWeek== dayOfWeek)
+                        if (currentDateTime.DayOfWeek == dayOfWeek)
                         {
 
                             bool foundInsideList = false;
                             //check if we already we already have already have a record
-                            for(int f=0;f< bookingAppointmentDataList.Count; f++)
+                            for (int f = 0; f < bookingAppointmentDataList.Count; f++)
                             {
-                                if((bookingAppointmentDataList[f].date == currentDateTime) && (clientEmployeeServiceList[i].serviceShiftId == bookingAppointmentDataList[f].serviceShiftID))
+                                if ((bookingAppointmentDataList[f].date == currentDateTime) && (clientEmployeeServiceList[i].serviceShiftId == bookingAppointmentDataList[f].serviceShiftID))
                                 {
                                     //it already exists....
                                     //add the employee to it
                                     bookingAppointmentDataList[f].addEmployee(clientEmployeeServiceList[i].fullName);
                                     foundInsideList = true;
                                     break;
-                                } 
+                                }
                             }
 
 
-                            if(!foundInsideList)
+                            if (!foundInsideList)
                             {
                                 bookingAppointmentDataList.Add(new BookingAppointmentData(clientEmployeeServiceList[i].serviceShiftId, currentDateTime,
                                     clientEmployeeServiceList[i].startTime.ToString(), clientEmployeeServiceList[i].endTime.ToString(),
@@ -351,7 +369,7 @@ namespace ServiceScheduling_App.Controllers
 
 
             //loop through our new employee divs and add the clients to them
-            for(int i=0;i< bookingAppointmentDataList.Count; i++)
+            for (int i = 0; i < bookingAppointmentDataList.Count; i++)
             {
                 //loop through our new employee divs and add the clients to them
                 for (int f = 0; f < clientAppointmentList.Count; f++)
@@ -369,54 +387,13 @@ namespace ServiceScheduling_App.Controllers
                 }
             }
 
-            return bookingAppointmentDataList;
+            //return bookingAppointmentDataList;
 
-            //bool foundMatchingAppointment = false;
-            //int clientCount = 0;
+            var serializer = JsonSerializer.Serialize(bookingAppointmentDataList);
 
-            ////look for a match in the clientAppointmentList list
-            //for (int f = 0; f < clientAppointmentList.Count; f++)
-            //{
-            //    if ((clientEmployeeServiceList[i].serviceShiftId == clientAppointmentList[f].serviceShiftID)
-            //        && (clientAppointmentList[f].entryDate > minDateRange) && (clientAppointmentList[f].entryDate < maxDateRange))
-            //    {
-            //        foundMatchingAppointment = true;
-            //        clientCount++;
-
-
-
-
-
-
-
-            //    }
-            //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-            // ServiceShiftType list that holds every element
-            //public List<ClientEmployeeService> clientEmployeeServiceList;
-            ////client appointments + appointment + appointmentsession
-            //public List<ClientAppointment> clientAppointmentList;
-
-
-
+            return serializer;
         }
-
-
-
-
-}
+    }
 
 
 
@@ -488,6 +465,14 @@ namespace ServiceScheduling_App.Controllers
         {
 
             return Ok(clientEmployeeServiceControl.FilterLocations(servTitle));
+        }
+
+        // GET: Appointments/GetFilteredDayOfWeek
+        [HttpGet]
+        public ActionResult GetFilteredDayOfWeek(string servTitle, string location)
+        {
+
+            return Ok(clientEmployeeServiceControl.FilterDayOfTheWeek(servTitle, location));
         }
 
         // GET: Appointments/GetFilteredLocations

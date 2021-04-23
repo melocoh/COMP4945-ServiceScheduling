@@ -351,8 +351,6 @@ namespace ServiceScheduling_App.Controllers
                 }
             }
 
-            //availableShifts.Distinct().ToList();
-
             var serializer = JsonSerializer.Serialize(availableShifts);
 
             return serializer;

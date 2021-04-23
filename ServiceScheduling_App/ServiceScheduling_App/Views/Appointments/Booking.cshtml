@@ -93,7 +93,7 @@
                             <!-- Location -->
                             <div class="form-group">
                                 <label asp-for="Location" class="control-label"></label>
-                                <select class="form-control" id="locationInput" asp-items="ViewBag.Location">
+                                <select class="form-control" id="locationInput" disabled asp-items="ViewBag.Location">
                                     <option value="">Select a Location</option>
                                 </select>
                                 <span class="text-danger"></span>
@@ -102,7 +102,7 @@
                             <!-- Day of Week -->
                             <div class="form-group">
                                 <label asp-for="Day" class="control-label"></label>
-                                <select class="form-control" id="dayInput" asp-items="Html.GetEnumSelectList<DayOfWeek>()">
+                                <select class="form-control" id="dayInput" disabled>
                                     <option value="">Select Day of the Week</option>
                                 </select>
                                 <span class="text-danger"></span>
@@ -110,15 +110,15 @@
 
                             <!-- Min Date Range -->
                             <div class="form-group">
-                                <label asp-for="StartDate" class="control-label"></label>
-                                <input asp-for="StartDate" class="form-control" id="startDateInput" />
+                                <label asp-for="StartDate" class="control-label" ></label>
+                                <input asp-for="StartDate" class="form-control" id="startDateInput" disabled />
                                 <span class="text-danger"></span>
                             </div>
 
                             <!-- Max Date Range -->
                             <div class="form-group">
                                 <label asp-for="EndDate" class="control-label"></label>
-                                <input asp-for="EndDate" class="form-control" id="endDateInput"/>
+                                <input asp-for="EndDate" class="form-control" id="endDateInput" disabled/>
                                 <span class="text-danger"></span>
                             </div>
 
@@ -207,8 +207,8 @@
 
         $("#check-availability").click(function () {
             document.getElementById("scheduleContainer").innerHTML = '';
-            @*getFilterBookingAppointment();*@
-            getFilteredAvailability();
+            getFilterBookingAppointment();
+            @*getFilteredAvailability();*@
         });
 
 
@@ -284,11 +284,54 @@
             getFilteredLocations();
         });
 
+
+        // when location is selected
+        $("#locationInput").change(function () {
+
+            var select = $("#locationInput option:selected").text();
+            console.log(select);
+
+            // removes all day options
+            $('#dayInput option').remove();
+
+            // next input is enabled.
+            $('#dayInput').prop("disabled", false);
+
+            // enters filtered day options
+            getFilteredDayOfWeek();
+        });
+
+        $("#dayInput").change(function () {
+
+            var select = $("#dayInput option:selected").text();
+            console.log(select);
+
+            // next input is enabled.
+            $('#startDateInput').prop("disabled", false);
+            // next input is enabled.
+            $('#endDateInput').prop("disabled", false);
+
+            // enters filtered day options
+            getFilteredDayOfWeek();
+        });
+
         // when service is selected
         $("#startDateInput").change(function () {
 
-            var select = $("#startDateInput option:selected").text();
-            console.log(select);
+            var selectText = $("#startDateInput").text();
+            console.log("text: " + selectText);
+
+            var selectVal = $("#startDateInput").val();
+            console.log("val: " + selectVal);
+        });
+
+        $("#endDateInput").change(function () {
+
+            var selectText = $("#endDateInput").text();
+            console.log(selectText);
+
+            var selectVal = $("#endDateInput").val();
+            console.log(selectVal);
         });
 
         // ajax call to send parameter and fetch filtered locations
@@ -318,18 +361,45 @@
 
         // ajax call to send parameter and fetch filtered locations
         // GET
+        // ROUTE: /Appointments/GetFilteredLocations
+        function getFilteredDayOfWeek() {
+
+            let daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+            $.ajax({
+                type: 'GET',
+                url: '/Appointments/GetFilteredDayOfWeek?servTitle=' + $("#serviceInput option:selected").text() + '&location=' + $("#locationInput option:selected").text(),
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data);
+
+                    $("#dayInput").append($("<option/>", {
+                        text: "Select Day"
+                    }));
+
+                    for (let i = 0; i < data.length; i++) {
+                        $("#dayInput").append($("<option/>", {
+                            text: daysOfWeek[data[i]]
+                        }));
+                    }
+                }
+            });
+        }
+
+        // ajax call to send parameter and fetch filtered locations
+        // GET
         // ROUTE: /Appointments/GetFilterBookingAppointment
         function getFilterBookingAppointment() {
 
             $.ajax({
                 type: 'GET',
                 url: '/Appointments/GetFilterBookingAppointment?servTitle=' + $("#serviceInput option:selected").text() + '&location=' + $("#locationInput option:selected").text()
-                    + '&dayOfWeek=' + $("#dayInput option:selected").text() + '&minDateRange=' + $("#startDateInput").text() + '&maxDateRange=' + $("#endDateInput").text(),
+                    + '&dayOfWeek=' + $("#dayInput option:selected").text() + '&minDateRange=' + $("#startDateInput").val() + '&maxDateRange=' + $("#endDateInput").val(),
                 dataType: 'JSON',
                 success: function (data) {
                     console.log(data);
 
-                
+
                 }
             });
         }
