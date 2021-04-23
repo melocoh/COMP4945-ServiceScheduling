@@ -55,19 +55,18 @@
 
                             <div class="p-2 bd-highlight">
                                 <label asp-for="Email">Email</label><br>
-                                <input asp-for="Email" class="logininput" type="text" id="loginemail" name="loginemail">
+                                <input asp-for="Email" class="logininput" type="text" id="loginemail">
                             </div>
-
+                            @Html.ValidationMessageFor(client => client.Email, null, new { style = "color:red" })
                             <div class="p-2 bd-highlight">
                                 <label asp-for="Password">Password</label><br>
-                                <input asp-for="Password" class="logininput" type="password" id="loginpassword" name="loginpassword">
+                                <input asp-for="Password" class="logininput" type="password" id="loginpassword">
                             </div>
-
+                            @Html.ValidationMessageFor(client => client.Password, null, new { style="color:red"})
                             <div class="p-2 bd-highlight">
-                                <input type="checkbox" id="remember1" name="remember1" value="Remember">
-                                <label for="remember1">Remember me?</label><br>
+                                <input type="checkbox" id="remember" name="remember" value="Remember">
+                                <label for="remember">Remember me?</label><br>
                             </div>
-
                         </div>
                     </div>
                     <div class="d-flex justify-content-center">
