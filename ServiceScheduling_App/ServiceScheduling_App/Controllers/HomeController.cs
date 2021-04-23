@@ -29,7 +29,7 @@ namespace ServiceScheduling_App.Controllers
 
         public IActionResult Login(Employee credentials)
         {
-            Employee account = _context.Employees.Where(emp => emp.Email == credentials.Email).FirstOrDefault<Employee>();
+            Employee account = _context.Employees.Where(emp => emp.Email == credentials.Email && emp.Password == credentials.Password).FirstOrDefault<Employee>();
             if (account != null)
             {
                 ViewBag.AccountName = account.FullName;
@@ -37,20 +37,23 @@ namespace ServiceScheduling_App.Controllers
                 return View("LoggedIn");
             }
 
-            ModelState.AddModelError("Email", "User with that email not found.");
-            //return View("EmployeeSignIn");
-            return View("LoggedIn");
+            ModelState.AddModelError("Email", "Incorrect credentials");
+            return View("EmployeeSignIn");
         }
 
         //CLIENT SIDE OF LOGGING IN
         //register works but not login
         public IActionResult LoginClient(Client credentials)
         {
-            Client account = _context.Clients.Where(emp => emp.Email == credentials.Email).FirstOrDefault<Client>();
-            ViewBag.AccountName = account.FullName;
-
-            HttpContext.Session.SetInt32("clientID", account.ClientId);
-            return View("LoggedInClient");
+            Client account = _context.Clients.Where(client => client.Email == credentials.Email).FirstOrDefault<Client>();
+            if (account != null)
+            {
+                ViewBag.AccountName = account.FullName;
+                HttpContext.Session.SetInt32("clientID", account.ClientId);
+                
+                return View("LoggedInClient");
+            }
+            return View("ClientSignIn");
         }
 
         // Converts List to SelectListItems
