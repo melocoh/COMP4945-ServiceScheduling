@@ -88,6 +88,8 @@ namespace ServiceScheduling_App.Controllers
         public string location { get; set; }
         public List<string> employeeNameList { get; set; }
         public double rate { get; set; }
+        public string startAndEndTime { get; set; }
+        public string dayOfTheWeek { get; set; }
 
         public BookingAppointmentData(int serviceShiftID, DateTime date, string startTime, string endTime, int maxClients, string location, double rate)
         {
@@ -100,6 +102,14 @@ namespace ServiceScheduling_App.Controllers
             this.location = location;
             this.rate = rate;
             this.employeeNameList = new List<string>();
+
+            //strip away the seconds
+            TimeSpan startTimeHourMinute = TimeSpan.Parse(startTime);
+            TimeSpan endTimeHourMinute = TimeSpan.Parse(endTime);
+            this.startAndEndTime = startTimeHourMinute.Hours.ToString("D2") + ":" + startTimeHourMinute.Minutes.ToString("D2") + " - "
+                + endTimeHourMinute.Hours.ToString("D2") + ":" + endTimeHourMinute.Minutes.ToString("D2");
+
+            this.dayOfTheWeek = date.DayOfWeek.ToString();
         }
 
         public void addClient()
