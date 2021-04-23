@@ -81,6 +81,7 @@ namespace ServiceScheduling_App.Controllers
     {
         public int serviceShiftID { get; set; }
         public DateTime date { get; set; }
+        public string dateStr { get; set; }
         public string startTime { get; set; }
         public string endTime { get; set; }
         public int clientCount { get; set; }
@@ -95,6 +96,7 @@ namespace ServiceScheduling_App.Controllers
         {
             this.serviceShiftID = serviceShiftID;
             this.date = date;
+            this.dateStr = date.ToString("MM/dd/yyyy");
             this.startTime = startTime;
             this.endTime = endTime;
             this.clientCount = 0;

@@ -213,7 +213,6 @@
 
 
         function createCard(data) {
-            let daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
             // Row 3
             let createDiv7 = document.createElement("div");
@@ -221,11 +220,11 @@
             document.getElementById("scheduleContainer").appendChild(createDiv7);
 
             let createDiv8 = document.createElement("div");
-            createDiv8.setAttribute('class', "col-9");
+            createDiv8.setAttribute('class', "col-9 mt-1");
             createDiv7.appendChild(createDiv8);
 
             let createP3 = document.createElement("div");
-            createP3.appendChild(document.createTextNode(`${daysOfWeek[data.day]}, ${data.date} at ${data.startToEndTime}`));
+            createP3.appendChild(document.createTextNode(`${data.dayOfTheWeek}, ${data.dateStr} at ${data.startAndEndTime}`));
             createDiv8.appendChild(createP3);
 
             createP3 = document.createElement("div");
@@ -409,56 +408,17 @@
 
         function getFilteredAvailability() {
 
-            // ===============================
-            // DO SHIT HERE
-            //      pull from DB
-            // ===============================
-
-
-            // ===============================
-            // example data
-
-
-
-
-            @*let data = [
-            serviceShiftID:
-            date:
-            startTime;
-            endTime;
-            clientCount =;
-            maxClients = ;
-            location = ;
-            rate = ;
-            employeeNameList
-            ]*@
-
-            let data = [
-                {
-                    employeeNames: ["Bebe ko"],
-                    appSessionId: 1,
-                    day: 2,
-                    date: "2020-04-19",
-                    time: "10:00-12:00",
-                    location: "Burnaby"
-                },
-                {
-                    employeeNames: ["Kuya"],
-                    appSessionId: 1,
-                    day: 2,
-                    date: "2020-04-26",
-                    time: "08:00-10:00",
-                    location: "Burnaby"
-                },
-                {
-                    employeeNames: ["Jason"],
-                    appSessionId: 2,
-                    day: 3,
-                    date: "2020-04-19",
-                    time: "11:00-15:00",
-                    location: "Burnaby"
-                },
-            ];
+            @*clientCount: 0
+            date: "2021-04-12T00:00:00"
+            dayOfTheWeek: "Monday"
+            employeeNameList: ["Nicki Minaj"]
+            endTime: "15:30:00"
+            location: "Burnaby"
+            maxClients: 1
+            rate: 60
+            serviceShiftID: 6
+            startAndEndTime: "07:30 - 15:30"
+            startTime: "07:30:00"*@
             // ===============================
 
             // generate availaibity list
@@ -467,53 +427,6 @@
                 createCard(data[i]);
             }
         }
-
-        function addAvailability(data) {
-
-            let createDiv = document.createElement("div");
-            createDiv.setAttribute('class', "row border m-3");
-            document.getElementById("schedulebox").appendChild(createDiv);
-
-            let createDiv2 = document.createElement("div");
-            createDiv2.setAttribute('class', "col-9");
-            createDiv.appendChild(createDiv2);
-
-            let shiftDetailsText = document.createElement("p");
-            shiftDetailsText.appendChild(document.createTextNode(`Num of Employee: ${data.numberOfEmployees}/${data.numberOfMaxEmployees}`));
-            createDiv2.appendChild(shiftDetailsText);
-
-            shiftDetailsText = document.createElement("p");
-
-            let names = "";
-
-            for (let i = 0; i < data.employeeNameList.length; i++) {
-                names += data.employeeNameList[i] + ((i == i - 1) ? ', ' : ' ');
-            }
-
-            shiftDetailsText.appendChild(document.createTextNode(`Employee: ${names}`));
-            createDiv2.appendChild(shiftDetailsText);
-
-            let createDiv3 = document.createElement("div");
-            createDiv3.setAttribute('class', "col-3");
-            createDiv3.setAttribute('style', "padding: 30px;");
-            createDiv.appendChild(createDiv3);
-
-            let joinButton = document.createElement("button");
-            joinButton.setAttribute('type', "button");
-            joinButton.setAttribute('class', "btn btn-info");
-            joinButton.setAttribute('data-toggle', "modal");
-            joinButton.setAttribute('data-target', "#exampleModalCenter");
-            joinButton.appendChild(document.createTextNode("Join"));
-            createDiv3.appendChild(joinButton);
-
-
-            joinButton.setAttribute('id', "joinID" + data.serviceShiftId);
-            joinButton.setAttribute('onClick', "clickConfirm(this.id)");
-
-
-
-        }
-
 
     </script>
 </body>
