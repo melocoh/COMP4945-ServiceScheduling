@@ -483,6 +483,35 @@ namespace ServiceScheduling_App.Controllers
             return Ok(clientEmployeeServiceControl.FilterBookingAppointment(servTitle, location, dayOfWeek, minDateRange, maxDateRange));
         }
 
+        // GET: Appointments/GetExistingAppointment
+        [HttpGet]
+        public ActionResult GetExistingAppointment(DateTime startDateTime, DateTime endDateTime, int serviceShiftId)
+        {
+            //startDateTime = new DateTime(2021, 11, 16, 12, 00, 00);
+            //endDateTime = new DateTime(2021, 11, 16, 13, 00, 00);
+
+            startDateTime = new DateTime(2021, 1, 16, 12, 00, 00);
+            endDateTime = new DateTime(2021, 1, 16, 13, 00, 00);
+
+            serviceShiftId = 2;
+
+            // returns an array of appointment objects
+            var appcontext = _context.Appointments.Include(a => a.AppointmentSessions).Include(b => b.ServiceShift)
+                .Where(s => (s.AppointmentSessions.Any(s => s.StartDateTime == startDateTime)
+                && s.AppointmentSessions.Any(s => s.EndDateTime == endDateTime))); // OR if serviceshiftId  matches param
+
+            // if null, then create
+            if(appcontext == null || !appcontext.Any())
+            {
+                // create function that inserts new appointment, appointment session, empAppointment, clientAppointment 
+            } else
+            {
+                // create function that inserts new client Appointment
+            }
+
+            return View();
+        }
+
         // GET: Appointments
         public async Task<IActionResult> Index()
         {

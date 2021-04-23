@@ -110,7 +110,7 @@
 
                             <!-- Min Date Range -->
                             <div class="form-group">
-                                <label asp-for="StartDate" class="control-label" ></label>
+                                <label asp-for="StartDate" class="control-label"></label>
                                 <input asp-for="StartDate" class="form-control" id="startDateInput" disabled />
                                 <span class="text-danger"></span>
                             </div>
@@ -118,7 +118,7 @@
                             <!-- Max Date Range -->
                             <div class="form-group">
                                 <label asp-for="EndDate" class="control-label"></label>
-                                <input asp-for="EndDate" class="form-control" id="endDateInput" disabled/>
+                                <input asp-for="EndDate" class="form-control" id="endDateInput" disabled />
                                 <span class="text-danger"></span>
                             </div>
 
@@ -225,7 +225,7 @@
             createDiv7.appendChild(createDiv8);
 
             let createP3 = document.createElement("div");
-            createP3.appendChild(document.createTextNode(`${daysOfWeek[data.day]}, ${data.date} at ${data.time}`));
+            createP3.appendChild(document.createTextNode(`${daysOfWeek[data.day]}, ${data.date} at ${data.startToEndTime}`));
             createDiv8.appendChild(createP3);
 
             createP3 = document.createElement("div");
@@ -236,8 +236,8 @@
 
             let names = "";
 
-            for (let i = 0; i < data.employeeNames.length; i++) {
-                names += data.employeeNames[i] + ((i == i - 1) ? ', ' : ' ');
+            for (let i = 0; i < data.employeeNameList.length; i++) {
+                names += data.employeeNameList[i] + ((i == i - 1) ? ', ' : ' ');
             }
 
             shiftDetailsText.appendChild(document.createTextNode(`Employees: ${names}`));
@@ -399,7 +399,9 @@
                 success: function (data) {
                     console.log(data);
 
-
+                    for (let i = 0; i < data.length; i++) {
+                        createCard(data[i]);
+                    }
                 }
             });
         }
@@ -415,6 +417,22 @@
 
             // ===============================
             // example data
+
+
+
+
+            @*let data = [
+            serviceShiftID:
+            date:
+            startTime;
+            endTime;
+            clientCount =;
+            maxClients = ;
+            location = ;
+            rate = ;
+            employeeNameList
+            ]*@
+
             let data = [
                 {
                     employeeNames: ["Bebe ko"],
@@ -468,8 +486,8 @@
 
             let names = "";
 
-            for (let i = 0; i < data.employeeNames.length; i++) {
-                names += data.employeeNames[i] + ((i == i - 1) ? ', ' : ' ');
+            for (let i = 0; i < data.employeeNameList.length; i++) {
+                names += data.employeeNameList[i] + ((i == i - 1) ? ', ' : ' ');
             }
 
             shiftDetailsText.appendChild(document.createTextNode(`Employee: ${names}`));
