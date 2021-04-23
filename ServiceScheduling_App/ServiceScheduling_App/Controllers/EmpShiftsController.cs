@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using ServiceScheduling_App;
 using ServiceScheduling_App.Models;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
 //using System.Web.Script.Serialization;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 
 namespace ServiceScheduling_App.Controllers
 {
@@ -391,7 +387,6 @@ namespace ServiceScheduling_App.Controllers
         }
     }
 
-    
 
     // Custom class that makes rows distinct
     class DistinctItemComparer2 : IEqualityComparer<EmployeeService>
@@ -508,7 +503,9 @@ namespace ServiceScheduling_App.Controllers
             }
             ViewBag.accountID = id;
             ViewBag.accountName = _context.Employees.Where(emp => emp.EmpId == id).FirstOrDefault().FullName;
-            var appContext = _context.EmpShifts.Include(e => e.Employee).Include(e => e.ServiceShift);
+
+            // INCLUDE AND WHERE QUERY for FINAL Q3
+            var appContext = _context.EmpShifts.Include(e => e.Employee).Include(e => e.ServiceShift).Include(e => e.ServiceShift.ServiceType).Where(e => e.EmpId == id);
             return View(await appContext.ToListAsync());
         }
 

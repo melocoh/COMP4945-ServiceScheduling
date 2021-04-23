@@ -65,41 +65,79 @@
                         <p id="message2" class="">Employ ID: @ViewBag.accountID</p>
                     </div>
                 </div>
-                <hr class="splitline">
-                <div class="d-flex justify-content-center">
-                    <div id="schedulebox" class="d-flex flex-column bd-highlight mb-3">
-                        <div id="dp"></div>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-start">
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-warning statusbutton" data-toggle="modal" data-target="#exampleModalCenter">
-                        Edit
-                    </button>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Shift</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    How would you like to set up a shift?
-                                </div>
-                                <div class="modal-footer justify-content-center">
-                                    <a href="@Url.Action("CreateOrJoin","EmpShifts")">
-                                        <button type="button" class="btn btn-outline-primary">Add Service</button>
-                                    </a>
-                                    <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Remove Service</button>
+                @* Added the following code to disaply a table for Q3.4 *@
+                <table class="table">
+                    <tr>
+                        <th>
+                            EmpId
+                        </th>
+                        <th>
+                            ServiceShiftId
+                        </th>
+                        <th>
+                            Employee Name
+                        </th>
+                        <th>
+                            Service Name
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.EmpId
+                            </td>
+                            <td>
+                                @item.ServiceShiftId
+                            </td>
+                            <td>
+                                @item.Employee.FullName
+                            </td>
+                            <td>
+                                @item.ServiceShift.ServiceType.ServTitle
+                            </td>
+                        </tr>
+                    }
+                </table>
+
+
+                    <hr class="splitline">
+                    <div class="d-flex justify-content-center">
+                        <div id="schedulebox" class="d-flex flex-column bd-highlight mb-3">
+                            <div id="dp"></div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-start">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-warning statusbutton" data-toggle="modal" data-target="#exampleModalCenter">
+                            Edit
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Edit Shift</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        How would you like to set up a shift?
+                                    </div>
+                                    <div class="modal-footer justify-content-center">
+                                        <a href="@Url.Action("CreateOrJoin","EmpShifts")">
+                                            <button type="button" class="btn btn-outline-primary">Add Service</button>
+                                        </a>
+                                        <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Remove Service</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     </div>
