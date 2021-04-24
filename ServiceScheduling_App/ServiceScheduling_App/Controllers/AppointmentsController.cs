@@ -521,6 +521,16 @@ namespace ServiceScheduling_App.Controllers
                 // create function that inserts new client Appointment
             }
 
+            //checks if Employee or client
+            //if (HttpContext.Session.GetInt32("empID") != null)
+            //{
+            //    return RedirectToAction("Details", "Employees");
+            //}
+            //else if (HttpContext.Session.GetInt32("clientID") != null)
+            //{
+            //    return RedirectToAction("Details", "Clients");
+            //}
+
             return View();
         }
 

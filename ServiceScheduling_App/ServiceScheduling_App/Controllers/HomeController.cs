@@ -24,6 +24,8 @@ namespace ServiceScheduling_App.Controllers
 
         public IActionResult Index()
         {
+            // clears session
+            HttpContext.Session.Clear();
             return View();
         }
 
@@ -149,21 +151,6 @@ namespace ServiceScheduling_App.Controllers
 
             ViewBag.CertificationTypes = GetCertificateTypeList();
 
-            ViewBag.Locations = new List<SelectListItem>()
-            {
-                new SelectListItem() { Text = "Burnaby", Value = "Burnaby" },
-                new SelectListItem() { Text = "Richmond", Value = "Richmond" },
-                new SelectListItem() { Text = "Vancouver", Value = "Vancouver" }
-            };
-
-            ViewBag.ServiceTypes = new List<SelectListItem>()
-            {
-                new SelectListItem() { Text = "Teach", Value = "Teach" },
-                new SelectListItem() { Text = "Chew food", Value = "Chew food" },
-                new SelectListItem() { Text = "Rap", Value = "Rap" },
-                new SelectListItem() { Text = "Provide vaccine", Value = "Provide vaccine" }
-            };
-
             return View();
         }
 
@@ -178,6 +165,42 @@ namespace ServiceScheduling_App.Controllers
             }
             ViewBag.AlertMessage = "Log-in to view profile information.";
             return View("RoleSelection");
+        }
+
+        public async Task<IActionResult> Main()
+        {
+
+            // if logged in as employee
+            if (HttpContext.Session.GetInt32("empID") != null)
+            {
+                int id = (int)HttpContext.Session.GetInt32("empID");
+                var account = await _context.Employees.FindAsync(id);
+
+                if (account == null)
+                {
+                    return NotFound();
+                }
+
+                ViewBag.AccountName = account.FullName;
+
+                return View("LoggedIn", "Home");
+            }
+            else if (HttpContext.Session.GetInt32("clientID") != null) // if logged in as client
+            {
+                int id = (int)HttpContext.Session.GetInt32("clientID");
+                var account = await _context.Clients.FindAsync(id);
+
+                if (account == null)
+                {
+                    return NotFound();
+                }
+
+                ViewBag.AccountName = account.FullName;
+
+                return View("LoggedInClient", "Home");
+            }
+
+            return View("Index", "Home");
         }
 
         public void GetNotifications()
