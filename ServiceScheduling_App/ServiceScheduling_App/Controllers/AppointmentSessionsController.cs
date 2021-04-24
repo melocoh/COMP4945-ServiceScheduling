@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -22,8 +23,23 @@ namespace ServiceScheduling_App.Controllers
         // GET: AppointmentSessions
         public async Task<IActionResult> Index()
         {
-            var appContext = _context.AppointmentSession.Include(a => a.Appointment);
-            return View(await appContext.ToListAsync());
+            int? empId = HttpContext.Session.GetInt32("empID");
+            int? clientId = HttpContext.Session.GetInt32("clientID");
+
+            if ( empId == null && clientId == null)
+            {
+                return RedirectToAction("RoleSelection", "Home");
+            } 
+            else if (empId != null) 
+            {
+                var appContext = _context.AppointmentSession.Include(a => a.Appointment).Include(a => a.Appointment.EmpAppointments).Where(a => a.Appointment.EmpAppointments.Any(e => e.EmpId == empId));
+                return View(await appContext.ToListAsync());
+            } else
+            {
+                var appContext = _context.AppointmentSession.Include(a => a.Appointment).Include(a => a.Appointment.ClientAppointments).Where(a => a.Appointment.ClientAppointments.Any(e => e.ClientId == clientId));
+                return View(await appContext.ToListAsync());
+            }
+            
         }
 
         // GET: AppointmentSessions/Details/5
