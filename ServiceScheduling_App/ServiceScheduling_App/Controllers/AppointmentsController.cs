@@ -464,7 +464,6 @@ namespace ServiceScheduling_App.Controllers
 
         public AppointmentsController(AppContext context)
         {
-            ViewBag.ShowLogOut = true;
             _context = context;
 
             clientEmployeeServiceControl = new ClientEmployeeServiceControl(_context);

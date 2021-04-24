@@ -26,6 +26,7 @@ namespace ServiceScheduling_App.Controllers
         // GET: AppointmentSessions
         public async Task<IActionResult> Index()
         {
+            ViewBag.ShowLogOut = true;
             var appContext = _context.AppointmentSession.Include(a => a.Appointment);
             return View(await appContext.ToListAsync());
         }
@@ -38,6 +39,7 @@ namespace ServiceScheduling_App.Controllers
                 return NotFound();
             }
 
+            ViewBag.ShowLogOut = true;
             var appointmentSession = await _context.AppointmentSession
                 .Include(a => a.Appointment)
                 .FirstOrDefaultAsync(m => m.AppSessionId == id);
@@ -52,6 +54,7 @@ namespace ServiceScheduling_App.Controllers
         // GET: AppointmentSessions/Create
         public IActionResult Create()
         {
+            ViewBag.ShowLogOut = true;
             ViewData["AppId"] = new SelectList(_context.Appointments, "AppId", "AppId");
             return View();
         }
@@ -70,17 +73,19 @@ namespace ServiceScheduling_App.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AppId"] = new SelectList(_context.Appointments, "AppId", "AppId", appointmentSession.AppId);
+            ViewBag.ShowLogOut = true;
             return View(appointmentSession);
         }
 
         // GET: AppointmentSessions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
             }
-
+            ViewBag.ShowLogOut = true;
             var appointmentSession = await _context.AppointmentSession.FindAsync(id);
             if (appointmentSession == null)
             {
@@ -133,7 +138,7 @@ namespace ServiceScheduling_App.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.ShowLogOut = true;
             var appointmentSession = await _context.AppointmentSession
                 .Include(a => a.Appointment)
                 .FirstOrDefaultAsync(m => m.AppSessionId == id);
