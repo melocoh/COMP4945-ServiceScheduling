@@ -443,6 +443,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: EmpShifts
         public async Task<IActionResult> Index()
         {
+            ViewBag.ShowLogOut = true;
+
             int? id = HttpContext.Session.GetInt32("empID");
             if (id == null)
             {
@@ -460,6 +462,8 @@ namespace ServiceScheduling_App.Controllers
         [HttpGet]
         public ActionResult GetCalendarShifts()
         {
+            ViewBag.ShowLogOut = true;
+
             int? id = HttpContext.Session.GetInt32("empID");
             if (id == null)
             {
@@ -477,6 +481,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: EmpShifts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            ViewBag.ShowLogOut = true;
+
             if (id == null)
             {
                 return NotFound();
@@ -497,6 +503,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: EmpShifts/Create
         public IActionResult CreateOrJoin()
         {
+            ViewBag.ShowLogOut = true;
+
             // service title viewbag
             ViewBag.SerTitle = GetSerTitleList();
 
@@ -506,6 +514,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: EmpShifts/Create
         public IActionResult Create()
         {
+            ViewBag.ShowLogOut = true;
+
             ViewData["EmpId"] = new SelectList(_context.Employees, "EmpId", "EmpId");
             ViewData["ServiceShiftId"] = new SelectList(_context.ServiceShifts, "ServiceShiftId", "ServiceShiftId");
             return View();
@@ -593,6 +603,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: EmpShifts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewBag.ShowLogOut = true;
+
             if (id == null)
             {
                 return NotFound();
@@ -648,6 +660,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: EmpShifts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewBag.ShowLogOut = true;
+
             if (id == null)
             {
                 return NotFound();

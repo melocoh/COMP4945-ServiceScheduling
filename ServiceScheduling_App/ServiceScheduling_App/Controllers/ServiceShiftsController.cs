@@ -309,6 +309,7 @@ namespace ServiceScheduling_App.Controllers
         // GET: ServiceShifts
         public async Task<IActionResult> Index()
         {
+            ViewBag.ShowLogOut = true;
             //var appContext = _context.ServiceShifts.Include(s => s.ServiceType);
             //return View(await appContext.ToListAsync());
             ViewBag.ServiceTypes = GetSerTitleList();
@@ -318,6 +319,7 @@ namespace ServiceScheduling_App.Controllers
         // GET: ServiceShifts/:id
         public async Task<IActionResult> GetServiceShifts(int id)
         {
+
             var res = FilterServiceShiftsById(id);
             return Ok(res);
         }

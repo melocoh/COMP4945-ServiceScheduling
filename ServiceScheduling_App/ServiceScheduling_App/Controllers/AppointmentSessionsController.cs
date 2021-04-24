@@ -50,6 +50,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: AppointmentSessions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            ViewBag.ShowLogOut = true;
+
             if (id == null)
             {
                 return NotFound();
@@ -82,6 +84,8 @@ namespace ServiceScheduling_App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("AppSessionId,AppId,SessionNo,Status,StartDateTime,EndDateTime")] AppointmentSession appointmentSession)
         {
+            ViewBag.ShowLogOut = true;
+
             if (ModelState.IsValid)
             {
                 _context.Add(appointmentSession);
@@ -96,6 +100,7 @@ namespace ServiceScheduling_App.Controllers
         // GET: AppointmentSessions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewBag.ShowLogOut = true;
 
             if (id == null)
             {
@@ -150,6 +155,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: AppointmentSessions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewBag.ShowLogOut = true;
+
             if (id == null)
             {
                 return NotFound();

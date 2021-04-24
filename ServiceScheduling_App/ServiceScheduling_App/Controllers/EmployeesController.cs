@@ -25,6 +25,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: Employees
         public async Task<IActionResult> Index()
         {
+            ViewBag.ShowLogOut = true;
+
             var appContext = _context.Employees.Include(e => e.JobType);
             return View(await appContext.ToListAsync());
         }
@@ -32,6 +34,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: Employees/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            ViewBag.ShowLogOut = true;
+
             id = HttpContext.Session.GetInt32("empID");
 
             if (id == null)
@@ -85,6 +89,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: Employees/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewBag.ShowLogOut = true;
+
             if (id == null)
             {
                 return NotFound();

@@ -30,6 +30,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: Clients/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+
+            ViewBag.ShowLogOut = true;
             id = HttpContext.Session.GetInt32("clientID");
 
             if (id == null)
@@ -73,6 +75,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: Clients/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewBag.ShowLogOut = true;
+
             if (id == null)
             {
                 return NotFound();
@@ -124,6 +128,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: Clients/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewBag.ShowLogOut = true;
+
             if (id == null)
             {
                 return NotFound();

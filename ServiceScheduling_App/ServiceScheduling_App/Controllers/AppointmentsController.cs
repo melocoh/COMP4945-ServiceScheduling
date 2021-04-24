@@ -408,54 +408,6 @@ namespace ServiceScheduling_App.Controllers
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public class AppointmentsController : Controller
     {
         private readonly AppContext _context;
@@ -537,6 +489,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: Appointments
         public async Task<IActionResult> Index()
         {
+            ViewBag.ShowLogOut = true;
+
             if (HttpContext.Session.GetInt32("empID") == null)
             {
                 return RedirectToAction("RoleSelection", "Home");
@@ -567,6 +521,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: Appointments/Booking
         public IActionResult Booking()
         {
+            ViewBag.ShowLogOut = true;
+
             ViewData["Service"] = new SelectList(_context.ServiceTypes, "ServId", "ServTitle");
 
             ViewData["Location"] = new SelectList(_context.ServiceShifts, "SerLocation", "SerLocation");
