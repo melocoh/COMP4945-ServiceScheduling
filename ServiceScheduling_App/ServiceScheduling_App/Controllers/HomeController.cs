@@ -17,14 +17,13 @@ namespace ServiceScheduling_App.Controllers
         private readonly AppContext _context;
 
         public HomeController(ILogger<HomeController> logger, AppContext context)
-        {
+        {   
             _logger = logger;
             _context = context;
         }
 
         public IActionResult Index()
         {
-            // clears session
             HttpContext.Session.Clear();
             return View();
         }
@@ -34,8 +33,10 @@ namespace ServiceScheduling_App.Controllers
             Employee account = _context.Employees.Where(emp => emp.Email == credentials.Email && emp.Password == credentials.Password).FirstOrDefault<Employee>();
             if (account != null)
             {
+                ViewBag.ShowLogOut = true;
                 ViewBag.AccountName = account.FullName;
                 HttpContext.Session.SetInt32("empID", account.EmpId);
+                
                 return View("LoggedIn");
             }
 
@@ -50,6 +51,7 @@ namespace ServiceScheduling_App.Controllers
             Client account = _context.Clients.Where(client => client.Email == credentials.Email).FirstOrDefault<Client>();
             if (account != null)
             {
+                ViewBag.ShowLogOut = true;
                 ViewBag.AccountName = account.FullName;
                 HttpContext.Session.SetInt32("clientID", account.ClientId);
                 
@@ -158,9 +160,11 @@ namespace ServiceScheduling_App.Controllers
         {
             if(HttpContext.Session.GetInt32("empID") != null)
             {
+                ViewBag.ShowLogOut = true;
                 return RedirectToAction("Details", "Employees");
             } else if (HttpContext.Session.GetInt32("clientID") != null)
             {
+                ViewBag.ShowLogOut = true;
                 return RedirectToAction("Details", "Clients");
             }
             ViewBag.AlertMessage = "Log-in to view profile information.";
@@ -169,10 +173,11 @@ namespace ServiceScheduling_App.Controllers
 
         public async Task<IActionResult> Main()
         {
-
             // if logged in as employee
             if (HttpContext.Session.GetInt32("empID") != null)
             {
+                ViewBag.ShowLogOut = true;
+
                 int id = (int)HttpContext.Session.GetInt32("empID");
                 var account = await _context.Employees.FindAsync(id);
 
@@ -187,6 +192,7 @@ namespace ServiceScheduling_App.Controllers
             }
             else if (HttpContext.Session.GetInt32("clientID") != null) // if logged in as client
             {
+                ViewBag.ShowLogOut = true;
                 int id = (int)HttpContext.Session.GetInt32("clientID");
                 var account = await _context.Clients.FindAsync(id);
 

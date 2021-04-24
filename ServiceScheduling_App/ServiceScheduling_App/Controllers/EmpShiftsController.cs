@@ -414,6 +414,7 @@ namespace ServiceScheduling_App.Controllers
         // Constructor
         public EmpShiftsController(AppContext context)
         {
+            ViewBag.ShowLogOut = true;
             _context = context;
 
             employeeServiceControl = new EmployeeServiceControl(_context);
@@ -422,8 +423,8 @@ namespace ServiceScheduling_App.Controllers
 
 
 
-        // Converts List to SelectListItems
-        // @returns a list with the Text = service titles and Value = service Id
+        //// Converts List to SelectListItems
+        //// @returns a list with the Text = service titles and Value = service Id
         private List<SelectListItem> GetSerTitleList()
         {
 
@@ -436,60 +437,6 @@ namespace ServiceScheduling_App.Controllers
                     Selected = false
                 };
             });
-            return list;
-        }
-
-        // Converts List to SelectListItems
-        // @returns a list of service locations
-        private List<SelectListItem> GetSerLocationList(List<string> filteredLocations)
-        {
-
-            List<SelectListItem> list = filteredLocations.ConvertAll<SelectListItem>(item =>
-            {
-                return new SelectListItem()
-                {
-                    Text = item,
-                    Value = item,
-                    Selected = false
-                };
-            });
-
-            return list;
-        }
-
-        // Converts List to SelectListItems
-        // @returns a list of service days of the week
-        private List<SelectListItem> GetSerDayOfWeek(List<DayOfWeek> dayOfWeek)
-        {
-
-            List<SelectListItem> list = dayOfWeek.ConvertAll<SelectListItem>(item =>
-            {
-                return new SelectListItem()
-                {
-                    Text = item.ToString(),
-                    Value = item.ToString(),
-                    Selected = false
-                };
-            });
-
-            return list;
-        }
-
-        // Converts List to SelectListItems
-        // @returns a list of service start and end time
-        private List<SelectListItem> GetSerStartEndTime(List<string> startEndTime)
-        {
-
-            List<SelectListItem> list = startEndTime.ConvertAll<SelectListItem>(item =>
-            {
-                return new SelectListItem()
-                {
-                    Text = item.ToString(),
-                    Value = item.ToString(),
-                    Selected = false
-                };
-            });
-
             return list;
         }
 
@@ -570,9 +517,6 @@ namespace ServiceScheduling_App.Controllers
         {
             var res = employeeServiceControl.FilterLocations(servTitle);
 
-            // service location viewbag
-            //ViewBag.SerLocation = GetSerLocationList(res);
-
             return Ok(res);
         }
 
@@ -581,9 +525,6 @@ namespace ServiceScheduling_App.Controllers
         public ActionResult GetFilteredDayOfWeek(string servTitle, string location)
         {
             var res = employeeServiceControl.FilterDayOfTheWeek(servTitle, location);
-
-            // service day of week viewbag
-            //ViewBag.SerDayOfWeek = GetSerDayOfWeek(res);
 
             return Ok(res);
         }
@@ -594,9 +535,6 @@ namespace ServiceScheduling_App.Controllers
         {
 
             var res = employeeServiceControl.FilterStartAndEndTime(servTitle, location, dayOfWeek);
-
-            // service start and end time viewbag
-            //ViewBag.SerStartEndTime = GetSerStartEndTime(res);
 
             return Ok(res);
         }
@@ -633,41 +571,6 @@ namespace ServiceScheduling_App.Controllers
 
             return Ok();
         }
-
-        //// POST: EmpShifts/JoinShift
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //public async Task<IActionResult> JoinShift([Bind("EmpId,ServiceShiftId")] EmpShift empShift)
-        //{
-        //    var test = 1;
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(empShift);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-
-        //    return Ok(empShift);
-        //}
-
-        ////// POST: EmpShifts/JoinShift
-        ////// To protect from overposting attacks, enable the specific properties you want to bind to.
-        ////// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //public async Task<IActionResult> JoinShift([FromBody] EmpShift empShift)
-        //{
-        //    var test = 1;
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(empShift);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-
-        //    return Ok(empShift);
-        //}
-
 
         // POST: EmpShifts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.

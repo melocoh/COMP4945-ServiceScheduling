@@ -39,9 +39,16 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a id="logoutbutton" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" style="display: inline;">Logout</a>
-                        </li>
+                        @if (ViewBag.ShowLogOut ?? false)
+                        {
+                            <li class="nav-item">
+                                <a id="logoutbutton" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" style="display: inline;">Logout</a>
+                            </li>
+                        }
+
+                        @*<li class="nav-item">
+                                <a id="logoutbutton" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" style="display: inline;">Logout</a>
+                            </li>*@
                     </ul>
                 </div>
             </div>

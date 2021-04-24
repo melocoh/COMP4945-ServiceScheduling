@@ -18,6 +18,7 @@ namespace ServiceScheduling_App.Controllers
         
         public EmployeesController(AppContext context)
         {
+            ViewBag.ShowLogOut = true;
             _context = context;
         }
 
@@ -52,7 +53,7 @@ namespace ServiceScheduling_App.Controllers
         // GET: Employees/Create
         public IActionResult Create()
         {
-
+            ViewBag.ShowLogOut = false;
             ViewData["CertId"] = new SelectList(_context.CertificationTypes, "CertId", "CertTitle");
 
             ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobTitle");

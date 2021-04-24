@@ -17,6 +17,7 @@ namespace ServiceScheduling_App.Controllers
 
         public ClientsController(AppContext context)
         {
+            ViewBag.ShowLogOut = true;
             _context = context;
         }
 
@@ -49,6 +50,7 @@ namespace ServiceScheduling_App.Controllers
         // GET: Clients/Create
         public IActionResult Create()
         {
+            ViewBag.ShowLogOut = false;
             return View();
         }
 
