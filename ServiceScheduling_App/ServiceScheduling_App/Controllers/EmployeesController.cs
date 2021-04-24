@@ -18,12 +18,15 @@ namespace ServiceScheduling_App.Controllers
         
         public EmployeesController(AppContext context)
         {
+            ViewBag.ShowLogOut = true;
             _context = context;
         }
 
         // GET: Employees
         public async Task<IActionResult> Index()
         {
+            ViewBag.ShowLogOut = true;
+
             var appContext = _context.Employees.Include(e => e.JobType);
             return View(await appContext.ToListAsync());
         }
@@ -31,6 +34,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: Employees/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            ViewBag.ShowLogOut = true;
+
             id = HttpContext.Session.GetInt32("empID");
 
             if (id == null)
@@ -52,7 +57,7 @@ namespace ServiceScheduling_App.Controllers
         // GET: Employees/Create
         public IActionResult Create()
         {
-
+            ViewBag.ShowLogOut = false;
             ViewData["CertId"] = new SelectList(_context.CertificationTypes, "CertId", "CertTitle");
 
             ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobTitle");
@@ -66,20 +71,26 @@ namespace ServiceScheduling_App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("EmpId,FullName,JobId,Email,Password")] Employee employee)
         {
-
+            // Checks whether the request values were able to bind to the model
             if (ModelState.IsValid)
             {
+                // Adds the employee object to the database context
                 _context.Add(employee);
+                // Asynchronously saves the context changes to the database
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("LoggedIn","Home");
+
             }
-            //ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobId", employee.JobId);
-            return View(employee);
+            
+            // Returns view
+            return View();
         }
 
         // GET: Employees/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewBag.ShowLogOut = true;
+
             if (id == null)
             {
                 return NotFound();
@@ -90,7 +101,8 @@ namespace ServiceScheduling_App.Controllers
             {
                 return NotFound();
             }
-            //ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobId", employee.JobId);
+
+            ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobTitle");
             return View(employee);
         }
 
@@ -101,20 +113,27 @@ namespace ServiceScheduling_App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("EmpId,FullName,JobId,Email,Password")] Employee employee)
         {
+            // Checks whether the id for the employee is correct
             if (id != employee.EmpId)
             {
                 return NotFound();
             }
 
+            // Checks whether the request values were able to bind to the model
             if (ModelState.IsValid)
             {
                 try
                 {
+                    // Updates the employee in the database context
                     _context.Update(employee);
+                    // Asynchronously saves the context changes to the database
                     await _context.SaveChangesAsync();
                 }
+                // If database changes failed to save then catch
                 catch (DbUpdateConcurrencyException)
                 {
+                    // Checks if the employee cannot be found in the database
+                    // based on their employee id
                     if (!EmployeeExists(employee.EmpId))
                     {
                         return NotFound();
@@ -124,10 +143,11 @@ namespace ServiceScheduling_App.Controllers
                         throw;
                     }
                 }
+                // Redirect to index page
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["JobId"] = new SelectList(_context.JobTypes, "JobId", "JobId", employee.JobId);
-            return View(employee);
+            // Return view
+            return View();
         }
 
         // GET: Employees/Delete/5

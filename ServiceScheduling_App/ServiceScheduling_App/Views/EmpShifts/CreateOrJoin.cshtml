@@ -180,28 +180,9 @@
 
     <script>
 
-        $(document).on('click', '#btn-create', function () {
-
-            let serviceType = document.getElementById("serviceTitle");
-            serviceType.innerText =  "Service: " + $("#serviceInput option:selected").text();
-            let serviceLoc = document.getElementById("serviceLocation");
-            serviceLoc.innerText = "Location: " + $("#locationInput option:selected").text();
-            let serviceDay = document.getElementById("serviceDay");
-            serviceDay.innerText = "Day of Week: " + $("#dayInput option:selected").text();
-            let serviceTime = document.getElementById("serviceTime");
-            serviceTime.innerText = "Time: " + $("#timeInput option:selected").text();
-        });
 
         // when check shifts button is clicked
         $(document).on('click', '#btn-check', function () {
-
-            @* manually add data to the div *@
-             @*addShiftToSchedule({
-                employeeNames: ["Saem Lee"],
-                numberOfEmployees: 1,
-                numberOfMaxEmployees: 3,
-                serviceShiftId: 3
-            })*@
 
             @* add generated data *@
             getFilteredShifts();
@@ -259,6 +240,15 @@
         function clickConfirm(serviceShiftId) {
 
             console.log("clickedConfirm hit serviceShiftId " + serviceShiftId);
+
+            let serviceType = document.getElementById("serviceTitle");
+            serviceType.innerText = "Service: " + $("#serviceInput option:selected").text();
+            let serviceLoc = document.getElementById("serviceLocation");
+            serviceLoc.innerText = "Location: " + $("#locationInput option:selected").text();
+            let serviceDay = document.getElementById("serviceDay");
+            serviceDay.innerText = "Day of Week: " + $("#dayInput option:selected").text();
+            let serviceTime = document.getElementById("serviceTime");
+            serviceTime.innerText = "Time: " + $("#timeInput option:selected").text();
 
             let placeholder = "" + serviceShiftId;
 
@@ -382,7 +372,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '/EmpShifts/JoinShift?EmpId=' + 4 + '&ServiceShiftId=' + serviceShiftId,
+                url: '/EmpShifts/JoinShift?ServiceShiftId=' + serviceShiftId,
                 dataType: 'JSON',
                 success: function (data) {
                 alert(data.success);

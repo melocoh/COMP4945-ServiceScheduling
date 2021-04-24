@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using ServiceScheduling_App;
 using ServiceScheduling_App.Models;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
 //using System.Web.Script.Serialization;
 using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+
 namespace ServiceScheduling_App.Controllers
 {
 
@@ -130,9 +128,26 @@ namespace ServiceScheduling_App.Controllers
         }
     }
 
-    /*************************************************** Query executing objects ********************************************************/
+    // Contains information about a single shift for employees to be displayed on calendar
+    public class EmployeeCalShift
+    {
+        public string serviceTitle { get; set; }
+        public string location { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
 
-    public class EmployeeServiceControl
+        public EmployeeCalShift(string serviceTitle, string location, DateTime startDate, DateTime endDate)
+        {
+            this.serviceTitle = serviceTitle;
+            this.location = location;
+            this.startDate = startDate;
+            this.endDate = endDate;
+        }
+    }
+
+        /*************************************************** Query executing objects ********************************************************/
+
+        public class EmployeeServiceControl
     {
         // ServiceShiftType list that holds every element
         public List<EmployeeService> employeeServiceList;
@@ -332,13 +347,46 @@ namespace ServiceScheduling_App.Controllers
                 }
             }
 
-            //availableShifts.Distinct().ToList();
-
             var serializer = JsonSerializer.Serialize(availableShifts);
 
             return serializer;
         }
+
+        // Returns a list of service information that contains:
+        // Service name
+        // Location
+        // Start DateTime
+        // End DateTime
+        // It is filtered by Employee ID
+        public string FilterEmployeeShifts(int empId)
+        {
+            // list of employee shifts
+            List<EmployeeCalShift> empShifts = new List<EmployeeCalShift>();
+            for (int i = 0; i < employeeServiceList.Count; i++)
+            {
+                if (employeeServiceList[i].empId == empId)
+                {
+                    string service = employeeServiceList[i].servTitle;
+                    string location = employeeServiceList[i].location;
+                    DateTime baseDate = getBaseDateFromDay(employeeServiceList[i].dayOfWeek);
+                    DateTime start = baseDate.Add(employeeServiceList[i].startTime);
+                    DateTime end = baseDate.Add(employeeServiceList[i].endTime);
+                    empShifts.Add(new EmployeeCalShift(service, location, start, end));
+                }
+            }
+            var serializer = JsonSerializer.Serialize(empShifts);
+
+            return serializer;
+        }
+
+        public DateTime getBaseDateFromDay(DayOfWeek day)
+        {
+            DateTime dt = DateTime.Now;
+            int diff = dt.DayOfWeek - day;
+            return dt.AddDays(-1 * diff).Date;
+        }
     }
+
 
     // Custom class that makes rows distinct
     class DistinctItemComparer2 : IEqualityComparer<EmployeeService>
@@ -366,6 +414,7 @@ namespace ServiceScheduling_App.Controllers
         // Constructor
         public EmpShiftsController(AppContext context)
         {
+            ViewBag.ShowLogOut = true;
             _context = context;
 
             employeeServiceControl = new EmployeeServiceControl(_context);
@@ -374,8 +423,8 @@ namespace ServiceScheduling_App.Controllers
 
 
 
-        // Converts List to SelectListItems
-        // @returns a list with the Text = service titles and Value = service Id
+        //// Converts List to SelectListItems
+        //// @returns a list with the Text = service titles and Value = service Id
         private List<SelectListItem> GetSerTitleList()
         {
 
@@ -391,63 +440,11 @@ namespace ServiceScheduling_App.Controllers
             return list;
         }
 
-        // Converts List to SelectListItems
-        // @returns a list of service locations
-        private List<SelectListItem> GetSerLocationList(List<string> filteredLocations)
-        {
-
-            List<SelectListItem> list = filteredLocations.ConvertAll<SelectListItem>(item =>
-            {
-                return new SelectListItem()
-                {
-                    Text = item,
-                    Value = item,
-                    Selected = false
-                };
-            });
-
-            return list;
-        }
-
-        // Converts List to SelectListItems
-        // @returns a list of service days of the week
-        private List<SelectListItem> GetSerDayOfWeek(List<DayOfWeek> dayOfWeek)
-        {
-
-            List<SelectListItem> list = dayOfWeek.ConvertAll<SelectListItem>(item =>
-            {
-                return new SelectListItem()
-                {
-                    Text = item.ToString(),
-                    Value = item.ToString(),
-                    Selected = false
-                };
-            });
-
-            return list;
-        }
-
-        // Converts List to SelectListItems
-        // @returns a list of service start and end time
-        private List<SelectListItem> GetSerStartEndTime(List<string> startEndTime)
-        {
-
-            List<SelectListItem> list = startEndTime.ConvertAll<SelectListItem>(item =>
-            {
-                return new SelectListItem()
-                {
-                    Text = item.ToString(),
-                    Value = item.ToString(),
-                    Selected = false
-                };
-            });
-
-            return list;
-        }
-
         // GET: EmpShifts
         public async Task<IActionResult> Index()
         {
+            ViewBag.ShowLogOut = true;
+
             int? id = HttpContext.Session.GetInt32("empID");
             if (id == null)
             {
@@ -455,13 +452,37 @@ namespace ServiceScheduling_App.Controllers
             }
             ViewBag.accountID = id;
             ViewBag.accountName = _context.Employees.Where(emp => emp.EmpId == id).FirstOrDefault().FullName;
-            var appContext = _context.EmpShifts.Include(e => e.Employee).Include(e => e.ServiceShift);
+
+            // INCLUDE AND WHERE QUERY for FINAL Q3
+            var appContext = _context.EmpShifts.Include(e => e.Employee).Include(e => e.ServiceShift).Include(e => e.ServiceShift.ServiceType).Where(e => e.EmpId == id);
             return View(await appContext.ToListAsync());
+        }
+
+        // GET: EmpShifts/GetCalendarShifts
+        [HttpGet]
+        public ActionResult GetCalendarShifts()
+        {
+            ViewBag.ShowLogOut = true;
+
+            int? id = HttpContext.Session.GetInt32("empID");
+            if (id == null)
+            {
+                return RedirectToAction("RoleSelection", "Home");
+            }
+
+            // Switch commented res to view employee shifts from logged in user
+            // or Nicki Minaj respectively
+            var res = employeeServiceControl.FilterEmployeeShifts((int)id);
+            //var res = employeeServiceControl.FilterEmployeeShifts(4);
+
+            return Ok(res);
         }
 
         // GET: EmpShifts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            ViewBag.ShowLogOut = true;
+
             if (id == null)
             {
                 return NotFound();
@@ -482,6 +503,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: EmpShifts/Create
         public IActionResult CreateOrJoin()
         {
+            ViewBag.ShowLogOut = true;
+
             // service title viewbag
             ViewBag.SerTitle = GetSerTitleList();
 
@@ -491,6 +514,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: EmpShifts/Create
         public IActionResult Create()
         {
+            ViewBag.ShowLogOut = true;
+
             ViewData["EmpId"] = new SelectList(_context.Employees, "EmpId", "EmpId");
             ViewData["ServiceShiftId"] = new SelectList(_context.ServiceShifts, "ServiceShiftId", "ServiceShiftId");
             return View();
@@ -502,9 +527,6 @@ namespace ServiceScheduling_App.Controllers
         {
             var res = employeeServiceControl.FilterLocations(servTitle);
 
-            // service location viewbag
-            //ViewBag.SerLocation = GetSerLocationList(res);
-
             return Ok(res);
         }
 
@@ -513,9 +535,6 @@ namespace ServiceScheduling_App.Controllers
         public ActionResult GetFilteredDayOfWeek(string servTitle, string location)
         {
             var res = employeeServiceControl.FilterDayOfTheWeek(servTitle, location);
-
-            // service day of week viewbag
-            //ViewBag.SerDayOfWeek = GetSerDayOfWeek(res);
 
             return Ok(res);
         }
@@ -526,9 +545,6 @@ namespace ServiceScheduling_App.Controllers
         {
 
             var res = employeeServiceControl.FilterStartAndEndTime(servTitle, location, dayOfWeek);
-
-            // service start and end time viewbag
-            //ViewBag.SerStartEndTime = GetSerStartEndTime(res);
 
             return Ok(res);
         }
@@ -545,9 +561,16 @@ namespace ServiceScheduling_App.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public ActionResult JoinShift(int EmpId, int ServiceShiftId)
+        public ActionResult JoinShift(int ServiceShiftId)
         {
-            EmpShift empShift = new EmpShift(EmpId, ServiceShiftId);
+            int? EmpId = HttpContext.Session.GetInt32("empID");
+
+            if (EmpId == null)
+            {
+                return RedirectToAction("RoleSelection", "Home");
+            }
+
+            EmpShift empShift = new EmpShift((int)EmpId, ServiceShiftId);
 
             if (ModelState.IsValid)
             {
@@ -558,41 +581,6 @@ namespace ServiceScheduling_App.Controllers
 
             return Ok();
         }
-
-        //// POST: EmpShifts/JoinShift
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //public async Task<IActionResult> JoinShift([Bind("EmpId,ServiceShiftId")] EmpShift empShift)
-        //{
-        //    var test = 1;
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(empShift);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-
-        //    return Ok(empShift);
-        //}
-
-        ////// POST: EmpShifts/JoinShift
-        ////// To protect from overposting attacks, enable the specific properties you want to bind to.
-        ////// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //public async Task<IActionResult> JoinShift([FromBody] EmpShift empShift)
-        //{
-        //    var test = 1;
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(empShift);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-
-        //    return Ok(empShift);
-        //}
-
 
         // POST: EmpShifts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -615,6 +603,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: EmpShifts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewBag.ShowLogOut = true;
+
             if (id == null)
             {
                 return NotFound();
@@ -670,6 +660,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: EmpShifts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewBag.ShowLogOut = true;
+
             if (id == null)
             {
                 return NotFound();

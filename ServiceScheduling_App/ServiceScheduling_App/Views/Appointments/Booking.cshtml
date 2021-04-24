@@ -84,21 +84,25 @@
                             <!-- Service Type -->
                             <div class="form-group">
                                 <label class="control-label">Service:</label>
-                                <select class="form-control" asp-items="ViewBag.ServTitle"></select>
+                                <select class="form-control" id="serviceInput" asp-items="ViewBag.Service">
+                                    <option value="">Select a Service</option>
+                                </select>
                                 <span class="text-danger"></span>
                             </div>
 
                             <!-- Location -->
                             <div class="form-group">
                                 <label asp-for="Location" class="control-label"></label>
-                                <select class="form-control" asp-items="ViewBag.Location"></select>
+                                <select class="form-control" id="locationInput" disabled asp-items="ViewBag.Location">
+                                    <option value="">Select a Location</option>
+                                </select>
                                 <span class="text-danger"></span>
                             </div>
 
                             <!-- Day of Week -->
                             <div class="form-group">
                                 <label asp-for="Day" class="control-label"></label>
-                                <select class="form-control" asp-items="Html.GetEnumSelectList<DayOfWeek>()">
+                                <select class="form-control" id="dayInput" disabled>
                                     <option value="">Select Day of the Week</option>
                                 </select>
                                 <span class="text-danger"></span>
@@ -107,14 +111,14 @@
                             <!-- Min Date Range -->
                             <div class="form-group">
                                 <label asp-for="StartDate" class="control-label"></label>
-                                <input asp-for="StartDate" class="form-control" />
+                                <input asp-for="StartDate" class="form-control" id="startDateInput" disabled />
                                 <span class="text-danger"></span>
                             </div>
 
                             <!-- Max Date Range -->
                             <div class="form-group">
                                 <label asp-for="EndDate" class="control-label"></label>
-                                <input asp-for="EndDate" class="form-control" />
+                                <input asp-for="EndDate" class="form-control" id="endDateInput" disabled />
                                 <span class="text-danger"></span>
                             </div>
 
@@ -138,7 +142,7 @@
                                         </div>
                                         <div class="modal-body">
                                             <div>
-                                                <p>Wed, 2020-11-16 at 10:00 - 12:00</p>
+                                                <p>Mon, 2020-04-19 at 10:00 - 12:00</p>
                                                 <p>Burnaby</p>
                                                 <p>Rate ($/session): 80.00</p>
                                                 <p>Employee: Jason Chi Fai Lee</p>
@@ -152,21 +156,19 @@
                                             </div>
                                             <!-- Hidden Div -->
                                             <div id="hiddenDiv" style="display: none;">
-                                                <p>Please choose the <u>number of weeks</u> you'd like to subscribe to this service:</p>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        Number of weeks
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <a class="dropdown-item" href="#">2</a>
-                                                        <a class="dropdown-item" href="#">3</a>
-                                                    </div>
+                                                <!-- Weekly subscri -->
+                                                <div class="form-group">
+                                                    <label class="control-label">Please choose the <u>number of weeks</u> you'd like to subscribe to this service:</label>
+                                                    <select class="form-control" asp-items="ViewBag.NumOfWeeks">
+                                                        <option value="">Select the number of weekly sessions</option>
+                                                    </select>
+                                                    <span class="text-danger"></span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                            <a href="@Url.Action("BookingAppointment","Home")">
+                                            <a href="@Url.Action("Index","Appointments")">
                                                 <button type="button" class="btn btn-success">Confirm</button>
                                             </a>
                                         </div>
@@ -205,21 +207,12 @@
 
         $("#check-availability").click(function () {
             document.getElementById("scheduleContainer").innerHTML = '';
-            @* <div class="row border">
-                <div class="col-9">
-                    <p>Wed, 2020-11-16 at 10:00 - 12:00</p>
-                    <p>Burnaby</p>
-                </div>
-                <div class="col-3" style="padding: 30px;">
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">Book</button>
-                </div>
-            </div> *@
-            getFilteredAvailability();
+            getFilterBookingAppointment();
+            @*getFilteredAvailability();*@
         });
 
 
         function createCard(data) {
-            let daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
             // Row 3
             let createDiv7 = document.createElement("div");
@@ -227,11 +220,11 @@
             document.getElementById("scheduleContainer").appendChild(createDiv7);
 
             let createDiv8 = document.createElement("div");
-            createDiv8.setAttribute('class', "col-9");
+            createDiv8.setAttribute('class', "col-9 mt-1");
             createDiv7.appendChild(createDiv8);
 
             let createP3 = document.createElement("div");
-            createP3.appendChild(document.createTextNode(`${daysOfWeek[data.day]}, ${data.date} at ${data.time}`));
+            createP3.appendChild(document.createTextNode(`${data.dayOfTheWeek}, ${data.dateStr} at ${data.startAndEndTime}`));
             createDiv8.appendChild(createP3);
 
             createP3 = document.createElement("div");
@@ -242,9 +235,8 @@
 
             let names = "";
 
-            for(let i = 0; i < data.employeeNames.length; i++)
-            {
-                names += data.employeeNames[i] + ((i == i - 1) ? ', ' : ' ');
+            for (let i = 0; i < data.employeeNameList.length; i++) {
+                names += data.employeeNameList[i] + ((i == i - 1) ? ', ' : ' ');
             }
 
             shiftDetailsText.appendChild(document.createTextNode(`Employees: ${names}`));
@@ -274,100 +266,167 @@
             }
         });
 
-        function getFilteredAvailability()
-        {
+        // when service is selected
+        $("#serviceInput").change(function () {
 
-            // ===============================
-            // DO SHIT HERE
-            //      pull from DB
-            // ===============================
+            var select = $("#serviceInput option:selected").text();
+            console.log(select);
+
+            // removes all location options
+            $('#locationInput option').remove();
+
+            // next input is enabled.
+            $('#locationInput').prop("disabled", false); // Element(s) are now enabled.
 
 
-            // ===============================
-            // example data
-            let data = [
-                {
-                    employeeNames:["Vincent"],
-                    appSessionId : 1,
-                    day:2,
-                    date: "2020-11-16",
-                    time: "10:00-12:00",
-                    location : "Burnaby"
-                },
-                {
-                    employeeNames:["Eric"],
-                    appSessionId : 1,
-                    day:2,
-                    date: "2020-09-16",
-                    time: "08:00-10:00",
-                    location : "Burnaby"
-                },
-                {
-                    employeeNames:["Jason"],
-                    appSessionId : 2,
-                    day:3,
-                    date: "2020-12-16",
-                    time: "11:00-15:00",
-                    location : "Burnaby"
-                },
-            ];
+            // enters filtered location options
+            getFilteredLocations();
+        });
+
+
+        // when location is selected
+        $("#locationInput").change(function () {
+
+            var select = $("#locationInput option:selected").text();
+            console.log(select);
+
+            // removes all day options
+            $('#dayInput option').remove();
+
+            // next input is enabled.
+            $('#dayInput').prop("disabled", false);
+
+            // enters filtered day options
+            getFilteredDayOfWeek();
+        });
+
+        $("#dayInput").change(function () {
+
+            var select = $("#dayInput option:selected").text();
+            console.log(select);
+
+            // next input is enabled.
+            $('#startDateInput').prop("disabled", false);
+            // next input is enabled.
+            $('#endDateInput').prop("disabled", false);
+
+            // enters filtered day options
+            getFilteredDayOfWeek();
+        });
+
+        // when service is selected
+        $("#startDateInput").change(function () {
+
+            var selectText = $("#startDateInput").text();
+            console.log("text: " + selectText);
+
+            var selectVal = $("#startDateInput").val();
+            console.log("val: " + selectVal);
+        });
+
+        $("#endDateInput").change(function () {
+
+            var selectText = $("#endDateInput").text();
+            console.log(selectText);
+
+            var selectVal = $("#endDateInput").val();
+            console.log(selectVal);
+        });
+
+        // ajax call to send parameter and fetch filtered locations
+        // GET
+        // ROUTE: /Appointments/GetFilteredLocations
+        function getFilteredLocations() {
+
+            $.ajax({
+                type: 'GET',
+                url: '/Appointments/GetFilteredLocations?servTitle=' + $("#serviceInput option:selected").text(),
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data);
+
+                    $("#locationInput").append($("<option/>", {
+                        text: "Select Location"
+                    }));
+
+                    for (let i = 0; i < data.length; i++) {
+                        $("#locationInput").append($("<option/>", {
+                            text: data[i]
+                        }));
+                    }
+                }
+            });
+        }
+
+        // ajax call to send parameter and fetch filtered locations
+        // GET
+        // ROUTE: /Appointments/GetFilteredLocations
+        function getFilteredDayOfWeek() {
+
+            let daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+            $.ajax({
+                type: 'GET',
+                url: '/Appointments/GetFilteredDayOfWeek?servTitle=' + $("#serviceInput option:selected").text() + '&location=' + $("#locationInput option:selected").text(),
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data);
+
+                    $("#dayInput").append($("<option/>", {
+                        text: "Select Day"
+                    }));
+
+                    for (let i = 0; i < data.length; i++) {
+                        $("#dayInput").append($("<option/>", {
+                            text: daysOfWeek[data[i]]
+                        }));
+                    }
+                }
+            });
+        }
+
+        // ajax call to send parameter and fetch filtered locations
+        // GET
+        // ROUTE: /Appointments/GetFilterBookingAppointment
+        function getFilterBookingAppointment() {
+
+            $.ajax({
+                type: 'GET',
+                url: '/Appointments/GetFilterBookingAppointment?servTitle=' + $("#serviceInput option:selected").text() + '&location=' + $("#locationInput option:selected").text()
+                    + '&dayOfWeek=' + $("#dayInput option:selected").text() + '&minDateRange=' + $("#startDateInput").val() + '&maxDateRange=' + $("#endDateInput").val(),
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data);
+
+                    for (let i = 0; i < data.length; i++) {
+                        createCard(data[i]);
+                    }
+                }
+            });
+        }
+
+
+        function getFilteredAvailability() {
+
+            @*clientCount: 0
+            date: "2021-04-12T00:00:00"
+            dayOfTheWeek: "Monday"
+            employeeNameList: ["Nicki Minaj"]
+            endTime: "15:30:00"
+            location: "Burnaby"
+            maxClients: 1
+            rate: 60
+            serviceShiftID: 6
+            startAndEndTime: "07:30 - 15:30"
+            startTime: "07:30:00"*@
             // ===============================
 
             // generate availaibity list
 
-            for(let i = 0; i < data.length; i++)
-            {
+            for (let i = 0; i < data.length; i++) {
                 createCard(data[i]);
             }
         }
-
-        function addAvailability(data) {
-
-            let createDiv = document.createElement("div");
-            createDiv.setAttribute('class', "row border m-3");
-            document.getElementById("schedulebox").appendChild(createDiv);
-
-            let createDiv2 = document.createElement("div");
-            createDiv2.setAttribute('class', "col-9");
-            createDiv.appendChild(createDiv2);
-
-            let shiftDetailsText = document.createElement("p");
-            shiftDetailsText.appendChild(document.createTextNode(`Num of Employee: ${data.numberOfEmployees}/${data.numberOfMaxEmployees}`));
-            createDiv2.appendChild(shiftDetailsText);
-
-            shiftDetailsText = document.createElement("p");
-
-            let names = "";
-
-            for(let i = 0; i < data.employeeNames.length; i++)
-            {
-                names += data.employeeNames[i] + ((i == i - 1) ? ', ' : ' ');
-            }
-
-            shiftDetailsText.appendChild(document.createTextNode(`Employee: ${names}`));
-            createDiv2.appendChild(shiftDetailsText);
-
-            let createDiv3 = document.createElement("div");
-            createDiv3.setAttribute('class', "col-3");
-            createDiv3.setAttribute('style', "padding: 30px;");
-            createDiv.appendChild(createDiv3);
-
-            let joinButton = document.createElement("button");
-            joinButton.setAttribute('type', "button");
-            joinButton.setAttribute('class', "btn btn-info");
-            joinButton.setAttribute('data-toggle', "modal");
-            joinButton.setAttribute('data-target', "#exampleModalCenter");
-            joinButton.appendChild(document.createTextNode("Join"));
-            createDiv3.appendChild(joinButton);
-
-
-            joinButton.setAttribute('id', "joinID" + data.serviceShiftId);
-            joinButton.setAttribute('onClick', "clickConfirm(this.id)");
-
-
-
-        }
-
 
     </script>
 </body>

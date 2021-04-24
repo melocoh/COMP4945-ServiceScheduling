@@ -17,6 +17,7 @@ namespace ServiceScheduling_App.Controllers
 
         public ClientsController(AppContext context)
         {
+            ViewBag.ShowLogOut = true;
             _context = context;
         }
 
@@ -29,6 +30,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: Clients/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+
+            ViewBag.ShowLogOut = true;
             id = HttpContext.Session.GetInt32("clientID");
 
             if (id == null)
@@ -49,6 +52,7 @@ namespace ServiceScheduling_App.Controllers
         // GET: Clients/Create
         public IActionResult Create()
         {
+            ViewBag.ShowLogOut = false;
             return View();
         }
 
@@ -63,7 +67,7 @@ namespace ServiceScheduling_App.Controllers
             {
                 _context.Add(client);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("LoggedInClient", "Home");
+                return RedirectToAction("LoginClient", "Home", client);
             }
             return View(client);
         }
@@ -71,6 +75,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: Clients/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewBag.ShowLogOut = true;
+
             if (id == null)
             {
                 return NotFound();
@@ -122,6 +128,8 @@ namespace ServiceScheduling_App.Controllers
         // GET: Clients/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewBag.ShowLogOut = true;
+
             if (id == null)
             {
                 return NotFound();

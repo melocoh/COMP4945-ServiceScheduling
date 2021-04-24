@@ -17,40 +17,47 @@ namespace ServiceScheduling_App.Controllers
         private readonly AppContext _context;
 
         public HomeController(ILogger<HomeController> logger, AppContext context)
-        {
+        {   
             _logger = logger;
             _context = context;
         }
 
         public IActionResult Index()
         {
+            HttpContext.Session.Clear();
             return View();
         }
 
         public IActionResult Login(Employee credentials)
         {
-            Employee account = _context.Employees.Where(emp => emp.Email == credentials.Email).FirstOrDefault<Employee>();
+            Employee account = _context.Employees.Where(emp => emp.Email == credentials.Email && emp.Password == credentials.Password).FirstOrDefault<Employee>();
             if (account != null)
             {
+                ViewBag.ShowLogOut = true;
                 ViewBag.AccountName = account.FullName;
                 HttpContext.Session.SetInt32("empID", account.EmpId);
+                
                 return View("LoggedIn");
             }
 
-            ModelState.AddModelError("Email", "User with that email not found.");
-            //return View("EmployeeSignIn");
-            return View("LoggedIn");
+            ModelState.AddModelError("Email", "Incorrect credentials");
+            return View("EmployeeSignIn");
         }
 
         //CLIENT SIDE OF LOGGING IN
         //register works but not login
         public IActionResult LoginClient(Client credentials)
         {
-            Client account = _context.Clients.Where(emp => emp.Email == credentials.Email).FirstOrDefault<Client>();
-            ViewBag.AccountName = account.FullName;
-
-            HttpContext.Session.SetInt32("clientID", account.ClientId);
-            return View("LoggedInClient");
+            Client account = _context.Clients.Where(client => client.Email == credentials.Email).FirstOrDefault<Client>();
+            if (account != null)
+            {
+                ViewBag.ShowLogOut = true;
+                ViewBag.AccountName = account.FullName;
+                HttpContext.Session.SetInt32("clientID", account.ClientId);
+                
+                return View("LoggedInClient");
+            }
+            return View("ClientSignIn");
         }
 
         // Converts List to SelectListItems
@@ -146,21 +153,6 @@ namespace ServiceScheduling_App.Controllers
 
             ViewBag.CertificationTypes = GetCertificateTypeList();
 
-            ViewBag.Locations = new List<SelectListItem>()
-            {
-                new SelectListItem() { Text = "Burnaby", Value = "Burnaby" },
-                new SelectListItem() { Text = "Richmond", Value = "Richmond" },
-                new SelectListItem() { Text = "Vancouver", Value = "Vancouver" }
-            };
-
-            ViewBag.ServiceTypes = new List<SelectListItem>()
-            {
-                new SelectListItem() { Text = "Teach", Value = "Teach" },
-                new SelectListItem() { Text = "Chew food", Value = "Chew food" },
-                new SelectListItem() { Text = "Rap", Value = "Rap" },
-                new SelectListItem() { Text = "Provide vaccine", Value = "Provide vaccine" }
-            };
-
             return View();
         }
 
@@ -168,13 +160,53 @@ namespace ServiceScheduling_App.Controllers
         {
             if(HttpContext.Session.GetInt32("empID") != null)
             {
+                ViewBag.ShowLogOut = true;
                 return RedirectToAction("Details", "Employees");
             } else if (HttpContext.Session.GetInt32("clientID") != null)
             {
+                ViewBag.ShowLogOut = true;
                 return RedirectToAction("Details", "Clients");
             }
             ViewBag.AlertMessage = "Log-in to view profile information.";
             return View("RoleSelection");
+        }
+
+        public async Task<IActionResult> Main()
+        {
+            // if logged in as employee
+            if (HttpContext.Session.GetInt32("empID") != null)
+            {
+                ViewBag.ShowLogOut = true;
+
+                int id = (int)HttpContext.Session.GetInt32("empID");
+                var account = await _context.Employees.FindAsync(id);
+
+                if (account == null)
+                {
+                    return NotFound();
+                }
+
+                ViewBag.AccountName = account.FullName;
+
+                return View("LoggedIn", "Home");
+            }
+            else if (HttpContext.Session.GetInt32("clientID") != null) // if logged in as client
+            {
+                ViewBag.ShowLogOut = true;
+                int id = (int)HttpContext.Session.GetInt32("clientID");
+                var account = await _context.Clients.FindAsync(id);
+
+                if (account == null)
+                {
+                    return NotFound();
+                }
+
+                ViewBag.AccountName = account.FullName;
+
+                return View("LoggedInClient", "Home");
+            }
+
+            return View("Index", "Home");
         }
 
         public void GetNotifications()

@@ -55,19 +55,18 @@
 
                             <div class="p-2 bd-highlight">
                                 <label asp-for="Email">Email</label><br>
-                                <input asp-for="Email" class="logininput" type="text" id="loginemail" name="loginemail">
+                                <input asp-for="Email" class="logininput" type="text" id="loginemail">
                             </div>
-
+                            @Html.ValidationMessageFor(client => client.Email, null, new { style = "color:red" })
                             <div class="p-2 bd-highlight">
                                 <label asp-for="Password">Password</label><br>
-                                <input asp-for="Password" class="logininput" type="password" id="loginpassword" name="loginpassword">
+                                <input asp-for="Password" class="logininput" type="password" id="loginpassword">
                             </div>
-
+                            @Html.ValidationMessageFor(client => client.Password, null, new { style="color:red"})
                             <div class="p-2 bd-highlight">
-                                <input type="checkbox" id="remember1" name="remember1" value="Remember">
-                                <label for="remember1">Remember me?</label><br>
+                                <input type="checkbox" id="remember" name="remember" value="Remember">
+                                <label for="remember">Remember me?</label><br>
                             </div>
-
                         </div>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -96,11 +95,14 @@
             integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous">
     </script>
     <script>
-        $(document).ready(function () {
-            console.log("onload for logout button update working");
-            let logout = document.getElementById("logoutbutton");
-            logout.style.display = "none";
-        });
+        console.log("hello");
+        let logout = document.getElementById("logoutbutton");
+        logout.style.display = "none";
+        //$(document).ready(function () {
+        //    console.log("onload for logout button update working");
+        //    let logout = document.getElementById("logoutbutton");
+        //    logout.style.display = "none";
+        //});
     </script>
 </body>
 </html>
