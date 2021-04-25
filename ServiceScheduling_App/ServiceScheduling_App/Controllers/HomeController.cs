@@ -57,6 +57,7 @@ namespace ServiceScheduling_App.Controllers
                 
                 return View("LoggedInClient");
             }
+
             return View("ClientSignIn");
         }
 
