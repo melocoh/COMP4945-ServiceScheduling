@@ -101,30 +101,6 @@ namespace ServiceScheduling_App.Controllers
             return list;
         }
 
-        [HttpPost]
-        public IActionResult SubmitRegistration(Employee formData)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(formData);
-                _context.SaveChanges();
-            }
-
-            return RedirectToAction("Login", formData);
-        }
-
-        [HttpPost]
-        public IActionResult SubmitRegistrationClient(Client formData)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(formData);
-                _context.SaveChanges();
-            }
-
-            return RedirectToAction("LoginClient", formData);
-        }
-
         public IActionResult RoleSelection()
         {
             return View();
@@ -212,11 +188,6 @@ namespace ServiceScheduling_App.Controllers
             }
 
             return View("Index", "Home");
-        }
-
-        public void GetNotifications()
-        {
-
         }
     }
 }

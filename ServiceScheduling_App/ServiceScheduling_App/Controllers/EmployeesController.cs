@@ -78,7 +78,8 @@ namespace ServiceScheduling_App.Controllers
                 _context.Add(employee);
                 // Asynchronously saves the context changes to the database
                 await _context.SaveChangesAsync();
-                return RedirectToAction("LoggedIn","Home");
+
+                return RedirectToAction("Login", "Home", employee);
 
             }
             
