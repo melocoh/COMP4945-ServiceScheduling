@@ -88,8 +88,6 @@ namespace ServiceScheduling_App.Controllers
             // grabs list of JobType objects from the JobType table
             List<CertificationType> certificationTypeList = _context.CertificationTypes.ToList<CertificationType>();
 
-            //certificationTypeList.Distinct();
-
             // converts jobTypeList into selectListItem list
             List<SelectListItem> list = certificationTypeList.ConvertAll<SelectListItem>(item =>
             {
@@ -169,6 +167,13 @@ namespace ServiceScheduling_App.Controllers
             }
             ViewBag.AlertMessage = "Log-in to view profile information.";
             return View("RoleSelection");
+        }
+
+        // GET: EmpShifts/NotAuthorized
+        public IActionResult NotAuthorized()
+        {
+            ViewBag.ShowLogOut = true;
+            return View();
         }
 
         public async Task<IActionResult> Main()

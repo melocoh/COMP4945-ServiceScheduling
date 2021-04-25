@@ -420,9 +420,6 @@ namespace ServiceScheduling_App.Controllers
             employeeServiceControl = new EmployeeServiceControl(_context);
         }
 
-
-
-
         //// Converts List to SelectListItems
         //// @returns a list with the Text = service titles and Value = service Id
         private List<SelectListItem> GetSerTitleList()
@@ -448,7 +445,7 @@ namespace ServiceScheduling_App.Controllers
             int? id = HttpContext.Session.GetInt32("empID");
             if (id == null)
             {
-                return RedirectToAction("RoleSelection","Home");
+                return RedirectToAction("NotAuthorized","Home");
             }
             ViewBag.accountID = id;
             ViewBag.accountName = _context.Employees.Where(emp => emp.EmpId == id).FirstOrDefault().FullName;
