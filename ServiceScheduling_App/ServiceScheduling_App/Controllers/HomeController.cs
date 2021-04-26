@@ -58,6 +58,7 @@ namespace ServiceScheduling_App.Controllers
                 return View("LoggedInClient");
             }
 
+            ModelState.AddModelError("Email", "Incorrect credentials");
             return View("ClientSignIn");
         }
 
