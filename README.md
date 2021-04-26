@@ -12,7 +12,7 @@ Below, you can see our GitHub profiles which you can contact if you have any inq
 * [Risham Johar](https://github.com/RishamJo)
 
 ## App Description
-This is an ASP.NET Core 5.0 (MVC & Entity Framework) web application that can be used to manage service shifts and bookings for employees and client.
+This is an ASP.NET Core 5.0 (MVC & Entity Framework) web application for managing service shifts and bookings for employees and clients.
 
 Main Features:
 * Create an employee or client account that gives different acccess and view of the web application
