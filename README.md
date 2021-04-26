@@ -15,7 +15,7 @@ Below, you can see our GitHub profiles which you can contact if you have any inq
 This is an ASP.NET Core 5.0 (MVC & Entity Framework) web application for managing service shifts and bookings for employees and clients.
 
 Main Features:
-* Create an employee or client account that gives different acccess and view of the web application
+* Create an employee or client account that gives access to different views of the application
 * Allows admins to manage the types of services offered by the organization
 * Registers employees to their work shifts, depending on their qualifications and availability
 * Shows available services based on client's booking criteria and allows them to make appointment requests
